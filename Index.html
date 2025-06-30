@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MACLOR | Editor de Video</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #030303; /* Un negro casi puro para más impacto */
+        }
+        .video-responsive {
+            overflow: hidden;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            position: relative;
+            height: 0;
+        }
+        .video-responsive iframe {
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 100%;
+            position: absolute;
+        }
+        /* Clase para el color de acento personalizado */
+        .accent-color {
+            color: #e34656;
+        }
+        .bg-accent-color {
+            background-color: #e34656;
+        }
+        .border-accent-color {
+            border-color: #e34656;
+        }
+        .hover\:text-accent-color:hover {
+            color: #e34656;
+        }
+        /* Estilo para las vistas previas en video */
+        .thumbnail-video, .thumbnail-image {
+            width: 100%;
+            height: 18rem; /* 288px */
+            object-fit: cover;
+        }
+
+        /* --- NUEVAS ANIMACIONES --- */
+        
+        /* Animación para las letras del título */
+        @keyframes letter-in {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        #main-title span {
+            display: inline-block;
+            opacity: 0;
+            animation: letter-in 0.5s forwards;
+        }
+
+        /* Animación para secciones al hacer scroll */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* --- FIN DE NUEVAS ANIMACIONES --- */
+
+    </style>
+</head>
+<body class="bg-black text-gray-200">
+
+    <!-- ========== HEADER / NAV ========== -->
+    <header class="sticky top-0 z-50 bg-black/50 backdrop-blur-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-xl font-bold text-white uppercase tracking-widest">MACLOR</a>
+            <div class="hidden md:flex space-x-6 items-center">
+                <a href="#proyectos" class="text-gray-300 hover:text-white">Proyectos</a>
+                <a href="#sobre-mi" class="text-gray-300 hover:text-white">Sobre Mí</a>
+                <a href="#contacto" class="border border-white text-white font-bold py-2 px-4 rounded-full hover:bg-white hover:text-black transition-colors">HABLEMOS</a>
+            </div>
+             <div class="md:hidden">
+                <a href="#contacto" class="border border-white text-white font-bold py-2 px-3 rounded-full hover:bg-white hover:text-black transition-colors text-sm">CONTACTO</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6">
+
+        <!-- ========== HERO SECTION v2 ========== -->
+        <section id="hero" class="py-20 md:py-32">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <!-- Izquierda: Títulos y Lema -->
+                <div class="space-y-4">
+                    <p class="font-mono text-sm uppercase tracking-widest accent-color fade-in-section">◆ Ritmo y energía en cada corte.</p>
+                    <h1 id="main-title" class="text-7xl md:text-9xl font-black text-white leading-none tracking-tighter">
+                        <span>E</span><span>D</span><span>I</span><span>T</span><span>O</span><span>R</span><span class="accent-color">.</span><br>
+                        <span>V</span><span>I</span><span>D</span><span>E</span><span>O</span>
+                    </h1>
+                </div>
+                <!-- Derecha: Descripción y CTA -->
+                <div class="space-y-8 self-end fade-in-section" style="transition-delay: 300ms;">
+                    <div class="flex items-start gap-4">
+                         <div class="w-12 h-12 flex-shrink-0 rounded-full bg-accent-color mt-1"></div>
+                         <p class="text-lg text-gray-300 max-w-sm">
+                            Transformo metraje en experiencias visuales cinéticas. Mi edición se enfoca en la energía, el ritmo y los detalles que hacen que tu contenido sea inolvidable.
+                         </p>
+                    </div>
+                    <a href="#proyectos" class="font-mono text-sm uppercase tracking-widest text-white hover:accent-color">
+                        Ver todos los proyectos (6) &rarr;
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== PROYECTOS / PORTFOLIO SECTION CON VIDEO THUMBNAILS ========== -->
+        <section id="proyectos" class="py-16 fade-in-section">
+            <h2 class="text-3xl font-bold text-center text-white mb-12">Proyectos Destacados</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Proyecto 1 -->
+                <div class="bg-gray-900 rounded-xl overflow-hidden group border border-gray-800">
+                    <video class="thumbnail-video" src="https://i.imgur.com/9vPKbqr.mp4" autoplay loop muted playsinline></video>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-white">Documental: El Rey Balduino IV</h3>
+                        <p class="text-gray-400 mt-2">Análisis histórico del rey de Jerusalén, combinando narrativa con una edición visual que captura la épica y el drama.</p>
+                        <button onclick="openModal('modal1')" class="mt-4 accent-color font-semibold hover:brightness-125">Ver Proyecto <i class="fas fa-arrow-right ml-1"></i></button>
+                    </div>
+                </div>
+
+                <!-- Proyecto 2 -->
+                <div class="bg-gray-900 rounded-xl overflow-hidden group border border-gray-800">
+                    <video class="thumbnail-video" src="https://i.imgur.com/9lYEasD.mp4" autoplay loop muted playsinline></video>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-white">Ensayo Visual: El Horror de la Guerra</h3>
+                        <p class="text-gray-400 mt-2">Experimentando con un estilo más pausado y enfocado en el terror psicológico para analizar la película "Masacre: Ven y Mira".</p>
+                        <button onclick="openModal('modal2')" class="mt-4 accent-color font-semibold hover:brightness-125">Ver Proyecto <i class="fas fa-arrow-right ml-1"></i></button>
+                    </div>
+                </div>
+
+                <!-- Proyecto 3 (ACTUALIZADO) -->
+                <div class="bg-gray-900 rounded-xl overflow-hidden group border border-gray-800">
+                    <video class="thumbnail-video" src="https://i.imgur.com/XKZzN6n.mp4" autoplay loop muted playsinline></video>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-white">Análisis: Sin Novedad en el Frente</h3>
+                        <p class="text-gray-400 mt-2">Un vídeo que explora todo el horror que se vivió en una guerra, con un estilo de edición más limpio y enfocado en impactar al espectador.</p>
+                        <button onclick="openModal('modal3')" class="mt-4 accent-color font-semibold hover:brightness-125">Ver Proyecto <i class="fas fa-arrow-right ml-1"></i></button>
+                    </div>
+                </div>
+
+                <!-- Proyecto 4 -->
+                <div class="bg-gray-900 rounded-xl overflow-hidden group border border-gray-800">
+                    <video class="thumbnail-video" src="https://i.imgur.com/GDNR5Vi.mp4" autoplay loop muted playsinline></video>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-white">Reel de Animaciones en After Effects</h3>
+                        <p class="text-gray-400 mt-2">Recopilación de mis primeras exploraciones en motion graphics, experimentando con diversas técnicas de animación.</p>
+                        <button onclick="openModal('modal4')" class="mt-4 accent-color font-semibold hover:brightness-125">Ver Proyecto <i class="fas fa-arrow-right ml-1"></i></button>
+                    </div>
+                </div>
+
+                <!-- Proyecto 5 -->
+                <div class="bg-gray-900 rounded-xl overflow-hidden group border border-gray-800">
+                    <video class="thumbnail-video" src="https://i.imgur.com/eG6Pimu.mp4" autoplay loop muted playsinline></video>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-white">Reel de Contenido: Izumi Club</h3>
+                        <p class="text-gray-400 mt-2">Creación de pequeños documentales sobre leyendas del boxeo para impulsar el contenido de una escuela en Madrid.</p>
+                        <button onclick="openModal('modal5')" class="mt-4 accent-color font-semibold hover:brightness-125">Ver Proyecto <i class="fas fa-arrow-right ml-1"></i></button>
+                    </div>
+                </div>
+
+                <!-- Proyecto 6 -->
+                <div class="bg-gray-900 rounded-xl overflow-hidden group border border-gray-800">
+                    <video class="thumbnail-video" src="https://i.imgur.com/luhiOKD.mp4" autoplay loop muted playsinline></video>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-white">Reel para Instagram: U Clinic Center</h3>
+                        <p class="text-gray-400 mt-2">Gestión y creación de contenido para una clínica en Madrid, con una edición limpia que demuestra profesionalismo.</p>
+                        <button onclick="openModal('modal6')" class="mt-4 accent-color font-semibold hover:brightness-125">Ver Proyecto <i class="fas fa-arrow-right ml-1"></i></button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ========== SOBRE MÍ SECTION ========== -->
+        <section id="sobre-mi" class="py-16 flex flex-col md:flex-row items-center gap-12 fade-in-section">
+            <div class="md:w-1/3">
+                <img src="https://placehold.co/400x400/030303/e34656?text=MACLOR" alt="Logo o foto de MACLOR" class="rounded-full shadow-2xl mx-auto border-4 border-accent-color">
+            </div>
+            <div class="md:w-2/3">
+                <h2 class="text-3xl font-bold text-white mb-4">Soy Jesús Rondón, el editor detrás de MACLOR.</h2>
+                <p class="text-gray-400 mb-4">Con más de 5 años de experiencia, mi pasión es contar historias. Combino técnica y creatividad para que cada proyecto no solo se vea bien, sino que también conecte y emocione. Mi objetivo es simple: superar tus expectativas.</p>
+                <h3 class="text-xl font-bold text-white mt-6 mb-3">Mis Servicios</h3>
+                <ul class="list-disc list-inside text-gray-300 space-y-2">
+                    <li>Edición de Video (Redes, Corporativo, Creativo)</li>
+                    <li>Motion Graphics y Animación 2D</li>
+                    <li>Corrección de Color y Etalonaje</li>
+                    <li>Edición y Retoque Fotográfico</li>
+                    <li>Diseño de Sonido Básico</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ========== TESTIMONIOS SECTION ========== -->
+        <section id="testimonios" class="py-16 fade-in-section">
+            <h2 class="text-3xl font-bold text-center text-white mb-12">Lo que dicen mis clientes</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Testimonio 1 -->
+                <div class="bg-gray-900 p-8 rounded-xl border border-gray-800">
+                    <i class="fas fa-quote-left accent-color text-2xl mb-4"></i>
+                    <p class="text-gray-300 italic">"La visión de MACLOR es increíble. Entendió perfectamente lo que buscábamos y lo elevó a otro nivel. Su edición es pura energía."</p>
+                    <div class="mt-6">
+                        <p class="font-bold text-white">Ana Torres</p>
+                        <p class="text-sm text-gray-500">Fundadora de Marca Creativa</p>
+                    </div>
+                </div>
+                <!-- Testimonio 2 -->
+                <div class="bg-gray-900 p-8 rounded-xl border border-gray-800">
+                    <i class="fas fa-quote-left accent-color text-2xl mb-4"></i>
+                    <p class="text-gray-300 italic">"Profesional, rápido y con una comunicación excelente. El resultado final superó todas nuestras expectativas. Sin duda volveremos a trabajar con él."</p>
+                    <div class="mt-6">
+                        <p class="font-bold text-white">Carlos Jiménez</p>
+                        <p class="text-sm text-gray-500">Director de Marketing, Tech Solutions</p>
+                    </div>
+                </div>
+                <!-- Testimonio 3 -->
+                <div class="bg-gray-900 p-8 rounded-xl border border-gray-800">
+                    <i class="fas fa-quote-left accent-color text-2xl mb-4"></i>
+                    <p class="text-gray-300 italic">"Necesitábamos un video impactante para redes sociales y MACLOR lo consiguió. El engagement de nuestras publicaciones se disparó."</p>
+                    <div class="mt-6">
+                        <p class="font-bold text-white">Sofía Navarro</p>
+                        <p class="text-sm text-gray-500">Influencer & Creadora de Contenido</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== CONTACTO SECTION (ACTUALIZADA) ========== -->
+        <section id="contacto" class="py-16 bg-gray-900 rounded-2xl my-16 p-8 md:p-12 border border-gray-800 fade-in-section">
+            <div class="text-center max-w-2xl mx-auto">
+                <h2 class="text-4xl font-bold text-white">¿Tienes un proyecto en mente?</h2>
+                <p class="text-gray-400 mt-3 mb-8">Me encantaría escucharlo. Rellena el formulario y empecemos a crear algo increíble juntos.</p>
+                
+                <!-- Formulario de contacto funcional -->
+                <form action="https://formspree.io/f/mjkrlknp" method="POST" class="text-left space-y-6">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Tu Nombre</label>
+                        <input type="text" name="name" id="name" required class="w-full bg-gray-800 border border-gray-700 rounded-lg py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-accent-color transition-colors">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Tu Email</label>
+                        <input type="email" name="email" id="email" required class="w-full bg-gray-800 border border-gray-700 rounded-lg py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-accent-color transition-colors">
+                    </div>
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-gray-300 mb-2">Tu Mensaje</label>
+                        <textarea name="message" id="message" rows="4" required class="w-full bg-gray-800 border border-gray-700 rounded-lg py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-accent-color transition-colors"></textarea>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="mt-4 inline-block bg-accent-color hover:brightness-125 text-white font-bold py-3 px-8 rounded-lg text-lg transition-all w-full md:w-auto">Enviar Mensaje</button>
+                    </div>
+                </form>
+
+                <div class="flex justify-center space-x-6 mt-12">
+                    <a href="https://www.youtube.com/@Maclor_" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:accent-color text-2xl"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="text-gray-400 hover:accent-color text-2xl"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-gray-400 hover:accent-color text-2xl"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="text-center py-6 border-t border-gray-800">
+        <p class="text-gray-500">&copy; 2024 Jesús Rondón (MACLOR). Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- ========== MODALS (VENTANAS EMERGENTES) ========== -->
+    <!-- Modal para Proyecto 1 -->
+    <div id="modal1" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-gray-900 rounded-xl w-full max-w-4xl max-h-full overflow-y-auto border border-gray-700">
+            <div class="p-4 flex justify-between items-center border-b border-gray-700">
+                <h3 class="text-xl font-bold text-white">Documental: El Rey Balduino IV</h3>
+                <button onclick="closeModal('modal1')" class="text-gray-400 hover:text-white text-3xl">&times;</button>
+            </div>
+            <div class="p-4">
+                <div class="video-responsive">
+                    <iframe data-src="https://www.youtube.com/embed/nnEkfU5rWdU" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+                </div>
+                <p class="text-gray-300 mt-4">Análisis histórico del Rey Balduino IV de Jerusalén, combinando narrativa documental con una edición visual que captura la épica y el drama de su reinado.</p>
+            </div>
+        </div>
+    </div>
+    <!-- Modal para Proyecto 2 -->
+    <div id="modal2" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-gray-900 rounded-xl w-full max-w-4xl max-h-full overflow-y-auto border border-gray-700">
+            <div class="p-4 flex justify-between items-center border-b border-gray-700">
+                <h3 class="text-xl font-bold text-white">Ensayo Visual: El Horror de la Guerra</h3>
+                <button onclick="closeModal('modal2')" class="text-gray-400 hover:text-white text-3xl">&times;</button>
+            </div>
+            <div class="p-4">
+                <div class="video-responsive">
+                    <iframe data-src="https://www.youtube.com/embed/T19LKFARr-Y" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+                </div>
+                <p class="text-gray-300 mt-4">Experimentando con un estilo más pausado y enfocado en el terror psicológico para analizar la película "Masacre: Ven y Mira". Este fue mi primer video en alcanzar viralidad, buscando impactar al espectador a través de una atmósfera opresiva.</p>
+            </div>
+        </div>
+    </div>
+    <!-- Modal para Proyecto 3 (ACTUALIZADO) -->
+    <div id="modal3" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-gray-900 rounded-xl w-full max-w-4xl max-h-full overflow-y-auto border border-gray-700">
+            <div class="p-4 flex justify-between items-center border-b border-gray-700">
+                <h3 class="text-xl font-bold text-white">Análisis: Sin Novedad en el Frente</h3>
+                <button onclick="closeModal('modal3')" class="text-gray-400 hover:text-white text-3xl">&times;</button>
+            </div>
+            <div class="p-4">
+                <div class="video-responsive">
+                    <iframe data-src="https://www.youtube.com/embed/WaspcBACCyo" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+                </div>
+                <p class="text-gray-300 mt-4">Un vídeo que explora todo el horror que se vivió en una guerra, con un estilo de edición más limpio y enfocado en impactar al espectador.</p>
+            </div>
+        </div>
+    </div>
+    <!-- Modal para Proyecto 4 -->
+    <div id="modal4" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-gray-900 rounded-xl w-full max-w-4xl max-h-full overflow-y-auto border border-gray-700">
+            <div class="p-4 flex justify-between items-center border-b border-gray-700">
+                <h3 class="text-xl font-bold text-white">Reel de Animaciones en After Effects</h3>
+                <button onclick="closeModal('modal4')" class="text-gray-400 hover:text-white text-3xl">&times;</button>
+            </div>
+            <div class="p-4">
+                <div class="video-responsive">
+                    <iframe data-src="https://www.youtube.com/embed/zlVBn8OmL6E" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+                </div>
+                <p class="text-gray-300 mt-4">Una recopilación de mis primeras exploraciones en motion graphics. Este reel muestra mi experimentación con diversas técnicas de animación y efectos visuales en Adobe After Effects.</p>
+            </div>
+        </div>
+    </div>
+    <!-- Modal para Proyecto 5 -->
+    <div id="modal5" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-gray-900 rounded-xl w-full max-w-4xl max-h-full overflow-y-auto border border-gray-700">
+            <div class="p-4 flex justify-between items-center border-b border-gray-700">
+                <h3 class="text-xl font-bold text-white">Reel de Contenido: Izumi Club</h3>
+                <button onclick="closeModal('modal5')" class="text-gray-400 hover:text-white text-3xl">&times;</button>
+            </div>
+            <div class="p-4">
+                <div class="video-responsive">
+                    <iframe data-src="https://www.youtube.com/embed/CF6RwsSAS34" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+                </div>
+                <p class="text-gray-300 mt-4">Uno de los Reels que cree para una Escuela de Boxeo ubicada en Madrid la cual necesitaba un impulso en su contenido, por lo cual una de las secciones eran pequeños documentales sobre distintos boxeadores o leyendas del deporte.</p>
+            </div>
+        </div>
+    </div>
+    <!-- Modal para Proyecto 6 -->
+    <div id="modal6" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-gray-900 rounded-xl w-full max-w-4xl max-h-full overflow-y-auto border border-gray-700">
+            <div class="p-4 flex justify-between items-center border-b border-gray-700">
+                <h3 class="text-xl font-bold text-white">Reel para Instagram: U Clinic Center</h3>
+                <button onclick="closeModal('modal6')" class="text-gray-400 hover:text-white text-3xl">&times;</button>
+            </div>
+            <div class="p-4">
+                <div class="video-responsive">
+                    <iframe data-src="https://www.youtube.com/embed/juIrcETp4HI" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+                </div>
+                <p class="text-gray-300 mt-4">Uno de los Reels para la cuenta de Instagram U Clinic. Esta es una Clínica en Madrid, en la cual me encargo de todo el contenido que se sube en su instagram. Los vídeos solicitados por el cliente piden una edición limpia que demuestre el profesionalismo que se vive dia dia en la clinica.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== JAVASCRIPT para la funcionalidad de los Modals y Animaciones ========== -->
+    <script>
+        // --- MODAL SCRIPT ---
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+            
+            const iframe = modal.querySelector('iframe');
+            if (iframe && iframe.getAttribute('data-src')) {
+                iframe.src = iframe.getAttribute('data-src');
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+            
+            const iframe = modal.querySelector('iframe');
+            if (iframe) {
+                iframe.src = ''; 
+            }
+        }
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === "Escape") {
+                document.querySelectorAll('.fixed.inset-0').forEach(modal => {
+                    if (!modal.classList.contains('hidden')) {
+                        closeModal(modal.id);
+                    }
+                });
+            }
+        });
+
+        // --- ANIMATION SCRIPT ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Animación de letras del título
+            const titleSpans = document.querySelectorAll('#main-title span');
+            titleSpans.forEach((span, index) => {
+                span.style.animationDelay = `${index * 0.07}s`;
+            });
+
+            // Animación de secciones al hacer scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, {
+                threshold: 0.1 // La animación se activa cuando el 10% del elemento es visible
+            });
+
+            const sections = document.querySelectorAll('.fade-in-section');
+            sections.forEach(section => observer.observe(section));
+        });
+    </script>
+
+</body>
+</html>
