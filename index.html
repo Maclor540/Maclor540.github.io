@@ -111,8 +111,20 @@
                 <a href="#proyectos" class="text-gray-300 hover:text-white" data-translate="nav_projects">Proyectos</a>
                 <a href="#sobre-mi" class="text-gray-300 hover:text-white" data-translate="nav_about">Sobre Mí</a>
                 <a href="#contacto" class="border border-white text-white font-bold py-2 px-4 rounded-full hover:bg-white hover:text-black transition-colors" data-translate="nav_contact_talk">HABLEMOS</a>
+                <!-- Language Switcher (Desktop) -->
+                <div class="flex items-center space-x-2 border-l border-gray-600 ml-4 pl-4">
+                    <button id="lang-es-desktop" onclick="setLanguage('es')" class="font-bold text-white transition-colors">ES</button>
+                    <span class="text-gray-500">/</span>
+                    <button id="lang-en-desktop" onclick="setLanguage('en')" class="text-gray-500 hover:text-white transition-colors">EN</button>
+                </div>
             </div>
-             <div class="md:hidden">
+             <div class="md:hidden flex items-center gap-4">
+                <!-- Language Switcher (Mobile) -->
+                <div class="flex items-center space-x-1">
+                    <button id="lang-es-mobile" onclick="setLanguage('es')" class="font-bold text-white text-sm p-1">ES</button>
+                    <span class="text-gray-500 text-sm">/</span>
+                    <button id="lang-en-mobile" onclick="setLanguage('en')" class="text-gray-500 hover:text-white text-sm p-1">EN</button>
+                </div>
                 <a href="#contacto" class="border border-white text-white font-bold py-2 px-3 rounded-full hover:bg-white hover:text-black transition-colors text-sm" data-translate="nav_contact_contact">CONTACTO</a>
             </div>
         </nav>
@@ -596,22 +608,56 @@
             }
         };
 
-        // --- LÓGICA DE TRADUCCIÓN ---
+        // --- LÓGICA DE TRADUCCIÓN (ACTUALIZADA) ---
         function setLanguage(lang) {
+            // Traduce todo el contenido
             document.querySelectorAll('[data-translate]').forEach(element => {
                 const key = element.getAttribute('data-translate');
                 if (translations[lang] && translations[lang][key]) {
                     element.innerHTML = translations[lang][key];
                 }
             });
-            document.documentElement.lang = lang; // Actualiza el atributo lang del HTML
+            // Actualiza el atributo lang del HTML
+            document.documentElement.lang = lang; 
+
+            // Actualiza los estilos de los botones del selector de idioma
+            const langButtonsDesktop = {
+                es: document.getElementById('lang-es-desktop'),
+                en: document.getElementById('lang-en-desktop')
+            };
+            const langButtonsMobile = {
+                es: document.getElementById('lang-es-mobile'),
+                en: document.getElementById('lang-en-mobile')
+            };
+
+            if (lang === 'es') {
+                langButtonsDesktop.es.classList.add('text-white');
+                langButtonsDesktop.es.classList.remove('text-gray-500', 'hover:text-white');
+                langButtonsDesktop.en.classList.add('text-gray-500', 'hover:text-white');
+                langButtonsDesktop.en.classList.remove('text-white');
+                
+                langButtonsMobile.es.classList.add('text-white');
+                langButtonsMobile.es.classList.remove('text-gray-500', 'hover:text-white');
+                langButtonsMobile.en.classList.add('text-gray-500', 'hover:text-white');
+                langButtonsMobile.en.classList.remove('text-white');
+            } else { // lang === 'en'
+                langButtonsDesktop.en.classList.add('text-white');
+                langButtonsDesktop.en.classList.remove('text-gray-500', 'hover:text-white');
+                langButtonsDesktop.es.classList.add('text-gray-500', 'hover:text-white');
+                langButtonsDesktop.es.classList.remove('text-white');
+
+                langButtonsMobile.en.classList.add('text-white');
+                langButtonsMobile.en.classList.remove('text-gray-500', 'hover:text-white');
+                langButtonsMobile.es.classList.add('text-gray-500', 'hover:text-white');
+                langButtonsMobile.es.classList.remove('text-white');
+            }
         }
 
+        // Función para el pop-up inicial
         function selectLanguage(lang) {
-            localStorage.setItem('language', lang); // Guarda la preferencia del usuario
-            setLanguage(lang);
+            setLanguage(lang); // Establece el idioma
             const popup = document.getElementById('language-popup');
-            popup.classList.add('hidden');
+            popup.classList.add('hidden'); // Oculta el pop-up
         }
 
 
@@ -641,12 +687,9 @@
         // --- CÓDIGO QUE SE EJECUTA AL CARGAR LA PÁGINA ---
         document.addEventListener('DOMContentLoaded', () => {
             
-            // Comprueba si ya hay un idioma guardado
-            const savedLanguage = localStorage.getItem('language');
-            if (savedLanguage) {
-                setLanguage(savedLanguage);
-                document.getElementById('language-popup').classList.add('hidden');
-            }
+            // NO se comprueba el idioma guardado, el pop-up siempre aparece.
+            // Se establece español por defecto mientras el pop-up está visible.
+            setLanguage('es');
 
             // Año dinámico en el footer
             document.getElementById('year').textContent = new Date().getFullYear();
