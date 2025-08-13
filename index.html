@@ -57,7 +57,7 @@
             object-fit: cover;
         }
 
-        /* --- NUEVAS ANIMACIONES --- */
+        /* --- ANIMACIONES --- */
         
         /* Animación para las letras del título */
         @keyframes letter-in {
@@ -88,35 +88,44 @@
             opacity: 1;
             transform: translateY(0);
         }
-        /* --- FIN DE NUEVAS ANIMACIONES --- */
-
     </style>
 </head>
 <body class="bg-black text-gray-200">
 
+    <!-- ========== POP-UP DE IDIOMA ========== -->
+    <div id="language-popup" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-50">
+        <div class="bg-gray-900 rounded-xl p-8 text-center border border-gray-700 max-w-sm w-full">
+            <h2 class="text-2xl font-bold text-white mb-6" data-translate="lang_popup_title">Elige tu idioma / Choose your language</h2>
+            <div class="flex flex-col sm:flex-row gap-4">
+                <button onclick="selectLanguage('es')" class="w-full bg-accent-color hover:brightness-125 text-white font-bold py-3 px-6 rounded-lg transition-transform transform hover:scale-105">Español</button>
+                <button onclick="selectLanguage('en')" class="w-full bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-transform transform hover:scale-105">English</button>
+            </div>
+        </div>
+    </div>
+
     <!-- ========== HEADER / NAV ========== -->
-    <header class="sticky top-0 z-50 bg-black/50 backdrop-blur-sm">
+    <header class="sticky top-0 z-40 bg-black/50 backdrop-blur-sm">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="#" class="text-xl font-bold text-white uppercase tracking-widest">MACLOR</a>
             <div class="hidden md:flex space-x-6 items-center">
-                <a href="#proyectos" class="text-gray-300 hover:text-white">Proyectos</a>
-                <a href="#sobre-mi" class="text-gray-300 hover:text-white">Sobre Mí</a>
-                <a href="#contacto" class="border border-white text-white font-bold py-2 px-4 rounded-full hover:bg-white hover:text-black transition-colors">HABLEMOS</a>
+                <a href="#proyectos" class="text-gray-300 hover:text-white" data-translate="nav_projects">Proyectos</a>
+                <a href="#sobre-mi" class="text-gray-300 hover:text-white" data-translate="nav_about">Sobre Mí</a>
+                <a href="#contacto" class="border border-white text-white font-bold py-2 px-4 rounded-full hover:bg-white hover:text-black transition-colors" data-translate="nav_contact_talk">HABLEMOS</a>
             </div>
              <div class="md:hidden">
-                <a href="#contacto" class="border border-white text-white font-bold py-2 px-3 rounded-full hover:bg-white hover:text-black transition-colors text-sm">CONTACTO</a>
+                <a href="#contacto" class="border border-white text-white font-bold py-2 px-3 rounded-full hover:bg-white hover:text-black transition-colors text-sm" data-translate="nav_contact_contact">CONTACTO</a>
             </div>
         </nav>
     </header>
 
     <main class="container mx-auto px-6">
 
-        <!-- ========== HERO SECTION v2 ========== -->
+        <!-- ========== HERO SECTION ========== -->
         <section id="hero" class="py-20 md:py-32">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <!-- Izquierda: Títulos y Lema -->
                 <div class="space-y-4">
-                    <p class="font-mono text-sm uppercase tracking-widest accent-color fade-in-section">◆ Ritmo y energía en cada corte.</p>
+                    <p class="font-mono text-sm uppercase tracking-widest accent-color fade-in-section" data-translate="hero_tagline">◆ Ritmo y energía en cada corte.</p>
                     <h1 id="main-title" class="text-7xl md:text-9xl font-black text-white leading-none tracking-tighter">
                         <span>E</span><span>D</span><span>I</span><span>T</span><span>O</span><span>R</span><span class="accent-color">.</span><br>
                         <span>V</span><span>I</span><span>D</span><span>E</span><span>O</span>
@@ -126,29 +135,29 @@
                 <div class="space-y-8 self-end fade-in-section" style="transition-delay: 300ms;">
                     <div class="flex items-start gap-4">
                          <div class="w-12 h-12 flex-shrink-0 rounded-full bg-accent-color mt-1"></div>
-                         <p class="text-lg text-gray-300 max-w-sm">
+                         <p class="text-lg text-gray-300 max-w-sm" data-translate="hero_description">
                             Transformo metraje en experiencias visuales cinéticas. Mi edición se enfoca en la energía, el ritmo y los detalles que hacen que tu contenido sea inolvidable.
                          </p>
                     </div>
-                    <a href="#proyectos" class="font-mono text-sm uppercase tracking-widest text-white hover:accent-color">
-                        Ver todos los proyectos (6) &rarr;
+                    <a href="#proyectos" class="font-mono text-sm uppercase tracking-widest text-white hover:accent-color" data-translate="hero_cta">
+                        Ver todos los proyectos (8) &rarr;
                     </a>
                 </div>
             </div>
         </section>
 
-        <!-- ========== PROYECTOS / PORTFOLIO SECTION CON VIDEO THUMBNAILS ========== -->
+        <!-- ========== PROYECTOS / PORTFOLIO SECTION ========== -->
         <section id="proyectos" class="py-16 fade-in-section">
-            <h2 class="text-3xl font-bold text-center text-white mb-12">Proyectos Destacados</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <h2 class="text-3xl font-bold text-center text-white mb-12" data-translate="projects_title">Proyectos Destacados</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 
                 <!-- Proyecto 1 -->
                 <div class="bg-gray-900 rounded-xl overflow-hidden group border border-gray-800">
                     <video class="thumbnail-video" src="https://i.imgur.com/9vPKbqr.mp4" autoplay loop muted playsinline></video>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-white">Documental: El Rey Balduino IV</h3>
-                        <p class="text-gray-400 mt-2">Análisis histórico del rey de Jerusalén, combinando narrativa con una edición visual que captura la épica y el drama.</p>
-                        <button onclick="openModal('modal1')" class="mt-4 accent-color font-semibold hover:brightness-125">Ver Proyecto <i class="fas fa-arrow-right ml-1"></i></button>
+                        <h3 class="text-xl font-bold text-white" data-translate="p1_title">Documental: El Rey Balduino IV</h3>
+                        <p class="text-gray-400 mt-2" data-translate="p1_desc">Análisis histórico del rey de Jerusalén, combinando narrativa con una edición visual que captura la épica y el drama.</p>
+                        <button onclick="openModal('modal1')" class="mt-4 accent-color font-semibold hover:brightness-125" data-translate="view_project_btn">Ver Proyecto <i class="fas fa-arrow-right ml-1"></i></button>
                     </div>
                 </div>
 
@@ -156,19 +165,19 @@
                 <div class="bg-gray-900 rounded-xl overflow-hidden group border border-gray-800">
                     <video class="thumbnail-video" src="https://i.imgur.com/9lYEasD.mp4" autoplay loop muted playsinline></video>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-white">Ensayo Visual: El Horror de la Guerra</h3>
-                        <p class="text-gray-400 mt-2">Experimentando con un estilo más pausado y enfocado en el terror psicológico para analizar la película "Masacre: Ven y Mira".</p>
-                        <button onclick="openModal('modal2')" class="mt-4 accent-color font-semibold hover:brightness-125">Ver Proyecto <i class="fas fa-arrow-right ml-1"></i></button>
+                        <h3 class="text-xl font-bold text-white" data-translate="p2_title">Ensayo Visual: El Horror de la Guerra</h3>
+                        <p class="text-gray-400 mt-2" data-translate="p2_desc">Experimentando con un estilo más pausado y enfocado en el terror psicológico para analizar la película "Masacre: Ven y Mira".</p>
+                        <button onclick="openModal('modal2')" class="mt-4 accent-color font-semibold hover:brightness-125" data-translate="view_project_btn">Ver Proyecto <i class="fas fa-arrow-right ml-1"></i></button>
                     </div>
                 </div>
 
-                <!-- Proyecto 3 (ACTUALIZADO) -->
+                <!-- Proyecto 3 -->
                 <div class="bg-gray-900 rounded-xl overflow-hidden group border border-gray-800">
                     <video class="thumbnail-video" src="https://i.imgur.com/XKZzN6n.mp4" autoplay loop muted playsinline></video>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-white">Análisis: Sin Novedad en el Frente</h3>
-                        <p class="text-gray-400 mt-2">Un vídeo que explora todo el horror que se vivió en una guerra, con un estilo de edición más limpio y enfocado en impactar al espectador.</p>
-                        <button onclick="openModal('modal3')" class="mt-4 accent-color font-semibold hover:brightness-125">Ver Proyecto <i class="fas fa-arrow-right ml-1"></i></button>
+                        <h3 class="text-xl font-bold text-white" data-translate="p3_title">Análisis: Sin Novedad en el Frente</h3>
+                        <p class="text-gray-400 mt-2" data-translate="p3_desc">Un vídeo que explora todo el horror que se vivió en una guerra, con un estilo de edición más limpio y enfocado en impactar al espectador.</p>
+                        <button onclick="openModal('modal3')" class="mt-4 accent-color font-semibold hover:brightness-125" data-translate="view_project_btn">Ver Proyecto <i class="fas fa-arrow-right ml-1"></i></button>
                     </div>
                 </div>
 
@@ -176,9 +185,9 @@
                 <div class="bg-gray-900 rounded-xl overflow-hidden group border border-gray-800">
                     <video class="thumbnail-video" src="https://i.imgur.com/GDNR5Vi.mp4" autoplay loop muted playsinline></video>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-white">Reel de Animaciones en After Effects</h3>
-                        <p class="text-gray-400 mt-2">Recopilación de mis primeras exploraciones en motion graphics, experimentando con diversas técnicas de animación.</p>
-                        <button onclick="openModal('modal4')" class="mt-4 accent-color font-semibold hover:brightness-125">Ver Proyecto <i class="fas fa-arrow-right ml-1"></i></button>
+                        <h3 class="text-xl font-bold text-white" data-translate="p4_title">Reel de Animaciones en After Effects</h3>
+                        <p class="text-gray-400 mt-2" data-translate="p4_desc">Recopilación de mis primeras exploraciones en motion graphics, experimentando con diversas técnicas de animación.</p>
+                        <button onclick="openModal('modal4')" class="mt-4 accent-color font-semibold hover:brightness-125" data-translate="view_project_btn">Ver Proyecto <i class="fas fa-arrow-right ml-1"></i></button>
                     </div>
                 </div>
 
@@ -186,9 +195,9 @@
                 <div class="bg-gray-900 rounded-xl overflow-hidden group border border-gray-800">
                     <video class="thumbnail-video" src="https://i.imgur.com/eG6Pimu.mp4" autoplay loop muted playsinline></video>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-white">Reel de Contenido: Izumi Club</h3>
-                        <p class="text-gray-400 mt-2">Creación de pequeños documentales sobre leyendas del boxeo para impulsar el contenido de una escuela en Madrid.</p>
-                        <button onclick="openModal('modal5')" class="mt-4 accent-color font-semibold hover:brightness-125">Ver Proyecto <i class="fas fa-arrow-right ml-1"></i></button>
+                        <h3 class="text-xl font-bold text-white" data-translate="p5_title">Reel de Contenido: Izumi Club</h3>
+                        <p class="text-gray-400 mt-2" data-translate="p5_desc">Creación de pequeños documentales sobre leyendas del boxeo para impulsar el contenido de una escuela en Madrid.</p>
+                        <button onclick="openModal('modal5')" class="mt-4 accent-color font-semibold hover:brightness-125" data-translate="view_project_btn">Ver Proyecto <i class="fas fa-arrow-right ml-1"></i></button>
                     </div>
                 </div>
 
@@ -196,9 +205,29 @@
                 <div class="bg-gray-900 rounded-xl overflow-hidden group border border-gray-800">
                     <video class="thumbnail-video" src="https://i.imgur.com/luhiOKD.mp4" autoplay loop muted playsinline></video>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-white">Reel para Instagram: U Clinic Center</h3>
-                        <p class="text-gray-400 mt-2">Gestión y creación de contenido para una clínica en Madrid, con una edición limpia que demuestra profesionalismo.</p>
-                        <button onclick="openModal('modal6')" class="mt-4 accent-color font-semibold hover:brightness-125">Ver Proyecto <i class="fas fa-arrow-right ml-1"></i></button>
+                        <h3 class="text-xl font-bold text-white" data-translate="p6_title">Reel para Instagram: U Clinic Center</h3>
+                        <p class="text-gray-400 mt-2" data-translate="p6_desc">Gestión y creación de contenido para una clínica en Madrid, con una edición limpia que demuestra profesionalismo.</p>
+                        <button onclick="openModal('modal6')" class="mt-4 accent-color font-semibold hover:brightness-125" data-translate="view_project_btn">Ver Proyecto <i class="fas fa-arrow-right ml-1"></i></button>
+                    </div>
+                </div>
+                
+                <!-- Proyecto 7 (NUEVO) -->
+                <div class="bg-gray-900 rounded-xl overflow-hidden group border border-gray-800">
+                    <video class="thumbnail-video" src="https://placehold.co/600x400/e34656/white?text=Video+7" autoplay loop muted playsinline></video>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-white" data-translate="p7_title">Nombre del Proyecto 7</h3>
+                        <p class="text-gray-400 mt-2" data-translate="p7_desc">Descripción breve del proyecto para tu nuevo cliente.</p>
+                        <button onclick="openModal('modal7')" class="mt-4 accent-color font-semibold hover:brightness-125" data-translate="view_project_btn">Ver Proyecto <i class="fas fa-arrow-right ml-1"></i></button>
+                    </div>
+                </div>
+
+                <!-- Proyecto 8 (NUEVO) -->
+                <div class="bg-gray-900 rounded-xl overflow-hidden group border border-gray-800">
+                    <video class="thumbnail-video" src="https://placehold.co/600x400/e34656/white?text=Video+8" autoplay loop muted playsinline></video>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-white" data-translate="p8_title">Nombre del Proyecto 8</h3>
+                        <p class="text-gray-400 mt-2" data-translate="p8_desc">Descripción breve del segundo proyecto nuevo.</p>
+                        <button onclick="openModal('modal8')" class="mt-4 accent-color font-semibold hover:brightness-125" data-translate="view_project_btn">Ver Proyecto <i class="fas fa-arrow-right ml-1"></i></button>
                     </div>
                 </div>
 
@@ -208,85 +237,85 @@
         <!-- ========== SOBRE MÍ SECTION ========== -->
         <section id="sobre-mi" class="py-16 flex flex-col md:flex-row items-center gap-12 fade-in-section">
             <div class="md:w-1/3">
-                <img src="https://placehold.co/400x400/030303/e34656?text=MACLOR" alt="Logo o foto de MACLOR" class="rounded-full shadow-2xl mx-auto border-4 border-accent-color">
+                <img src="https://placehold.co/400x400/030303/e34656?text=MACLOR" alt="Logo de MACLOR" class="rounded-full shadow-2xl mx-auto border-4 border-accent-color">
             </div>
             <div class="md:w-2/3">
-                <h2 class="text-3xl font-bold text-white mb-4">Soy Jesús Rondón, el editor detrás de MACLOR.</h2>
-                <p class="text-gray-400 mb-4">Con más de 5 años de experiencia, mi pasión es contar historias. Combino técnica y creatividad para que cada proyecto no solo se vea bien, sino que también conecte y emocione. Mi objetivo es simple: superar tus expectativas.</p>
-                <h3 class="text-xl font-bold text-white mt-6 mb-3">Mis Servicios</h3>
+                <h2 class="text-3xl font-bold text-white mb-4" data-translate="about_title">Soy Jesús Rondón, el editor detrás de MACLOR.</h2>
+                <p class="text-gray-400 mb-4" data-translate="about_desc">Con más de 5 años de experiencia, mi pasión es contar historias. Combino técnica y creatividad para que cada proyecto no solo se vea bien, sino que también conecte y emocione. Mi objetivo es simple: superar tus expectativas.</p>
+                <h3 class="text-xl font-bold text-white mt-6 mb-3" data-translate="services_title">Mis Servicios</h3>
                 <ul class="list-disc list-inside text-gray-300 space-y-2">
-                    <li>Edición de Video (Redes, Corporativo, Creativo)</li>
-                    <li>Motion Graphics y Animación 2D</li>
-                    <li>Corrección de Color y Etalonaje</li>
-                    <li>Edición y Retoque Fotográfico</li>
-                    <li>Diseño de Sonido Básico</li>
+                    <li data-translate="service_1">Edición de Video (Redes, Corporativo, Creativo)</li>
+                    <li data-translate="service_2">Motion Graphics y Animación 2D</li>
+                    <li data-translate="service_3">Corrección de Color y Etalonaje</li>
+                    <li data-translate="service_4">Edición y Retoque Fotográfico</li>
+                    <li data-translate="service_5">Diseño de Sonido Básico</li>
                 </ul>
             </div>
         </section>
 
         <!-- ========== TESTIMONIOS SECTION ========== -->
         <section id="testimonios" class="py-16 fade-in-section">
-            <h2 class="text-3xl font-bold text-center text-white mb-12">Lo que dicen mis clientes</h2>
+            <h2 class="text-3xl font-bold text-center text-white mb-12" data-translate="testimonials_title">Lo que dicen mis clientes</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Testimonio 1 -->
                 <div class="bg-gray-900 p-8 rounded-xl border border-gray-800">
                     <i class="fas fa-quote-left accent-color text-2xl mb-4"></i>
-                    <p class="text-gray-300 italic">"La visión de MACLOR es increíble. Entendió perfectamente lo que buscábamos y lo elevó a otro nivel. Su edición es pura energía."</p>
+                    <p class="text-gray-300 italic" data-translate="testimonial_1_text">"La visión de MACLOR es increíble. Entendió perfectamente lo que buscábamos y lo elevó a otro nivel. Su edición es pura energía."</p>
                     <div class="mt-6">
-                        <p class="font-bold text-white">Ana Torres</p>
-                        <p class="text-sm text-gray-500">Fundadora de Marca Creativa</p>
+                        <p class="font-bold text-white" data-translate="testimonial_1_author">Ana Torres</p>
+                        <p class="text-sm text-gray-500" data-translate="testimonial_1_role">Fundadora de Marca Creativa</p>
                     </div>
                 </div>
                 <!-- Testimonio 2 -->
                 <div class="bg-gray-900 p-8 rounded-xl border border-gray-800">
                     <i class="fas fa-quote-left accent-color text-2xl mb-4"></i>
-                    <p class="text-gray-300 italic">"Profesional, rápido y con una comunicación excelente. El resultado final superó todas nuestras expectativas. Sin duda volveremos a trabajar con él."</p>
+                    <p class="text-gray-300 italic" data-translate="testimonial_2_text">"Profesional, rápido y con una comunicación excelente. El resultado final superó todas nuestras expectativas. Sin duda volveremos a trabajar con él."</p>
                     <div class="mt-6">
-                        <p class="font-bold text-white">Carlos Jiménez</p>
-                        <p class="text-sm text-gray-500">Director de Marketing, Tech Solutions</p>
+                        <p class="font-bold text-white" data-translate="testimonial_2_author">Carlos Jiménez</p>
+                        <p class="text-sm text-gray-500" data-translate="testimonial_2_role">Director de Marketing, Tech Solutions</p>
                     </div>
                 </div>
                 <!-- Testimonio 3 -->
                 <div class="bg-gray-900 p-8 rounded-xl border border-gray-800">
                     <i class="fas fa-quote-left accent-color text-2xl mb-4"></i>
-                    <p class="text-gray-300 italic">"Necesitábamos un video impactante para redes sociales y MACLOR lo consiguió. El engagement de nuestras publicaciones se disparó."</p>
+                    <p class="text-gray-300 italic" data-translate="testimonial_3_text">"Necesitábamos un video impactante para redes sociales y MACLOR lo consiguió. El engagement de nuestras publicaciones se disparó."</p>
                     <div class="mt-6">
-                        <p class="font-bold text-white">Sofía Navarro</p>
-                        <p class="text-sm text-gray-500">Influencer & Creadora de Contenido</p>
+                        <p class="font-bold text-white" data-translate="testimonial_3_author">Sofía Navarro</p>
+                        <p class="text-sm text-gray-500" data-translate="testimonial_3_role">Influencer & Creadora de Contenido</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- ========== CONTACTO SECTION (ACTUALIZADA) ========== -->
+        <!-- ========== CONTACTO SECTION ========== -->
         <section id="contacto" class="py-16 bg-gray-900 rounded-2xl my-16 p-8 md:p-12 border border-gray-800 fade-in-section">
             <div class="text-center max-w-2xl mx-auto">
-                <h2 class="text-4xl font-bold text-white">¿Tienes un proyecto en mente?</h2>
-                <p class="text-gray-400 mt-3 mb-8">Me encantaría escucharlo. Rellena el formulario y empecemos a crear algo increíble juntos.</p>
+                <h2 class="text-4xl font-bold text-white" data-translate="contact_title">¿Tienes un proyecto en mente?</h2>
+                <p class="text-gray-400 mt-3 mb-8" data-translate="contact_subtitle">Me encantaría escucharlo. Rellena el formulario y empecemos a crear algo increíble juntos.</p>
                 
-                <!-- Formulario de contacto funcional -->
                 <form action="https://formspree.io/f/mjkrlknp" method="POST" class="text-left space-y-6">
                     <div>
-                        <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Tu Nombre</label>
+                        <label for="name" class="block text-sm font-medium text-gray-300 mb-2" data-translate="form_name">Tu Nombre</label>
                         <input type="text" name="name" id="name" required class="w-full bg-gray-800 border border-gray-700 rounded-lg py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-accent-color transition-colors">
                     </div>
                     <div>
-                        <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Tu Email</label>
+                        <label for="email" class="block text-sm font-medium text-gray-300 mb-2" data-translate="form_email">Tu Email</label>
                         <input type="email" name="email" id="email" required class="w-full bg-gray-800 border border-gray-700 rounded-lg py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-accent-color transition-colors">
                     </div>
                     <div>
-                        <label for="message" class="block text-sm font-medium text-gray-300 mb-2">Tu Mensaje</label>
+                        <label for="message" class="block text-sm font-medium text-gray-300 mb-2" data-translate="form_message">Tu Mensaje</label>
                         <textarea name="message" id="message" rows="4" required class="w-full bg-gray-800 border border-gray-700 rounded-lg py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-accent-color transition-colors"></textarea>
                     </div>
                     <div class="text-center">
-                        <button type="submit" class="mt-4 inline-block bg-accent-color hover:brightness-125 text-white font-bold py-3 px-8 rounded-lg text-lg transition-all w-full md:w-auto">Enviar Mensaje</button>
+                        <button type="submit" class="mt-4 inline-block bg-accent-color hover:brightness-125 text-white font-bold py-3 px-8 rounded-lg text-lg transition-all w-full md:w-auto" data-translate="form_button">Enviar Mensaje</button>
                     </div>
                 </form>
 
                 <div class="flex justify-center space-x-6 mt-12">
-                    <a href="https://www.youtube.com/@Maclor_" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:accent-color text-2xl"><i class="fab fa-youtube"></i></a>
-                    <a href="#" class="text-gray-400 hover:accent-color text-2xl"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="text-gray-400 hover:accent-color text-2xl"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://youtube.com/@sr.maclor?si=j_jhz9mmhoqxZJaA" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:accent-color text-2xl transition-transform transform hover:scale-125"><i class="fab fa-youtube"></i></a>
+                    <a href="https://www.instagram.com/maclor_studio?igsh=MXYyNjBnMnI1ZDI1OA==" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:accent-color text-2xl transition-transform transform hover:scale-125"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.linkedin.com/in/jesus-rondon-i" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:accent-color text-2xl transition-transform transform hover:scale-125"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="http://tiktok.com/@sr.maclor" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:accent-color text-2xl transition-transform transform hover:scale-125"><i class="fab fa-tiktok"></i></a>
                 </div>
             </div>
         </section>
@@ -295,7 +324,7 @@
 
     <!-- ========== FOOTER ========== -->
     <footer class="text-center py-6 border-t border-gray-800">
-        <p class="text-gray-500">&copy; 2024 Jesús Rondón (MACLOR). Todos los derechos reservados.</p>
+        <p class="text-gray-500">&copy; <span id="year">2024</span> Jesús Rondón (MACLOR). <span data-translate="footer_rights">Todos los derechos reservados.</span></p>
     </footer>
 
     <!-- ========== MODALS (VENTANAS EMERGENTES) ========== -->
@@ -303,14 +332,14 @@
     <div id="modal1" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-gray-900 rounded-xl w-full max-w-4xl max-h-full overflow-y-auto border border-gray-700">
             <div class="p-4 flex justify-between items-center border-b border-gray-700">
-                <h3 class="text-xl font-bold text-white">Documental: El Rey Balduino IV</h3>
+                <h3 class="text-xl font-bold text-white" data-translate="p1_title">Documental: El Rey Balduino IV</h3>
                 <button onclick="closeModal('modal1')" class="text-gray-400 hover:text-white text-3xl">&times;</button>
             </div>
             <div class="p-4">
                 <div class="video-responsive">
                     <iframe data-src="https://www.youtube.com/embed/nnEkfU5rWdU" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
                 </div>
-                <p class="text-gray-300 mt-4">Análisis histórico del Rey Balduino IV de Jerusalén, combinando narrativa documental con una edición visual que captura la épica y el drama de su reinado.</p>
+                <p class="text-gray-300 mt-4" data-translate="modal_p1_desc">Análisis histórico del Rey Balduino IV de Jerusalén, combinando narrativa documental con una edición visual que captura la épica y el drama de su reinado.</p>
             </div>
         </div>
     </div>
@@ -318,29 +347,29 @@
     <div id="modal2" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-gray-900 rounded-xl w-full max-w-4xl max-h-full overflow-y-auto border border-gray-700">
             <div class="p-4 flex justify-between items-center border-b border-gray-700">
-                <h3 class="text-xl font-bold text-white">Ensayo Visual: El Horror de la Guerra</h3>
+                <h3 class="text-xl font-bold text-white" data-translate="p2_title">Ensayo Visual: El Horror de la Guerra</h3>
                 <button onclick="closeModal('modal2')" class="text-gray-400 hover:text-white text-3xl">&times;</button>
             </div>
             <div class="p-4">
                 <div class="video-responsive">
                     <iframe data-src="https://www.youtube.com/embed/T19LKFARr-Y" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
                 </div>
-                <p class="text-gray-300 mt-4">Experimentando con un estilo más pausado y enfocado en el terror psicológico para analizar la película "Masacre: Ven y Mira". Este fue mi primer video en alcanzar viralidad, buscando impactar al espectador a través de una atmósfera opresiva.</p>
+                <p class="text-gray-300 mt-4" data-translate="modal_p2_desc">Experimentando con un estilo más pausado y enfocado en el terror psicológico para analizar la película "Masacre: Ven y Mira". Este fue mi primer video en alcanzar viralidad, buscando impactar al espectador a través de una atmósfera opresiva.</p>
             </div>
         </div>
     </div>
-    <!-- Modal para Proyecto 3 (ACTUALIZADO) -->
+    <!-- Modal para Proyecto 3 -->
     <div id="modal3" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-gray-900 rounded-xl w-full max-w-4xl max-h-full overflow-y-auto border border-gray-700">
             <div class="p-4 flex justify-between items-center border-b border-gray-700">
-                <h3 class="text-xl font-bold text-white">Análisis: Sin Novedad en el Frente</h3>
+                <h3 class="text-xl font-bold text-white" data-translate="p3_title">Análisis: Sin Novedad en el Frente</h3>
                 <button onclick="closeModal('modal3')" class="text-gray-400 hover:text-white text-3xl">&times;</button>
             </div>
             <div class="p-4">
                 <div class="video-responsive">
                     <iframe data-src="https://www.youtube.com/embed/WaspcBACCyo" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
                 </div>
-                <p class="text-gray-300 mt-4">Un vídeo que explora todo el horror que se vivió en una guerra, con un estilo de edición más limpio y enfocado en impactar al espectador.</p>
+                <p class="text-gray-300 mt-4" data-translate="modal_p3_desc">Un vídeo que explora todo el horror que se vivió en una guerra, con un estilo de edición más limpio y enfocado en impactar al espectador.</p>
             </div>
         </div>
     </div>
@@ -348,14 +377,14 @@
     <div id="modal4" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-gray-900 rounded-xl w-full max-w-4xl max-h-full overflow-y-auto border border-gray-700">
             <div class="p-4 flex justify-between items-center border-b border-gray-700">
-                <h3 class="text-xl font-bold text-white">Reel de Animaciones en After Effects</h3>
+                <h3 class="text-xl font-bold text-white" data-translate="p4_title">Reel de Animaciones en After Effects</h3>
                 <button onclick="closeModal('modal4')" class="text-gray-400 hover:text-white text-3xl">&times;</button>
             </div>
             <div class="p-4">
                 <div class="video-responsive">
                     <iframe data-src="https://www.youtube.com/embed/zlVBn8OmL6E" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
                 </div>
-                <p class="text-gray-300 mt-4">Una recopilación de mis primeras exploraciones en motion graphics. Este reel muestra mi experimentación con diversas técnicas de animación y efectos visuales en Adobe After Effects.</p>
+                <p class="text-gray-300 mt-4" data-translate="modal_p4_desc">Una recopilación de mis primeras exploraciones en motion graphics. Este reel muestra mi experimentación con diversas técnicas de animación y efectos visuales en Adobe After Effects.</p>
             </div>
         </div>
     </div>
@@ -363,14 +392,14 @@
     <div id="modal5" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-gray-900 rounded-xl w-full max-w-4xl max-h-full overflow-y-auto border border-gray-700">
             <div class="p-4 flex justify-between items-center border-b border-gray-700">
-                <h3 class="text-xl font-bold text-white">Reel de Contenido: Izumi Club</h3>
+                <h3 class="text-xl font-bold text-white" data-translate="p5_title">Reel de Contenido: Izumi Club</h3>
                 <button onclick="closeModal('modal5')" class="text-gray-400 hover:text-white text-3xl">&times;</button>
             </div>
             <div class="p-4">
                 <div class="video-responsive">
                     <iframe data-src="https://www.youtube.com/embed/CF6RwsSAS34" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
                 </div>
-                <p class="text-gray-300 mt-4">Uno de los Reels que cree para una Escuela de Boxeo ubicada en Madrid la cual necesitaba un impulso en su contenido, por lo cual una de las secciones eran pequeños documentales sobre distintos boxeadores o leyendas del deporte.</p>
+                <p class="text-gray-300 mt-4" data-translate="modal_p5_desc">Uno de los Reels que cree para una Escuela de Boxeo ubicada en Madrid la cual necesitaba un impulso en su contenido, por lo cual una de las secciones eran pequeños documentales sobre distintos boxeadores o leyendas del deporte.</p>
             </div>
         </div>
     </div>
@@ -378,21 +407,215 @@
     <div id="modal6" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-gray-900 rounded-xl w-full max-w-4xl max-h-full overflow-y-auto border border-gray-700">
             <div class="p-4 flex justify-between items-center border-b border-gray-700">
-                <h3 class="text-xl font-bold text-white">Reel para Instagram: U Clinic Center</h3>
+                <h3 class="text-xl font-bold text-white" data-translate="p6_title">Reel para Instagram: U Clinic Center</h3>
                 <button onclick="closeModal('modal6')" class="text-gray-400 hover:text-white text-3xl">&times;</button>
             </div>
             <div class="p-4">
                 <div class="video-responsive">
                     <iframe data-src="https://www.youtube.com/embed/juIrcETp4HI" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
                 </div>
-                <p class="text-gray-300 mt-4">Uno de los Reels para la cuenta de Instagram U Clinic. Esta es una Clínica en Madrid, en la cual me encargo de todo el contenido que se sube en su instagram. Los vídeos solicitados por el cliente piden una edición limpia que demuestre el profesionalismo que se vive dia dia en la clinica.</p>
+                <p class="text-gray-300 mt-4" data-translate="modal_p6_desc">Uno de los Reels para la cuenta de Instagram U Clinic. Esta es una Clínica en Madrid, en la cual me encargo de todo el contenido que se sube en su instagram. Los vídeos solicitados por el cliente piden una edición limpia que demuestre el profesionalismo que se vive dia dia en la clinica.</p>
+            </div>
+        </div>
+    </div>
+    <!-- Modal para Proyecto 7 -->
+    <div id="modal7" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-gray-900 rounded-xl w-full max-w-4xl max-h-full overflow-y-auto border border-gray-700">
+            <div class="p-4 flex justify-between items-center border-b border-gray-700">
+                <h3 class="text-xl font-bold text-white" data-translate="p7_title">Nombre del Proyecto 7</h3>
+                <button onclick="closeModal('modal7')" class="text-gray-400 hover:text-white text-3xl">&times;</button>
+            </div>
+            <div class="p-4">
+                <div class="video-responsive">
+                    <iframe data-src="https://www.youtube.com/embed/VIDEO_ID_7" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+                </div>
+                <p class="text-gray-300 mt-4" data-translate="modal_p7_desc">Descripción detallada del proyecto 7.</p>
+            </div>
+        </div>
+    </div>
+    <!-- Modal para Proyecto 8 -->
+    <div id="modal8" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-gray-900 rounded-xl w-full max-w-4xl max-h-full overflow-y-auto border border-gray-700">
+            <div class="p-4 flex justify-between items-center border-b border-gray-700">
+                <h3 class="text-xl font-bold text-white" data-translate="p8_title">Nombre del Proyecto 8</h3>
+                <button onclick="closeModal('modal8')" class="text-gray-400 hover:text-white text-3xl">&times;</button>
+            </div>
+            <div class="p-4">
+                <div class="video-responsive">
+                    <iframe data-src="https://www.youtube.com/embed/VIDEO_ID_8" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+                </div>
+                <p class="text-gray-300 mt-4" data-translate="modal_p8_desc">Descripción detallada del proyecto 8.</p>
             </div>
         </div>
     </div>
 
-    <!-- ========== JAVASCRIPT para la funcionalidad de los Modals y Animaciones ========== -->
+
+    <!-- ========== JAVASCRIPT ========== -->
     <script>
-        // --- MODAL SCRIPT ---
+        // --- DICCIONARIO DE TRADUCCIONES ---
+        const translations = {
+            es: {
+                // POPUP
+                lang_popup_title: "Elige tu idioma",
+                // NAV
+                nav_projects: "Proyectos",
+                nav_about: "Sobre Mí",
+                nav_contact_talk: "HABLEMOS",
+                nav_contact_contact: "CONTACTO",
+                // HERO
+                hero_tagline: "◆ Ritmo y energía en cada corte.",
+                hero_description: "Transformo metraje en experiencias visuales cinéticas. Mi edición se enfoca en la energía, el ritmo y los detalles que hacen que tu contenido sea inolvidable.",
+                hero_cta: "Ver todos los proyectos (8) &rarr;",
+                // PROJECTS
+                projects_title: "Proyectos Destacados",
+                view_project_btn: "Ver Proyecto",
+                p1_title: "Documental: El Rey Balduino IV",
+                p1_desc: "Análisis histórico del rey de Jerusalén, combinando narrativa con una edición visual que captura la épica y el drama.",
+                p2_title: "Ensayo Visual: El Horror de la Guerra",
+                p2_desc: "Experimentando con un estilo más pausado y enfocado en el terror psicológico para analizar la película \"Masacre: Ven y Mira\".",
+                p3_title: "Análisis: Sin Novedad en el Frente",
+                p3_desc: "Un vídeo que explora todo el horror que se vivió en una guerra, con un estilo de edición más limpio y enfocado en impactar al espectador.",
+                p4_title: "Reel de Animaciones en After Effects",
+                p4_desc: "Recopilación de mis primeras exploraciones en motion graphics, experimentando con diversas técnicas de animación.",
+                p5_title: "Reel de Contenido: Izumi Club",
+                p5_desc: "Creación de pequeños documentales sobre leyendas del boxeo para impulsar el contenido de una escuela en Madrid.",
+                p6_title: "Reel para Instagram: U Clinic Center",
+                p6_desc: "Gestión y creación de contenido para una clínica en Madrid, con una edición limpia que demuestra profesionalismo.",
+                p7_title: "Nombre del Proyecto 7",
+                p7_desc: "Descripción breve del proyecto para tu nuevo cliente.",
+                p8_title: "Nombre del Proyecto 8",
+                p8_desc: "Descripción breve del segundo proyecto nuevo.",
+                // ABOUT
+                about_title: "Soy Jesús Rondón, el editor detrás de MACLOR.",
+                about_desc: "Con más de 5 años de experiencia, mi pasión es contar historias. Combino técnica y creatividad para que cada proyecto no solo se vea bien, sino que también conecte y emocione. Mi objetivo es simple: superar tus expectativas.",
+                services_title: "Mis Servicios",
+                service_1: "Edición de Video (Redes, Corporativo, Creativo)",
+                service_2: "Motion Graphics y Animación 2D",
+                service_3: "Corrección de Color y Etalonaje",
+                service_4: "Edición y Retoque Fotográfico",
+                service_5: "Diseño de Sonido Básico",
+                // TESTIMONIALS
+                testimonials_title: "Lo que dicen mis clientes",
+                testimonial_1_text: "\"La visión de MACLOR es increíble. Entendió perfectamente lo que buscábamos y lo elevó a otro nivel. Su edición es pura energía.\"",
+                testimonial_1_author: "Ana Torres",
+                testimonial_1_role: "Fundadora de Marca Creativa",
+                testimonial_2_text: "\"Profesional, rápido y con una comunicación excelente. El resultado final superó todas nuestras expectativas. Sin duda volveremos a trabajar con él.\"",
+                testimonial_2_author: "Carlos Jiménez",
+                testimonial_2_role: "Director de Marketing, Tech Solutions",
+                testimonial_3_text: "\"Necesitábamos un video impactante para redes sociales y MACLOR lo consiguió. El engagement de nuestras publicaciones se disparó.\"",
+                testimonial_3_author: "Sofía Navarro",
+                testimonial_3_role: "Influencer & Creadora de Contenido",
+                // CONTACT
+                contact_title: "¿Tienes un proyecto en mente?",
+                contact_subtitle: "Me encantaría escucharlo. Rellena el formulario y empecemos a crear algo increíble juntos.",
+                form_name: "Tu Nombre",
+                form_email: "Tu Email",
+                form_message: "Tu Mensaje",
+                form_button: "Enviar Mensaje",
+                // FOOTER
+                footer_rights: "Todos los derechos reservados.",
+                // MODALS
+                modal_p1_desc: "Análisis histórico del Rey Balduino IV de Jerusalén, combinando narrativa documental con una edición visual que captura la épica y el drama de su reinado.",
+                modal_p2_desc: "Experimentando con un estilo más pausado y enfocado en el terror psicológico para analizar la película \"Masacre: Ven y Mira\". Este fue mi primer video en alcanzar viralidad, buscando impactar al espectador a través de una atmósfera opresiva.",
+                modal_p3_desc: "Un vídeo que explora todo el horror que se vivió en una guerra, con un estilo de edición más limpio y enfocado en impactar al espectador.",
+                modal_p4_desc: "Una recopilación de mis primeras exploraciones en motion graphics. Este reel muestra mi experimentación con diversas técnicas de animación y efectos visuales en Adobe After Effects.",
+                modal_p5_desc: "Uno de los Reels que cree para una Escuela de Boxeo ubicada en Madrid la cual necesitaba un impulso en su contenido, por lo cual una de las secciones eran pequeños documentales sobre distintos boxeadores o leyendas del deporte.",
+                modal_p6_desc: "Uno de los Reels para la cuenta de Instagram U Clinic. Esta es una Clínica en Madrid, en la cual me encargo de todo el contenido que se sube en su instagram. Los vídeos solicitados por el cliente piden una edición limpia que demuestre el profesionalismo que se vive dia dia en la clinica.",
+                modal_p7_desc: "Descripción detallada del proyecto 7.",
+                modal_p8_desc: "Descripción detallada del proyecto 8."
+            },
+            en: {
+                // POPUP
+                lang_popup_title: "Choose your language",
+                // NAV
+                nav_projects: "Projects",
+                nav_about: "About Me",
+                nav_contact_talk: "LET'S TALK",
+                nav_contact_contact: "CONTACT",
+                // HERO
+                hero_tagline: "◆ Rhythm and energy in every cut.",
+                hero_description: "I transform footage into kinetic visual experiences. My editing focuses on energy, rhythm, and the details that make your content unforgettable.",
+                hero_cta: "See all projects (8) &rarr;",
+                // PROJECTS
+                projects_title: "Featured Projects",
+                view_project_btn: "View Project",
+                p1_title: "Documentary: King Baldwin IV",
+                p1_desc: "Historical analysis of the King of Jerusalem, combining narrative with visual editing that captures the epic and drama.",
+                p2_title: "Visual Essay: The Horror of War",
+                p2_desc: "Experimenting with a slower pace, focusing on psychological terror to analyze the film \"Come and See\".",
+                p3_title: "Analysis: All Quiet on the Western Front",
+                p3_desc: "A video that explores the horror lived in war, with a cleaner editing style focused on impacting the viewer.",
+                p4_title: "After Effects Animation Reel",
+                p4_desc: "A compilation of my first explorations in motion graphics, experimenting with various animation techniques.",
+                p5_title: "Content Reel: Izumi Club",
+                p5_desc: "Creating short documentaries about boxing legends to boost content for a school in Madrid.",
+                p6_title: "Instagram Reel: U Clinic Center",
+                p6_desc: "Content management and creation for a clinic in Madrid, with clean editing that shows professionalism.",
+                p7_title: "Project Name 7",
+                p7_desc: "Brief description of the project for your new client.",
+                p8_title: "Project Name 8",
+                p8_desc: "Brief description of the second new project.",
+                // ABOUT
+                about_title: "I'm Jesús Rondón, the editor behind MACLOR.",
+                about_desc: "With over 5 years of experience, my passion is storytelling. I combine technique and creativity so that each project not only looks good, but also connects and excites. My goal is simple: to exceed your expectations.",
+                services_title: "My Services",
+                service_1: "Video Editing (Social, Corporate, Creative)",
+                service_2: "Motion Graphics and 2D Animation",
+                service_3: "Color Correction and Grading",
+                service_4: "Photo Editing and Retouching",
+                service_5: "Basic Sound Design",
+                // TESTIMONIALS
+                testimonials_title: "What my clients say",
+                testimonial_1_text: "\"MACLOR's vision is incredible. He perfectly understood what we were looking for and took it to another level. His editing is pure energy.\"",
+                testimonial_1_author: "Ana Torres",
+                testimonial_1_role: "Founder of Creative Brand",
+                testimonial_2_text: "\"Professional, fast, and with excellent communication. The final result exceeded all our expectations. We will definitely work with him again.\"",
+                testimonial_2_author: "Carlos Jiménez",
+                testimonial_2_role: "Marketing Director, Tech Solutions",
+                testimonial_3_text: "\"We needed an impactful video for social media and MACLOR delivered. The engagement on our posts skyrocketed.\"",
+                testimonial_3_author: "Sofía Navarro",
+                testimonial_3_role: "Influencer & Content Creator",
+                // CONTACT
+                contact_title: "Have a project in mind?",
+                contact_subtitle: "I'd love to hear about it. Fill out the form and let's start creating something amazing together.",
+                form_name: "Your Name",
+                form_email: "Your Email",
+                form_message: "Your Message",
+                form_button: "Send Message",
+                // FOOTER
+                footer_rights: "All rights reserved.",
+                // MODALS
+                modal_p1_desc: "Historical analysis of King Baldwin IV of Jerusalem, combining documentary narrative with visual editing that captures the epic and drama of his reign.",
+                modal_p2_desc: "Experimenting with a slower pace and focusing on psychological terror to analyze the film \"Come and See.\" This was my first video to go viral, aiming to impact the viewer through an oppressive atmosphere.",
+                modal_p3_desc: "A video that explores the full horror of war, with a cleaner editing style focused on impacting the viewer.",
+                modal_p4_desc: "A compilation of my early explorations in motion graphics. This reel showcases my experimentation with various animation and visual effects techniques in Adobe After Effects.",
+                modal_p5_desc: "One of the Reels I created for a Boxing School in Madrid that needed a boost in its content. One of the sections included short documentaries about different boxers or legends of the sport.",
+                modal_p6_desc: "One of the Reels for the U Clinic Instagram account. This is a clinic in Madrid where I manage all the content posted on their Instagram. The client requested clean editing that demonstrates the professionalism experienced daily at the clinic.",
+                modal_p7_desc: "Detailed description of project 7.",
+                modal_p8_desc: "Detailed description of project 8."
+            }
+        };
+
+        // --- LÓGICA DE TRADUCCIÓN ---
+        function setLanguage(lang) {
+            document.querySelectorAll('[data-translate]').forEach(element => {
+                const key = element.getAttribute('data-translate');
+                if (translations[lang] && translations[lang][key]) {
+                    element.innerHTML = translations[lang][key];
+                }
+            });
+            document.documentElement.lang = lang; // Actualiza el atributo lang del HTML
+        }
+
+        function selectLanguage(lang) {
+            localStorage.setItem('language', lang); // Guarda la preferencia del usuario
+            setLanguage(lang);
+            const popup = document.getElementById('language-popup');
+            popup.classList.add('hidden');
+        }
+
+
+        // --- LÓGICA DE MODALES ---
         function openModal(modalId) {
             const modal = document.getElementById(modalId);
             modal.classList.remove('hidden');
@@ -415,18 +638,19 @@
             }
         }
 
-        document.addEventListener('keydown', function (event) {
-            if (event.key === "Escape") {
-                document.querySelectorAll('.fixed.inset-0').forEach(modal => {
-                    if (!modal.classList.contains('hidden')) {
-                        closeModal(modal.id);
-                    }
-                });
-            }
-        });
-
-        // --- ANIMATION SCRIPT ---
+        // --- CÓDIGO QUE SE EJECUTA AL CARGAR LA PÁGINA ---
         document.addEventListener('DOMContentLoaded', () => {
+            
+            // Comprueba si ya hay un idioma guardado
+            const savedLanguage = localStorage.getItem('language');
+            if (savedLanguage) {
+                setLanguage(savedLanguage);
+                document.getElementById('language-popup').classList.add('hidden');
+            }
+
+            // Año dinámico en el footer
+            document.getElementById('year').textContent = new Date().getFullYear();
+
             // Animación de letras del título
             const titleSpans = document.querySelectorAll('#main-title span');
             titleSpans.forEach((span, index) => {
@@ -446,6 +670,17 @@
 
             const sections = document.querySelectorAll('.fade-in-section');
             sections.forEach(section => observer.observe(section));
+
+            // Cerrar modales con la tecla Escape
+            document.addEventListener('keydown', function (event) {
+                if (event.key === "Escape") {
+                    document.querySelectorAll('.fixed.inset-0').forEach(modal => {
+                        if (!modal.classList.contains('hidden')) {
+                            closeModal(modal.id);
+                        }
+                    });
+                }
+            });
         });
     </script>
 
