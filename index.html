@@ -1,11 +1,14 @@
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MACLOR | Editor de Video</title>
     
-    <!-- FAVICON -->
-    <link rel="icon" type="image/png" href="Assets/favicon.png">
+    <!-- FAVICON (VERSIÓN MEJORADA PARA MÁXIMA COMPATIBILIDAD) -->
+    <link rel="icon" href="Assets/favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="Assets/favicon.png"> <!-- Para Apple -->
+
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -154,15 +157,38 @@
                          </p>
                     </div>
                     <a href="#proyectos" class="font-mono text-sm uppercase tracking-widest text-white hover:accent-color" data-translate="hero_cta">
-                        Ver todos los proyectos (8) &rarr;
+                        Ver todos los proyectos (7) &rarr;
                     </a>
                 </div>
             </div>
         </section>
 
-        <!-- ========== PROYECTOS / PORTFOLIO SECTION ========== -->
+        <!-- ========== PROYECTOS / PORTFOLIO SECTION (REESTRUCTURADA) ========== -->
         <section id="proyectos" class="py-16 fade-in-section">
             <h2 class="text-3xl font-bold text-center text-white mb-12" data-translate="projects_title">Proyectos Destacados</h2>
+
+            <!-- NUEVA SECCIÓN: SHOWREEL -->
+            <div class="mb-20 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 items-center bg-gray-900/50 p-8 rounded-2xl border border-gray-800">
+                <!-- Video Vertical -->
+                <div class="md:col-span-1 flex justify-center">
+                    <div class="w-full max-w-[280px] aspect-[9/16] bg-gray-800 rounded-xl overflow-hidden shadow-lg border border-gray-700">
+                        <video class="w-full h-full object-cover" src="https://i.imgur.com/i9Rv2UJ.mp4" autoplay loop muted playsinline></video>
+                    </div>
+                </div>
+                <!-- Descripción del Showreel -->
+                <div class="md:col-span-2 space-y-4 text-center md:text-left">
+                    <h3 class="text-3xl font-bold text-white" data-translate="trailer_title">Mi Showreel de Edición</h3>
+                    <p class="text-gray-400 max-w-lg mx-auto md:mx-0" data-translate="trailer_desc">
+                        Esta es una muestra total de mi potencial en Motion Graphics. Por unos segundos se logra ver un antes y después de uno de los videos para U Clinic Center, demostrando cómo el contenido de marca vibrante puede ser utilizado para videos corporativos o incluso proyectos más cinemáticos.
+                    </p>
+                    <button onclick="openModal('modal_showreel')" class="mt-4 inline-block bg-accent-color hover:brightness-125 text-white font-bold py-3 px-6 rounded-lg transition-transform transform hover:scale-105" data-translate="trailer_cta">Ver Showreel Completo</button>
+                </div>
+            </div>
+
+            <!-- Título para la Galería -->
+            <h3 class="text-2xl font-bold text-center text-white mb-12" data-translate="gallery_title">Galería de Proyectos</h3>
+
+            <!-- GALERÍA DE PROYECTOS -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 
                 <!-- Proyecto 1 -->
@@ -225,23 +251,13 @@
                     </div>
                 </div>
                 
-                <!-- Proyecto 7 (NUEVO) -->
+                <!-- Proyecto 7 (ACTUALIZADO) -->
                 <div class="bg-gray-900 rounded-xl overflow-hidden group border border-gray-800">
-                    <video class="thumbnail-video" src="https://placehold.co/600x400/e34656/white?text=Video+7" autoplay loop muted playsinline></video>
+                    <video class="thumbnail-video" src="https://i.imgur.com/kk0Z1Vn.mp4" autoplay loop muted playsinline></video>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-white" data-translate="p7_title">Nombre del Proyecto 7</h3>
-                        <p class="text-gray-400 mt-2" data-translate="p7_desc">Descripción breve del proyecto para tu nuevo cliente.</p>
+                        <h3 class="text-xl font-bold text-white" data-translate="p7_title">Anuncio Corporativo: U Clinic Center</h3>
+                        <p class="text-gray-400 mt-2" data-translate="p7_desc">Creación de contenido para U Clinic Center, fusionando un estilo para redes sociales con un enfoque corporativo.</p>
                         <button onclick="openModal('modal7')" class="mt-4 accent-color font-semibold hover:brightness-125" data-translate="view_project_btn">Ver Proyecto <i class="fas fa-arrow-right ml-1"></i></button>
-                    </div>
-                </div>
-
-                <!-- Proyecto 8 (NUEVO) -->
-                <div class="bg-gray-900 rounded-xl overflow-hidden group border border-gray-800">
-                    <video class="thumbnail-video" src="https://placehold.co/600x400/e34656/white?text=Video+8" autoplay loop muted playsinline></video>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-white" data-translate="p8_title">Nombre del Proyecto 8</h3>
-                        <p class="text-gray-400 mt-2" data-translate="p8_desc">Descripción breve del segundo proyecto nuevo.</p>
-                        <button onclick="openModal('modal8')" class="mt-4 accent-color font-semibold hover:brightness-125" data-translate="view_project_btn">Ver Proyecto <i class="fas fa-arrow-right ml-1"></i></button>
                     </div>
                 </div>
 
@@ -342,6 +358,23 @@
     </footer>
 
     <!-- ========== MODALS (VENTANAS EMERGENTES) ========== -->
+
+    <!-- Modal para Showreel (NUEVO) -->
+    <div id="modal_showreel" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-gray-900 rounded-xl w-full max-w-4xl max-h-full overflow-y-auto border border-gray-700">
+            <div class="p-4 flex justify-between items-center border-b border-gray-700">
+                <h3 class="text-xl font-bold text-white" data-translate="trailer_title">Mi Showreel de Edición</h3>
+                <button onclick="closeModal('modal_showreel')" class="text-gray-400 hover:text-white text-3xl">&times;</button>
+            </div>
+            <div class="p-4">
+                <div class="video-responsive">
+                    <iframe data-src="https://www.youtube.com/embed/iz6Bm4nUtBI" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+                </div>
+                <p class="text-gray-300 mt-4" data-translate="trailer_desc_modal">Esta es una muestra total de mi potencial en Motion Graphics. Por unos segundos se logra ver un antes y después de uno de los videos para U Clinic Center, demostrando cómo el contenido de marca vibrante puede ser utilizado para videos corporativos o incluso proyectos más cinemáticos.</p>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal para Proyecto 1 -->
     <div id="modal1" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-gray-900 rounded-xl w-full max-w-4xl max-h-full overflow-y-auto border border-gray-700">
@@ -432,37 +465,21 @@
             </div>
         </div>
     </div>
-    <!-- Modal para Proyecto 7 -->
+    <!-- Modal para Proyecto 7 (ACTUALIZADO) -->
     <div id="modal7" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-gray-900 rounded-xl w-full max-w-4xl max-h-full overflow-y-auto border border-gray-700">
             <div class="p-4 flex justify-between items-center border-b border-gray-700">
-                <h3 class="text-xl font-bold text-white" data-translate="p7_title">Nombre del Proyecto 7</h3>
+                <h3 class="text-xl font-bold text-white" data-translate="p7_title">Anuncio Corporativo: U Clinic Center</h3>
                 <button onclick="closeModal('modal7')" class="text-gray-400 hover:text-white text-3xl">&times;</button>
             </div>
             <div class="p-4">
                 <div class="video-responsive">
-                    <iframe data-src="https://www.youtube.com/embed/VIDEO_ID_7" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+                    <iframe data-src="https://www.youtube.com/embed/C6XSdD6Un-g" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
                 </div>
-                <p class="text-gray-300 mt-4" data-translate="modal_p7_desc">Descripción detallada del proyecto 7.</p>
+                <p class="text-gray-300 mt-4" data-translate="modal_p7_desc">Creación de contenido para U Clinic Center, fusionando un estilo para redes sociales con un enfoque corporativo para anunciar y explicar sus tratamientos de manera clara y profesional.</p>
             </div>
         </div>
     </div>
-    <!-- Modal para Proyecto 8 -->
-    <div id="modal8" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-gray-900 rounded-xl w-full max-w-4xl max-h-full overflow-y-auto border border-gray-700">
-            <div class="p-4 flex justify-between items-center border-b border-gray-700">
-                <h3 class="text-xl font-bold text-white" data-translate="p8_title">Nombre del Proyecto 8</h3>
-                <button onclick="closeModal('modal8')" class="text-gray-400 hover:text-white text-3xl">&times;</button>
-            </div>
-            <div class="p-4">
-                <div class="video-responsive">
-                    <iframe data-src="https://www.youtube.com/embed/VIDEO_ID_8" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
-                </div>
-                <p class="text-gray-300 mt-4" data-translate="modal_p8_desc">Descripción detallada del proyecto 8.</p>
-            </div>
-        </div>
-    </div>
-
 
     <!-- ========== JAVASCRIPT ========== -->
     <script>
@@ -479,9 +496,13 @@
                 // HERO
                 hero_tagline: "◆ Ritmo y energía en cada corte.",
                 hero_description: "Transformo metraje en experiencias visuales cinéticas. Mi edición se enfoca en la energía, el ritmo y los detalles que hacen que tu contenido sea inolvidable.",
-                hero_cta: "Ver todos los proyectos (8) &rarr;",
+                hero_cta: "Ver todos los proyectos (7) &rarr;",
                 // PROJECTS
                 projects_title: "Proyectos Destacados",
+                trailer_title: "Mi Showreel de Edición",
+                trailer_desc: "Esta es una muestra total de mi potencial en Motion Graphics. Por unos segundos se logra ver un antes y después de uno de los videos para U Clinic Center, demostrando cómo el contenido de marca vibrante puede ser utilizado para videos corporativos o incluso proyectos más cinemáticos.",
+                trailer_cta: "Ver Showreel Completo",
+                gallery_title: "Galería de Proyectos",
                 view_project_btn: "Ver Proyecto",
                 p1_title: "Documental: El Rey Balduino IV",
                 p1_desc: "Análisis histórico del rey de Jerusalén, combinando narrativa con una edición visual que captura la épica y el drama.",
@@ -495,10 +516,8 @@
                 p5_desc: "Creación de pequeños documentales sobre leyendas del boxeo para impulsar el contenido de una escuela en Madrid.",
                 p6_title: "Reel para Instagram: U Clinic Center",
                 p6_desc: "Gestión y creación de contenido para una clínica en Madrid, con una edición limpia que demuestra profesionalismo.",
-                p7_title: "Nombre del Proyecto 7",
-                p7_desc: "Descripción breve del proyecto para tu nuevo cliente.",
-                p8_title: "Nombre del Proyecto 8",
-                p8_desc: "Descripción breve del segundo proyecto nuevo.",
+                p7_title: "Anuncio Corporativo: U Clinic Center",
+                p7_desc: "Creación de contenido para U Clinic Center, fusionando un estilo para redes sociales con un enfoque corporativo.",
                 // ABOUT
                 about_title: "Soy Jesús Rondón, el editor detrás de MACLOR.",
                 about_desc: "Con más de 5 años de experiencia, mi pasión es contar historias. Combino técnica y creatividad para que cada proyecto no solo se vea bien, sino que también conecte y emocione. Mi objetivo es simple: superar tus expectativas.",
@@ -529,14 +548,14 @@
                 // FOOTER
                 footer_rights: "Todos los derechos reservados.",
                 // MODALS
+                trailer_desc_modal: "Esta es una muestra total de mi potencial en Motion Graphics. Por unos segundos se logra ver un antes y después de uno de los videos para U Clinic Center, demostrando cómo el contenido de marca vibrante puede ser utilizado para videos corporativos o incluso proyectos más cinemáticos.",
                 modal_p1_desc: "Análisis histórico del Rey Balduino IV de Jerusalén, combinando narrativa documental con una edición visual que captura la épica y el drama de su reinado.",
                 modal_p2_desc: "Experimentando con un estilo más pausado y enfocado en el terror psicológico para analizar la película \"Masacre: Ven y Mira\". Este fue mi primer video en alcanzar viralidad, buscando impactar al espectador a través de una atmósfera opresiva.",
                 modal_p3_desc: "Un vídeo que explora todo el horror que se vivió en una guerra, con un estilo de edición más limpio y enfocado en impactar al espectador.",
                 modal_p4_desc: "Una recopilación de mis primeras exploraciones en motion graphics. Este reel muestra mi experimentación con diversas técnicas de animación y efectos visuales en Adobe After Effects.",
                 modal_p5_desc: "Uno de los Reels que cree para una Escuela de Boxeo ubicada en Madrid la cual necesitaba un impulso en su contenido, por lo cual una de las secciones eran pequeños documentales sobre distintos boxeadores o leyendas del deporte.",
                 modal_p6_desc: "Uno de los Reels para la cuenta de Instagram U Clinic. Esta es una Clínica en Madrid, en la cual me encargo de todo el contenido que se sube en su instagram. Los vídeos solicitados por el cliente piden una edición limpia que demuestre el profesionalismo que se vive dia dia en la clinica.",
-                modal_p7_desc: "Descripción detallada del proyecto 7.",
-                modal_p8_desc: "Descripción detallada del proyecto 8."
+                modal_p7_desc: "Creación de contenido para U Clinic Center, fusionando un estilo para redes sociales con un enfoque corporativo para anunciar y explicar sus tratamientos de manera clara y profesional."
             },
             en: {
                 // POPUP
@@ -549,9 +568,13 @@
                 // HERO
                 hero_tagline: "◆ Rhythm and energy in every cut.",
                 hero_description: "I transform footage into kinetic visual experiences. My editing focuses on energy, rhythm, and the details that make your content unforgettable.",
-                hero_cta: "See all projects (8) &rarr;",
+                hero_cta: "See all projects (7) &rarr;",
                 // PROJECTS
                 projects_title: "Featured Projects",
+                trailer_title: "My Editing Showreel",
+                trailer_desc: "This is a full showcase of my potential in Motion Graphics. For a few seconds, you can see a before-and-after of one of the videos for U Clinic Center, demonstrating how vibrant brand content can be used for corporate or even more cinematic projects.",
+                trailer_cta: "Watch Full Showreel",
+                gallery_title: "Project Gallery",
                 view_project_btn: "View Project",
                 p1_title: "Documentary: King Baldwin IV",
                 p1_desc: "Historical analysis of the King of Jerusalem, combining narrative with visual editing that captures the epic and drama.",
@@ -565,10 +588,8 @@
                 p5_desc: "Creating short documentaries about boxing legends to boost content for a school in Madrid.",
                 p6_title: "Instagram Reel: U Clinic Center",
                 p6_desc: "Content management and creation for a clinic in Madrid, with clean editing that shows professionalism.",
-                p7_title: "Project Name 7",
-                p7_desc: "Brief description of the project for your new client.",
-                p8_title: "Project Name 8",
-                p8_desc: "Brief description of the second new project.",
+                p7_title: "Corporate Ad: U Clinic Center",
+                p7_desc: "Content creation for U Clinic Center, blending a social media style with a corporate approach.",
                 // ABOUT
                 about_title: "I'm Jesús Rondón, the editor behind MACLOR.",
                 about_desc: "With over 5 years of experience, my passion is storytelling. I combine technique and creativity so that each project not only looks good, but also connects and excites. My goal is simple: to exceed your expectations.",
@@ -599,14 +620,14 @@
                 // FOOTER
                 footer_rights: "All rights reserved.",
                 // MODALS
+                trailer_desc_modal: "This is a full showcase of my potential in Motion Graphics. For a few seconds, you can see a before-and-after of one of the videos for U Clinic Center, demonstrating how vibrant brand content can be used for corporate or even more cinematic projects.",
                 modal_p1_desc: "Historical analysis of King Baldwin IV of Jerusalem, combining documentary narrative with visual editing that captures the epic and drama of his reign.",
                 modal_p2_desc: "Experimenting with a slower pace and focusing on psychological terror to analyze the film \"Come and See.\" This was my first video to go viral, aiming to impact the viewer through an oppressive atmosphere.",
                 modal_p3_desc: "A video that explores the full horror of war, with a cleaner editing style focused on impacting the viewer.",
                 modal_p4_desc: "A compilation of my early explorations in motion graphics. This reel showcases my experimentation with various animation and visual effects techniques in Adobe After Effects.",
                 modal_p5_desc: "One of the Reels I created for a Boxing School in Madrid that needed a boost in its content. One of the sections included short documentaries about different boxers or legends of the sport.",
                 modal_p6_desc: "One of the Reels for the U Clinic Instagram account. This is a clinic in Madrid where I manage all the content posted on their Instagram. The client requested clean editing that demonstrates the professionalism experienced daily at the clinic.",
-                modal_p7_desc: "Detailed description of project 7.",
-                modal_p8_desc: "Detailed description of project 8."
+                modal_p7_desc: "Content creation for U Clinic Center, blending a social media style with a corporate approach to clearly and professionally advertise and explain their treatments."
             }
         };
 
