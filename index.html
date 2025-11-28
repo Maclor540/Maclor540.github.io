@@ -3,95 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MACLOR | Editor de Video</title>
+    <title>MACLOR | Visual Storyteller & Motion Graphics</title>
     
-    <!-- FAVICON (VERSIÓN MEJORADA PARA MÁXIMA COMPATIBILIDAD) -->
     <link rel="icon" href="Assets/favicon.png" type="image/png">
-    <link rel="apple-touch-icon" href="Assets/favicon.png"> <!-- Para Apple -->
-
+    <link rel="apple-touch-icon" href="Assets/favicon.png">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Google Fonts: Inter -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
     
-    <!-- Font Awesome for Icons -->
+    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        html {
-            scroll-behavior: smooth;
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #030303; /* Un negro casi puro para más impacto */
-        }
-        .video-responsive {
-            overflow: hidden;
-            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+        html { scroll-behavior: smooth; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #030303;
             position: relative;
-            height: 0;
         }
-        .video-responsive iframe {
-            left: 0;
+        /* Fondo con textura/ruido y desenfoque */
+        body::before {
+            content: '';
+            position: fixed;
             top: 0;
-            height: 100%;
-            width: 100%;
-            position: absolute;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop'); /* Imagen abstracta de fondo */
+            background-size: cover;
+            background-position: center;
+            opacity: 0.15;
+            filter: blur(8px) grayscale(100%);
+            z-index: -1;
+            pointer-events: none;
         }
-        /* Clase para el color de acento personalizado */
-        .accent-color {
-            color: #e34656;
+
+        .video-responsive { overflow: hidden; padding-bottom: 56.25%; position: relative; height: 0; }
+        .video-responsive iframe { left: 0; top: 0; height: 100%; width: 100%; position: absolute; }
+        
+        /* Colores y Utilidades */
+        .accent-color { color: #e34656; }
+        .bg-accent-color { background-color: #e34656; }
+        .border-accent-color { border-color: #e34656; }
+        .hover\:text-accent-color:hover { color: #e34656; }
+        
+        .thumbnail-video { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            transition: transform 0.5s ease;
         }
-        .bg-accent-color {
+        
+        /* --- ANIMACIONES Y TARJETAS --- */
+        .project-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        /* Clase para ocultar tarjetas al filtrar */
+        .project-card.hidden-card {
+            display: none; 
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        .card-hover-effect:hover .thumbnail-video {
+            transform: scale(1.05);
+        }
+        
+        .fade-in-section { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+        .fade-in-section.is-visible { opacity: 1; transform: translateY(0); }
+
+        #main-title {
+            position: relative;
+            color: white;
+            transition: color 0.3s ease;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3), 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        #main-title:hover {
+            color: rgba(255, 255, 255, 0.8);
+            background: radial-gradient(250px circle at var(--x, 50%) var(--y, 50%), #e34656 0%, transparent 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* Botones de Filtro */
+        .filter-btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .filter-btn.active {
             background-color: #e34656;
-        }
-        .border-accent-color {
+            color: white;
             border-color: #e34656;
         }
-        .hover\:text-accent-color:hover {
-            color: #e34656;
-        }
-        /* Estilo para las vistas previas en video */
-        .thumbnail-video, .thumbnail-image {
-            width: 100%;
-            height: 18rem; /* 288px */
-            object-fit: cover;
-        }
-
-        /* --- ANIMACIONES --- */
         
-        /* Animación para las letras del título */
-        @keyframes letter-in {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        #main-title span {
-            display: inline-block;
-            opacity: 0;
-            animation: letter-in 0.5s forwards;
-        }
-
-        /* Animación para secciones al hacer scroll */
-        .fade-in-section {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        }
-
-        .fade-in-section.is-visible {
-            opacity: 1;
-            transform: translateY(0);
+        /* Badge de Categoría */
+        .category-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(4px);
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border: 1px solid rgba(255,255,255,0.2);
+            z-index: 10;
         }
     </style>
 </head>
@@ -99,253 +129,421 @@
 
     <!-- ========== POP-UP DE IDIOMA ========== -->
     <div id="language-popup" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-50">
-        <div class="bg-gray-900 rounded-xl p-8 text-center border border-gray-700 max-w-sm w-full">
+        <div class="bg-gray-900 rounded-xl p-8 text-center border border-gray-700 max-w-sm w-full shadow-2xl shadow-red-900/20">
             <h2 class="text-2xl font-bold text-white mb-6" data-translate="lang_popup_title">Elige tu idioma / Choose your language</h2>
             <div class="flex flex-col sm:flex-row gap-4">
                 <button onclick="selectLanguage('es')" class="w-full bg-accent-color hover:brightness-125 text-white font-bold py-3 px-6 rounded-lg transition-transform transform hover:scale-105">Español</button>
-                <button onclick="selectLanguage('en')" class="w-full bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-transform transform hover:scale-105">English</button>
+                <button onclick="selectLanguage('en')" class="w-full bg-gray-800 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-lg transition-transform transform hover:scale-105 border border-gray-600">English</button>
             </div>
         </div>
     </div>
 
     <!-- ========== HEADER / NAV ========== -->
-    <header class="sticky top-0 z-40 bg-black/50 backdrop-blur-sm">
+    <header class="sticky top-0 z-40 bg-black/80 backdrop-blur-md border-b border-white/5">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" class="text-xl font-bold text-white uppercase tracking-widest">MACLOR</a>
-            <div class="hidden md:flex space-x-6 items-center">
-                <a href="#proyectos" class="text-gray-300 hover:text-white" data-translate="nav_projects">Proyectos</a>
-                <a href="#sobre-mi" class="text-gray-300 hover:text-white" data-translate="nav_about">Sobre Mí</a>
-                <a href="#contacto" class="border border-white text-white font-bold py-2 px-4 rounded-full hover:bg-white hover:text-black transition-colors" data-translate="nav_contact_talk">HABLEMOS</a>
-                <!-- Language Switcher (Desktop) -->
-                <div class="flex items-center space-x-2 border-l border-gray-600 ml-4 pl-4">
+            <a href="#" class="text-2xl font-black text-white uppercase tracking-widest flex items-center gap-2">
+                <span class="text-red-500 text-3xl">.</span>MACLOR
+            </a>
+            <div class="hidden md:flex space-x-8 items-center font-medium">
+                <a href="#proyectos" class="text-gray-300 hover:text-white hover:text-accent-color transition-colors" data-translate="nav_projects">Proyectos</a>
+                <a href="#sobre-mi" class="text-gray-300 hover:text-white hover:text-accent-color transition-colors" data-translate="nav_about">Sobre Mí</a>
+                <a href="#contacto" class="bg-white text-black font-bold py-2 px-6 rounded-full hover:bg-accent-color hover:text-white transition-all duration-300" data-translate="nav_contact_talk">HABLEMOS</a>
+                
+                <!-- Selector Idioma Desktop -->
+                <div class="flex items-center space-x-2 border-l border-gray-600 ml-4 pl-4 text-sm">
                     <button id="lang-es-desktop" onclick="setLanguage('es')" class="font-bold text-white transition-colors">ES</button>
-                    <span class="text-gray-500">/</span>
+                    <span class="text-gray-600">|</span>
                     <button id="lang-en-desktop" onclick="setLanguage('en')" class="text-gray-500 hover:text-white transition-colors">EN</button>
                 </div>
             </div>
+            
+            <!-- Mobile Menu Button & Lang -->
              <div class="md:hidden flex items-center gap-4">
-                <!-- Language Switcher (Mobile) -->
                 <div class="flex items-center space-x-1">
-                    <button id="lang-es-mobile" onclick="setLanguage('es')" class="font-bold text-white text-sm p-1">ES</button>
-                    <span class="text-gray-500 text-sm">/</span>
-                    <button id="lang-en-mobile" onclick="setLanguage('en')" class="text-gray-500 hover:text-white text-sm p-1">EN</button>
+                    <button id="lang-es-mobile" onclick="setLanguage('es')" class="font-bold text-white text-xs p-1">ES</button>
+                    <span class="text-gray-600 text-xs">|</span>
+                    <button id="lang-en-mobile" onclick="setLanguage('en')" class="text-gray-500 hover:text-white text-xs p-1">EN</button>
                 </div>
-                <a href="#contacto" class="border border-white text-white font-bold py-2 px-3 rounded-full hover:bg-white hover:text-black transition-colors text-sm" data-translate="nav_contact_contact">CONTACTO</a>
+                <a href="#contacto" class="bg-accent-color text-white font-bold py-2 px-4 rounded-full text-xs" data-translate="nav_contact_contact">CONTACTO</a>
             </div>
         </nav>
     </header>
 
-    <main class="container mx-auto px-6">
+    <main>
 
         <!-- ========== HERO SECTION ========== -->
-        <section id="hero" class="py-20 md:py-32">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                <!-- Izquierda: Títulos y Lema -->
-                <div class="space-y-4">
-                    <p class="font-mono text-sm uppercase tracking-widest accent-color fade-in-section" data-translate="hero_tagline">◆ Ritmo y energía en cada corte.</p>
-                    <h1 id="main-title" class="text-7xl md:text-9xl font-black text-white leading-none tracking-tighter">
-                        <span>E</span><span>D</span><span>I</span><span>T</span><span>O</span><span>R</span><span class="accent-color">.</span><br>
-                        <span>V</span><span>I</span><span>D</span><span>E</span><span>O</span>
-                    </h1>
+        <section id="hero" class="min-h-[90vh] flex flex-col justify-center items-start text-left p-6 container mx-auto relative overflow-hidden">
+            <!-- Elementos decorativos de fondo -->
+            <div class="absolute top-1/4 right-0 w-96 h-96 bg-red-600 rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-pulse"></div>
+            <div class="absolute bottom-1/4 left-0 w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-[128px] opacity-10"></div>
+
+            <div class="w-full relative z-10">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="h-px w-12 bg-accent-color"></span>
+                    <p class="font-mono text-sm uppercase tracking-[0.3em] text-accent-color" data-translate="hero_subtitle">Video Editor & Motion Designer</p>
                 </div>
-                <!-- Derecha: Descripción y CTA -->
-                <div class="space-y-8 self-end fade-in-section" style="transition-delay: 300ms;">
-                    <div class="flex items-start gap-4">
-                         <div class="w-12 h-12 flex-shrink-0 rounded-full bg-accent-color mt-1"></div>
-                         <p class="text-lg text-gray-300 max-w-sm" data-translate="hero_description">
-                            Transformo metraje en experiencias visuales cinéticas. Mi edición se enfoca en la energía, el ritmo y los detalles que hacen que tu contenido sea inolvidable.
-                         </p>
-                    </div>
-                    <a href="#proyectos" class="font-mono text-sm uppercase tracking-widest text-white hover:accent-color" data-translate="hero_cta">
-                        Ver todos los proyectos (7) &rarr;
+                
+                <h1 id="main-title" class="text-6xl md:text-8xl lg:text-[9rem] font-black text-white leading-[0.9] tracking-tighter cursor-default mb-8">
+                    VISUAL<br>
+                    <span class="text-stroke text-transparent bg-clip-text bg-gradient-to-r from-gray-500 to-gray-700" style="-webkit-text-stroke: 1px rgba(255,255,255,0.3);">STORYTELLER</span>
+                </h1>
+                
+                <p class="text-lg md:text-xl text-gray-400 max-w-xl leading-relaxed border-l-2 border-gray-800 pl-6" data-translate="hero_description">
+                    Me especializo en convertir contenido hablado en videos de alto impacto. Mi edición enfoca en tipografía cinética, composición profesional y ritmo dinámico para hacer tu mensaje inolvidable.
+                </p>
+                
+                <div class="mt-10 flex gap-4">
+                    <a href="#proyectos" class="bg-white text-black hover:bg-accent-color hover:text-white font-bold py-4 px-8 rounded-lg transition-all duration-300 transform hover:-translate-y-1 shadow-lg shadow-white/10" data-translate="hero_cta_button">
+                        Ver Portafolio
                     </a>
                 </div>
             </div>
         </section>
 
-        <!-- ========== PROYECTOS / PORTFOLIO SECTION (REESTRUCTURADA) ========== -->
-        <section id="proyectos" class="py-16 fade-in-section">
-            <h2 class="text-3xl font-bold text-center text-white mb-12" data-translate="projects_title">Proyectos Destacados</h2>
 
-            <!-- NUEVA SECCIÓN: SHOWREEL -->
-            <div class="mb-20 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 items-center bg-gray-900/50 p-8 rounded-2xl border border-gray-800">
-                <!-- Video Vertical -->
-                <div class="md:col-span-1 flex justify-center">
-                    <div class="w-full max-w-[280px] aspect-[9/16] bg-gray-800 rounded-xl overflow-hidden shadow-lg border border-gray-700">
-                        <video class="w-full h-full object-cover" src="https://i.imgur.com/i9Rv2UJ.mp4" autoplay loop muted playsinline></video>
-                    </div>
-                </div>
-                <!-- Descripción del Showreel -->
-                <div class="md:col-span-2 space-y-4 text-center md:text-left">
-                    <h3 class="text-3xl font-bold text-white" data-translate="trailer_title">Mi Showreel de Edición</h3>
-                    <p class="text-gray-400 max-w-lg mx-auto md:mx-0" data-translate="trailer_desc">
-                        Esta es una muestra total de mi potencial en Motion Graphics. Por unos segundos se logra ver un antes y después de uno de los videos para U Clinic Center, demostrando cómo el contenido de marca vibrante puede ser utilizado para videos corporativos o incluso proyectos más cinemáticos.
-                    </p>
-                    <button onclick="openModal('modal_showreel')" class="mt-4 inline-block bg-accent-color hover:brightness-125 text-white font-bold py-3 px-6 rounded-lg transition-transform transform hover:scale-105" data-translate="trailer_cta">Ver Showreel Completo</button>
-                </div>
+        <!-- ========== PROYECTOS (NUEVO SISTEMA DE FILTRADO) ========== -->
+        <section id="proyectos" class="py-20 px-6 container mx-auto">
+            
+            <div class="text-center mb-12 fade-in-section">
+                <h2 class="text-4xl md:text-5xl font-bold text-white mb-4"><span class="text-accent-color">.</span> Trabajos Seleccionados</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto" data-translate="projects_intro">Explora una selección de mis mejores colaboraciones y proyectos personales.</p>
             </div>
 
-            <!-- Título para la Galería -->
-            <h3 class="text-2xl font-bold text-center text-white mb-12" data-translate="gallery_title">Galería de Proyectos</h3>
+            <!-- FILTROS (TABS) -->
+            <div class="flex flex-wrap justify-center gap-3 mb-16 fade-in-section sticky top-24 z-30 py-4 bg-black/80 backdrop-blur-lg rounded-full border border-white/5 shadow-2xl max-w-fit mx-auto px-6">
+                <button onclick="filterProjects('all')" class="filter-btn active px-6 py-2 rounded-full border border-gray-700 text-gray-300 font-medium hover:border-white transition-colors text-sm md:text-base" data-translate="filter_all">Todos</button>
+                <button onclick="filterProjects('clientes')" class="filter-btn px-6 py-2 rounded-full border border-gray-700 text-gray-300 font-medium hover:border-white transition-colors text-sm md:text-base" data-translate="filter_clients">Clientes</button>
+                <button onclick="filterProjects('personal')" class="filter-btn px-6 py-2 rounded-full border border-gray-700 text-gray-300 font-medium hover:border-white transition-colors text-sm md:text-base" data-translate="filter_personal">Personal</button>
+                <button onclick="filterProjects('showreel')" class="filter-btn px-6 py-2 rounded-full border border-gray-700 text-gray-300 font-medium hover:border-white transition-colors text-sm md:text-base" data-translate="filter_showreels">Showreels</button>
+            </div>
 
-            <!-- GALERÍA DE PROYECTOS -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- GRID DE PROYECTOS -->
+            <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 
-                <!-- Proyecto 1 -->
-                <div class="bg-gray-900 rounded-xl overflow-hidden group border border-gray-800">
-                    <video class="thumbnail-video" src="https://i.imgur.com/9vPKbqr.mp4" autoplay loop muted playsinline></video>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-white" data-translate="p1_title">Documental: El Rey Balduino IV</h3>
-                        <p class="text-gray-400 mt-2" data-translate="p1_desc">Análisis histórico del rey de Jerusalén, combinando narrativa con una edición visual que captura la épica y el drama.</p>
-                        <button onclick="openModal('modal1')" class="mt-4 accent-color font-semibold hover:brightness-125" data-translate="view_project_btn">Ver Proyecto <i class="fas fa-arrow-right ml-1"></i></button>
+                <!-- NUEVO CLIENTE: Lead To Cash -->
+                <div class="project-card group fade-in-section" data-category="clientes">
+                    <div class="bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 card-hover-effect relative h-full flex flex-col">
+                        <span class="category-badge text-accent-color border-red-500/30">Lead To Cash</span>
+                        <div class="relative aspect-[16/9] overflow-hidden cursor-pointer" onclick="openModal('modal_lead_brand')">
+                            <!-- Link Miniatura Imgur -->
+                            <video class="thumbnail-video" src="https://i.imgur.com/UxOffPC.mp4" autoplay loop muted playsinline></video>
+                             <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center">
+                                <i class="fas fa-play text-white text-4xl opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all duration-300 drop-shadow-lg"></i>
+                            </div>
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold text-white mb-2" data-translate="p_lead_brand_title">Reel de Apertura: Marca Personal</h3>
+                            <p class="text-gray-400 text-sm mb-4 flex-grow" data-translate="p_lead_brand_desc">Estrategia visual unificada para lanzamiento de marca personal.</p>
+                            <button onclick="openModal('modal_lead_brand')" class="text-white font-bold text-sm uppercase tracking-wider hover:text-accent-color transition-colors flex items-center gap-2">Ver Proyecto <i class="fas fa-arrow-right text-xs"></i></button>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Proyecto 2 -->
-                <div class="bg-gray-900 rounded-xl overflow-hidden group border border-gray-800">
-                    <video class="thumbnail-video" src="https://i.imgur.com/9lYEasD.mp4" autoplay loop muted playsinline></video>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-white" data-translate="p2_title">Ensayo Visual: El Horror de la Guerra</h3>
-                        <p class="text-gray-400 mt-2" data-translate="p2_desc">Experimentando con un estilo más pausado y enfocado en el terror psicológico para analizar la película "Masacre: Ven y Mira".</p>
-                        <button onclick="openModal('modal2')" class="mt-4 accent-color font-semibold hover:brightness-125" data-translate="view_project_btn">Ver Proyecto <i class="fas fa-arrow-right ml-1"></i></button>
+                <!-- NUEVO CLIENTE: U Clinic Center -->
+                <div class="project-card group fade-in-section" data-category="clientes">
+                    <div class="bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 card-hover-effect relative h-full flex flex-col">
+                        <span class="category-badge text-accent-color border-red-500/30">U Clinic Center</span>
+                        <div class="relative aspect-[16/9] overflow-hidden cursor-pointer" onclick="openModal('modal_uclinic_impact')">
+                             <!-- Link Miniatura Imgur -->
+                             <video class="thumbnail-video" src="https://i.imgur.com/UDf1mi0.mp4" autoplay loop muted playsinline></video>
+                             <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center">
+                                <i class="fas fa-play text-white text-4xl opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all duration-300 drop-shadow-lg"></i>
+                            </div>
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold text-white mb-2" data-translate="p_uclinic_impact_title">Alto Impacto: Cirugía vs Calificación</h3>
+                            <p class="text-gray-400 text-sm mb-4 flex-grow" data-translate="p_uclinic_impact_desc">Edición dinámica manteniendo estética clínica pulcra.</p>
+                            <button onclick="openModal('modal_uclinic_impact')" class="text-white font-bold text-sm uppercase tracking-wider hover:text-accent-color transition-colors flex items-center gap-2">Ver Proyecto <i class="fas fa-arrow-right text-xs"></i></button>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Proyecto 3 -->
-                <div class="bg-gray-900 rounded-xl overflow-hidden group border border-gray-800">
-                    <video class="thumbnail-video" src="https://i.imgur.com/XKZzN6n.mp4" autoplay loop muted playsinline></video>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-white" data-translate="p3_title">Análisis: Sin Novedad en el Frente</h3>
-                        <p class="text-gray-400 mt-2" data-translate="p3_desc">Un vídeo que explora todo el horror que se vivió en una guerra, con un estilo de edición más limpio y enfocado en impactar al espectador.</p>
-                        <button onclick="openModal('modal3')" class="mt-4 accent-color font-semibold hover:brightness-125" data-translate="view_project_btn">Ver Proyecto <i class="fas fa-arrow-right ml-1"></i></button>
+                <!-- SHOWREEL SOCIAL MEDIA (Categoría: Showreel) -->
+                <div class="project-card group fade-in-section" data-category="showreel">
+                    <div class="bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 card-hover-effect relative h-full flex flex-col">
+                        <span class="category-badge text-green-400 border-green-400/30">Showreel</span>
+                        <div class="relative aspect-[16/9] overflow-hidden cursor-pointer" onclick="openModal('modal_showreel')">
+                            <video class="thumbnail-video" src="https://i.imgur.com/i9Rv2UJ.mp4" autoplay loop muted playsinline></video>
+                            <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center">
+                                <i class="fas fa-play text-white text-4xl opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all duration-300 drop-shadow-lg"></i>
+                            </div>
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold text-white mb-2" data-translate="showreel_promo_title">Showreel Redes Sociales</h3>
+                            <p class="text-gray-400 text-sm mb-4 flex-grow" data-translate="showreel_promo_desc">Trailer dinámico para promocionar estilo de edición de alto impacto.</p>
+                            <button onclick="openModal('modal_showreel')" class="text-white font-bold text-sm uppercase tracking-wider hover:text-accent-color transition-colors flex items-center gap-2">
+                                Ver Video <i class="fas fa-arrow-right text-xs"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Proyecto 4 -->
-                <div class="bg-gray-900 rounded-xl overflow-hidden group border border-gray-800">
-                    <video class="thumbnail-video" src="https://i.imgur.com/GDNR5Vi.mp4" autoplay loop muted playsinline></video>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-white" data-translate="p4_title">Reel de Animaciones en After Effects</h3>
-                        <p class="text-gray-400 mt-2" data-translate="p4_desc">Recopilación de mis primeras exploraciones en motion graphics, experimentando con diversas técnicas de animación.</p>
-                        <button onclick="openModal('modal4')" class="mt-4 accent-color font-semibold hover:brightness-125" data-translate="view_project_btn">Ver Proyecto <i class="fas fa-arrow-right ml-1"></i></button>
+                <!-- CARS (Categoría: Clientes) -->
+                <div class="project-card group fade-in-section" data-category="clientes">
+                    <div class="bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 card-hover-effect relative h-full flex flex-col">
+                        <span class="category-badge text-accent-color border-red-500/30">Lead To Cash</span>
+                        <div class="relative aspect-[16/9] overflow-hidden cursor-pointer" onclick="openModal('modal_cars')">
+                            <!-- Link Miniatura Imgur -->
+                            <video class="thumbnail-video" src="https://i.imgur.com/yfT0scC.mp4" autoplay loop muted playsinline></video>
+                            <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center">
+                                <i class="fas fa-play text-white text-4xl opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all duration-300 drop-shadow-lg"></i>
+                            </div>
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold text-white mb-2" data-translate="p_cars_title">Cars: Transformación</h3>
+                            <p class="text-gray-400 text-sm mb-4 flex-grow" data-translate="p_cars_desc">Análisis visual para desglosar narrativa de negocio.</p>
+                            <button onclick="openModal('modal_cars')" class="text-white font-bold text-sm uppercase tracking-wider hover:text-accent-color transition-colors flex items-center gap-2">Ver Proyecto <i class="fas fa-arrow-right text-xs"></i></button>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Proyecto 5 -->
-                <div class="bg-gray-900 rounded-xl overflow-hidden group border border-gray-800">
-                    <video class="thumbnail-video" src="https://i.imgur.com/eG6Pimu.mp4" autoplay loop muted playsinline></video>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-white" data-translate="p5_title">Reel de Contenido: Izumi Club</h3>
-                        <p class="text-gray-400 mt-2" data-translate="p5_desc">Creación de pequeños documentales sobre leyendas del boxeo para impulsar el contenido de una escuela en Madrid.</p>
-                        <button onclick="openModal('modal5')" class="mt-4 accent-color font-semibold hover:brightness-125" data-translate="view_project_btn">Ver Proyecto <i class="fas fa-arrow-right ml-1"></i></button>
+                <!-- AMV (Categoría: Clientes) -->
+                <div class="project-card group fade-in-section" data-category="clientes">
+                    <div class="bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 card-hover-effect relative h-full flex flex-col">
+                        <span class="category-badge text-purple-400 border-purple-400/30">Angeldust</span>
+                        <div class="relative aspect-[16/9] overflow-hidden cursor-pointer" onclick="openModal('modal_amv')">
+                            <!-- Link Miniatura Imgur -->
+                            <video class="thumbnail-video" src="https://i.imgur.com/tok2Wy4.mp4" autoplay loop muted playsinline></video>
+                             <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center">
+                                <i class="fas fa-play text-white text-4xl opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all duration-300 drop-shadow-lg"></i>
+                            </div>
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold text-white mb-2" data-translate="p_amv_title">Anime Music Video</h3>
+                            <p class="text-gray-400 text-sm mb-4 flex-grow" data-translate="p_amv_desc">Edición rítmica de alta energía para el canal Angeldust.</p>
+                            <button onclick="openModal('modal_amv')" class="text-white font-bold text-sm uppercase tracking-wider hover:text-accent-color transition-colors flex items-center gap-2">Ver Proyecto <i class="fas fa-arrow-right text-xs"></i></button>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Proyecto 6 -->
-                <div class="bg-gray-900 rounded-xl overflow-hidden group border border-gray-800">
-                    <video class="thumbnail-video" src="https://i.imgur.com/luhiOKD.mp4" autoplay loop muted playsinline></video>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-white" data-translate="p6_title">Reel para Instagram: U Clinic Center</h3>
-                        <p class="text-gray-400 mt-2" data-translate="p6_desc">Gestión y creación de contenido para una clínica en Madrid, con una edición limpia que demuestra profesionalismo.</p>
-                        <button onclick="openModal('modal6')" class="mt-4 accent-color font-semibold hover:brightness-125" data-translate="view_project_btn">Ver Proyecto <i class="fas fa-arrow-right ml-1"></i></button>
+                <!-- BALDUINO (Categoría: Personal) -->
+                <div class="project-card group fade-in-section" data-category="personal">
+                    <div class="bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 card-hover-effect relative h-full flex flex-col">
+                        <span class="category-badge text-blue-400 border-blue-400/30">Documental</span>
+                        <div class="relative aspect-[16/9] overflow-hidden cursor-pointer" onclick="openModal('modal1')">
+                            <video class="thumbnail-video" src="https://i.imgur.com/9vPKbqr.mp4" autoplay loop muted playsinline></video>
+                            <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center">
+                                <i class="fas fa-play text-white text-4xl opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all duration-300 drop-shadow-lg"></i>
+                            </div>
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold text-white mb-2" data-translate="p1_title">El Rey Balduino IV</h3>
+                            <p class="text-gray-400 text-sm mb-4 flex-grow" data-translate="p1_desc">Análisis histórico con narrativa documental épica.</p>
+                            <button onclick="openModal('modal1')" class="text-white font-bold text-sm uppercase tracking-wider hover:text-accent-color transition-colors flex items-center gap-2">Ver Proyecto <i class="fas fa-arrow-right text-xs"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- U CLINIC (Categoría: Clientes - Anterior) -->
+                 <div class="project-card group fade-in-section" data-category="clientes">
+                    <div class="bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 card-hover-effect relative h-full flex flex-col">
+                        <span class="category-badge text-accent-color border-red-500/30">U Clinic Center</span>
+                        <div class="relative aspect-[16/9] overflow-hidden cursor-pointer" onclick="openModal('modal7')">
+                            <video class="thumbnail-video" src="https://i.imgur.com/kk0Z1Vn.mp4" autoplay loop muted playsinline></video>
+                             <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center">
+                                <i class="fas fa-play text-white text-4xl opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all duration-300 drop-shadow-lg"></i>
+                            </div>
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold text-white mb-2" data-translate="p_uclinic_title">Reel Corporativo</h3>
+                            <p class="text-gray-400 text-sm mb-4 flex-grow" data-translate="p_uclinic_desc">Producción corporativa para destacar servicios médicos estéticos.</p>
+                            <button onclick="openModal('modal7')" class="text-white font-bold text-sm uppercase tracking-wider hover:text-accent-color transition-colors flex items-center gap-2">Ver Proyecto <i class="fas fa-arrow-right text-xs"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KFC (Categoría: Clientes) -->
+                <div class="project-card group fade-in-section" data-category="clientes">
+                    <div class="bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 card-hover-effect relative h-full flex flex-col">
+                        <span class="category-badge text-accent-color border-red-500/30">Lead To Cash</span>
+                        <div class="relative aspect-[16/9] overflow-hidden cursor-pointer" onclick="openModal('modal_kfc')">
+                            <!-- Link Miniatura Imgur -->
+                            <video class="thumbnail-video" src="https://i.imgur.com/pdY1Xuo.mp4" autoplay loop muted playsinline></video>
+                             <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center">
+                                <i class="fas fa-play text-white text-4xl opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all duration-300 drop-shadow-lg"></i>
+                            </div>
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold text-white mb-2" data-translate="p_kfc_title">KFC: Coronel Sanders</h3>
+                            <p class="text-gray-400 text-sm mb-4 flex-grow" data-translate="p_kfc_desc">Relato biográfico con compositing.</p>
+                            <button onclick="openModal('modal_kfc')" class="text-white font-bold text-sm uppercase tracking-wider hover:text-accent-color transition-colors flex items-center gap-2">Ver Proyecto <i class="fas fa-arrow-right text-xs"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SHOWREEL MOTION (Categoría: Showreel) -->
+                <div class="project-card group fade-in-section" data-category="showreel">
+                    <div class="bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 card-hover-effect relative h-full flex flex-col">
+                        <span class="category-badge text-green-400 border-green-400/30">Showreel</span>
+                        <div class="relative aspect-[16/9] overflow-hidden cursor-pointer" onclick="openModal('modal_showreel_mg')">
+                            <video class="thumbnail-video" src="https://i.imgur.com/i9Rv2UJ.mp4" autoplay loop muted playsinline></video>
+                             <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center">
+                                <i class="fas fa-play text-white text-4xl opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all duration-300 drop-shadow-lg"></i>
+                            </div>
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold text-white mb-2" data-translate="showreel_mg_title">Motion Graphics</h3>
+                            <p class="text-gray-400 text-sm mb-4 flex-grow" data-translate="showreel_mg_desc">Compilación de tipografía cinética y animación.</p>
+                            <button onclick="openModal('modal_showreel_mg')" class="text-white font-bold text-sm uppercase tracking-wider hover:text-accent-color transition-colors flex items-center gap-2">Ver Video <i class="fas fa-arrow-right text-xs"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BRUCE LEE (Categoría: Clientes) -->
+                <div class="project-card group fade-in-section" data-category="clientes">
+                    <div class="bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 card-hover-effect relative h-full flex flex-col">
+                         <span class="category-badge text-accent-color border-red-500/30">Lead To Cash</span>
+                        <div class="relative aspect-[16/9] overflow-hidden cursor-pointer" onclick="openModal('modal_bruce')">
+                            <!-- Link Miniatura Imgur -->
+                            <video class="thumbnail-video" src="https://i.imgur.com/iqprKof.mp4" autoplay loop muted playsinline></video>
+                             <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center">
+                                <i class="fas fa-play text-white text-4xl opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all duration-300 drop-shadow-lg"></i>
+                            </div>
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold text-white mb-2" data-translate="p_bruce_title">Bruce Lee: Filosofía</h3>
+                            <p class="text-gray-400 text-sm mb-4 flex-grow" data-translate="p_bruce_desc">Concepto filosófico en lección visual.</p>
+                            <button onclick="openModal('modal_bruce')" class="text-white font-bold text-sm uppercase tracking-wider hover:text-accent-color transition-colors flex items-center gap-2">Ver Proyecto <i class="fas fa-arrow-right text-xs"></i></button>
+                        </div>
                     </div>
                 </div>
                 
-                <!-- Proyecto 7 (ACTUALIZADO) -->
-                <div class="bg-gray-900 rounded-xl overflow-hidden group border border-gray-800">
-                    <video class="thumbnail-video" src="https://i.imgur.com/kk0Z1Vn.mp4" autoplay loop muted playsinline></video>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-white" data-translate="p7_title">Anuncio Corporativo: U Clinic Center</h3>
-                        <p class="text-gray-400 mt-2" data-translate="p7_desc">Creación de contenido para U Clinic Center, fusionando un estilo para redes sociales con un enfoque corporativo.</p>
-                        <button onclick="openModal('modal7')" class="mt-4 accent-color font-semibold hover:brightness-125" data-translate="view_project_btn">Ver Proyecto <i class="fas fa-arrow-right ml-1"></i></button>
+                 <!-- ENSAYO VISUAL (Categoría: Personal) -->
+                 <div class="project-card group fade-in-section" data-category="personal">
+                    <div class="bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 card-hover-effect relative h-full flex flex-col">
+                         <span class="category-badge text-blue-400 border-blue-400/30">Ensayo</span>
+                        <div class="relative aspect-[16/9] overflow-hidden cursor-pointer" onclick="openModal('modal2')">
+                            <video class="thumbnail-video" src="https://i.imgur.com/9lYEasD.mp4" autoplay loop muted playsinline></video>
+                             <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center">
+                                <i class="fas fa-play text-white text-4xl opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all duration-300 drop-shadow-lg"></i>
+                            </div>
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold text-white mb-2" data-translate="p2_title">Horror de la Guerra</h3>
+                            <p class="text-gray-400 text-sm mb-4 flex-grow" data-translate="p2_desc">Terror psicológico y atmósfera.</p>
+                            <button onclick="openModal('modal2')" class="text-white font-bold text-sm uppercase tracking-wider hover:text-accent-color transition-colors flex items-center gap-2">Ver Proyecto <i class="fas fa-arrow-right text-xs"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PYRAMID (Categoría: Clientes) -->
+                <div class="project-card group fade-in-section" data-category="clientes">
+                    <div class="bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 card-hover-effect relative h-full flex flex-col">
+                        <span class="category-badge text-accent-color border-red-500/30">Lead To Cash</span>
+                        <div class="relative aspect-[16/9] overflow-hidden cursor-pointer" onclick="openModal('modal_pyramid')">
+                             <!-- Link Miniatura Imgur -->
+                             <video class="thumbnail-video" src="https://i.imgur.com/E7FGjjS.mp4" autoplay loop muted playsinline></video>
+                             <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center">
+                                <i class="fas fa-play text-white text-4xl opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all duration-300 drop-shadow-lg"></i>
+                            </div>
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold text-white mb-2" data-translate="p_pyramid_title">Pirámide de Valor</h3>
+                            <p class="text-gray-400 text-sm mb-4 flex-grow" data-translate="p_pyramid_desc">Explicación de modelo de marketing.</p>
+                            <button onclick="openModal('modal_pyramid')" class="text-white font-bold text-sm uppercase tracking-wider hover:text-accent-color transition-colors flex items-center gap-2">Ver Proyecto <i class="fas fa-arrow-right text-xs"></i></button>
+                        </div>
+                    </div>
+                </div>
+                
+                 <!-- IZUMI (Categoría: Clientes) -->
+                 <div class="project-card group fade-in-section" data-category="clientes">
+                    <div class="bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 card-hover-effect relative h-full flex flex-col">
+                        <span class="category-badge text-accent-color border-red-500/30">Izumi Club</span>
+                        <div class="relative aspect-[16/9] overflow-hidden cursor-pointer" onclick="openModal('modal5')">
+                            <video class="thumbnail-video" src="https://i.imgur.com/eG6Pimu.mp4" autoplay loop muted playsinline></video>
+                             <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center">
+                                <i class="fas fa-play text-white text-4xl opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all duration-300 drop-shadow-lg"></i>
+                            </div>
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold text-white mb-2" data-translate="p5_title">Reel: Izumi Club</h3>
+                            <p class="text-gray-400 text-sm mb-4 flex-grow" data-translate="p5_desc">Mini documental deportivo.</p>
+                            <button onclick="openModal('modal5')" class="text-white font-bold text-sm uppercase tracking-wider hover:text-accent-color transition-colors flex items-center gap-2">Ver Proyecto <i class="fas fa-arrow-right text-xs"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SIN NOVEDAD (Categoría: Personal) -->
+                 <div class="project-card group fade-in-section" data-category="personal">
+                    <div class="bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 card-hover-effect relative h-full flex flex-col">
+                        <span class="category-badge text-blue-400 border-blue-400/30">Ensayo</span>
+                        <div class="relative aspect-[16/9] overflow-hidden cursor-pointer" onclick="openModal('modal3')">
+                            <video class="thumbnail-video" src="https://i.imgur.com/XKZzN6n.mp4" autoplay loop muted playsinline></video>
+                             <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center">
+                                <i class="fas fa-play text-white text-4xl opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all duration-300 drop-shadow-lg"></i>
+                            </div>
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold text-white mb-2" data-translate="p3_title">Sin Novedad en el Frente</h3>
+                            <p class="text-gray-400 text-sm mb-4 flex-grow" data-translate="p3_desc">Edición limpia impactante.</p>
+                            <button onclick="openModal('modal3')" class="text-white font-bold text-sm uppercase tracking-wider hover:text-accent-color transition-colors flex items-center gap-2">Ver Proyecto <i class="fas fa-arrow-right text-xs"></i></button>
+                        </div>
                     </div>
                 </div>
 
             </div>
+            
+            <!-- BOTÓN YOUTUBE -->
+            <div class="text-center mt-20">
+                <a href="https://youtube.com/@sr.maclor?si=j_jhz9mmhoqxZJaA" target="_blank" class="inline-flex items-center gap-3 text-white border border-gray-700 bg-black/50 hover:bg-red-600 hover:border-red-600 py-3 px-8 rounded-full transition-all duration-300 group">
+                    <i class="fab fa-youtube text-xl group-hover:scale-110 transition-transform"></i>
+                    <span class="font-bold tracking-wide" data-translate="youtube_btn_text">VER MÁS EN YOUTUBE</span>
+                </a>
+            </div>
+
         </section>
 
         <!-- ========== SOBRE MÍ SECTION ========== -->
-        <section id="sobre-mi" class="py-16 flex flex-col md:flex-row items-center gap-12 fade-in-section">
-            <div class="md:w-1/3">
-                <img src="https://placehold.co/400x400/030303/e34656?text=MACLOR" alt="Logo de MACLOR" class="rounded-full shadow-2xl mx-auto border-4 border-accent-color">
-            </div>
-            <div class="md:w-2/3">
-                <h2 class="text-3xl font-bold text-white mb-4" data-translate="about_title">Soy Jesús Rondón, el editor detrás de MACLOR.</h2>
-                <p class="text-gray-400 mb-4" data-translate="about_desc">Con más de 5 años de experiencia, mi pasión es contar historias. Combino técnica y creatividad para que cada proyecto no solo se vea bien, sino que también conecte y emocione. Mi objetivo es simple: superar tus expectativas.</p>
-                <h3 class="text-xl font-bold text-white mt-6 mb-3" data-translate="services_title">Mis Servicios</h3>
-                <ul class="list-disc list-inside text-gray-300 space-y-2">
-                    <li data-translate="service_1">Edición de Video (Redes, Corporativo, Creativo)</li>
-                    <li data-translate="service_2">Motion Graphics y Animación 2D</li>
-                    <li data-translate="service_3">Corrección de Color y Etalonaje</li>
-                    <li data-translate="service_4">Edición y Retoque Fotográfico</li>
-                    <li data-translate="service_5">Diseño de Sonido Básico</li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- ========== TESTIMONIOS SECTION ========== -->
-        <section id="testimonios" class="py-16 fade-in-section">
-            <h2 class="text-3xl font-bold text-center text-white mb-12" data-translate="testimonials_title">Lo que dicen mis clientes</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Testimonio 1 -->
-                <div class="bg-gray-900 p-8 rounded-xl border border-gray-800">
-                    <i class="fas fa-quote-left accent-color text-2xl mb-4"></i>
-                    <p class="text-gray-300 italic" data-translate="testimonial_1_text">"La visión de MACLOR es increíble. Entendió perfectamente lo que buscábamos y lo elevó a otro nivel. Su edición es pura energía."</p>
-                    <div class="mt-6">
-                        <p class="font-bold text-white" data-translate="testimonial_1_author">Ana Torres</p>
-                        <p class="text-sm text-gray-500" data-translate="testimonial_1_role">Fundadora de Marca Creativa</p>
-                    </div>
+        <section id="sobre-mi" class="py-20 relative container mx-auto px-6">
+            <div class="bg-gradient-to-br from-gray-900 to-black rounded-3xl p-8 md:p-16 border border-gray-800 flex flex-col md:flex-row items-center gap-12 fade-in-section shadow-2xl">
+                <div class="md:w-1/3 relative group">
+                    <div class="absolute inset-0 bg-accent-color rounded-full blur-[40px] opacity-20 group-hover:opacity-40 transition-opacity"></div>
+                    <img src="https://placehold.co/400x400/030303/e34656?text=MACLOR" alt="MACLOR" class="relative z-10 rounded-full shadow-2xl mx-auto border-4 border-gray-800 w-64 h-64 object-cover transform transition duration-500 hover:scale-105">
                 </div>
-                <!-- Testimonio 2 -->
-                <div class="bg-gray-900 p-8 rounded-xl border border-gray-800">
-                    <i class="fas fa-quote-left accent-color text-2xl mb-4"></i>
-                    <p class="text-gray-300 italic" data-translate="testimonial_2_text">"Profesional, rápido y con una comunicación excelente. El resultado final superó todas nuestras expectativas. Sin duda volveremos a trabajar con él."</p>
-                    <div class="mt-6">
-                        <p class="font-bold text-white" data-translate="testimonial_2_author">Carlos Jiménez</p>
-                        <p class="text-sm text-gray-500" data-translate="testimonial_2_role">Director de Marketing, Tech Solutions</p>
-                    </div>
-                </div>
-                <!-- Testimonio 3 -->
-                <div class="bg-gray-900 p-8 rounded-xl border border-gray-800">
-                    <i class="fas fa-quote-left accent-color text-2xl mb-4"></i>
-                    <p class="text-gray-300 italic" data-translate="testimonial_3_text">"Necesitábamos un video impactante para redes sociales y MACLOR lo consiguió. El engagement de nuestras publicaciones se disparó."</p>
-                    <div class="mt-6">
-                        <p class="font-bold text-white" data-translate="testimonial_3_author">Sofía Navarro</p>
-                        <p class="text-sm text-gray-500" data-translate="testimonial_3_role">Influencer & Creadora de Contenido</p>
+                <div class="md:w-2/3">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight" data-translate="about_title">Soy Jesús Rondón. <br><span class="text-gray-500">Editor & Visual Storyteller.</span></h2>
+                    <p class="text-gray-400 text-lg mb-8 leading-relaxed" data-translate="about_desc">Con más de 5 años de experiencia, mi pasión es contar historias. Combino técnica y creatividad para que cada proyecto no solo se vea bien, sino que también conecte y emocione.</p>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="bg-black/30 p-4 rounded-lg border border-gray-800 hover:border-accent-color transition-colors">
+                            <i class="fas fa-film text-accent-color mb-2"></i>
+                            <h4 class="text-white font-bold text-sm" data-translate="service_1">Edición Narrativa</h4>
+                        </div>
+                        <div class="bg-black/30 p-4 rounded-lg border border-gray-800 hover:border-accent-color transition-colors">
+                            <i class="fas fa-music text-accent-color mb-2"></i>
+                            <h4 class="text-white font-bold text-sm" data-translate="service_2">Edición Rítmica</h4>
+                        </div>
+                        <div class="bg-black/30 p-4 rounded-lg border border-gray-800 hover:border-accent-color transition-colors">
+                            <i class="fas fa-magic text-accent-color mb-2"></i>
+                            <h4 class="text-white font-bold text-sm" data-translate="service_3">VFX & Composición</h4>
+                        </div>
+                        <div class="bg-black/30 p-4 rounded-lg border border-gray-800 hover:border-accent-color transition-colors">
+                            <i class="fas fa-hashtag text-accent-color mb-2"></i>
+                            <h4 class="text-white font-bold text-sm" data-translate="service_4">Social Media</h4>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- ========== CONTACTO SECTION ========== -->
-        <section id="contacto" class="py-16 bg-gray-900 rounded-2xl my-16 p-8 md:p-12 border border-gray-800 fade-in-section">
-            <div class="text-center max-w-2xl mx-auto">
-                <h2 class="text-4xl font-bold text-white" data-translate="contact_title">¿Tienes un proyecto en mente?</h2>
-                <p class="text-gray-400 mt-3 mb-8" data-translate="contact_subtitle">Me encantaría escucharlo. Rellena el formulario y empecemos a crear algo increíble juntos.</p>
+        <section id="contacto" class="py-16 container mx-auto px-6 mb-12">
+            <div class="max-w-4xl mx-auto bg-gray-900/50 backdrop-blur-sm p-8 md:p-12 rounded-3xl border border-gray-800 text-center fade-in-section">
+                <h2 class="text-4xl font-bold text-white mb-4" data-translate="contact_title">¿Creamos algo épico?</h2>
+                <p class="text-gray-400 mb-8 max-w-lg mx-auto" data-translate="contact_subtitle">Cuéntame tu idea. Estoy listo para llevar tu contenido al siguiente nivel.</p>
                 
-                <form action="https://formspree.io/f/mjkrlknp" method="POST" class="text-left space-y-6">
-                    <div>
-                        <label for="name" class="block text-sm font-medium text-gray-300 mb-2" data-translate="form_name">Tu Nombre</label>
-                        <input type="text" name="name" id="name" required class="w-full bg-gray-800 border border-gray-700 rounded-lg py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-accent-color transition-colors">
-                    </div>
-                    <div>
-                        <label for="email" class="block text-sm font-medium text-gray-300 mb-2" data-translate="form_email">Tu Email</label>
-                        <input type="email" name="email" id="email" required class="w-full bg-gray-800 border border-gray-700 rounded-lg py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-accent-color transition-colors">
-                    </div>
-                    <div>
-                        <label for="message" class="block text-sm font-medium text-gray-300 mb-2" data-translate="form_message">Tu Mensaje</label>
-                        <textarea name="message" id="message" rows="4" required class="w-full bg-gray-800 border border-gray-700 rounded-lg py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-accent-color transition-colors"></textarea>
-                    </div>
-                    <div class="text-center">
-                        <button type="submit" class="mt-4 inline-block bg-accent-color hover:brightness-125 text-white font-bold py-3 px-8 rounded-lg text-lg transition-all w-full md:w-auto" data-translate="form_button">Enviar Mensaje</button>
-                    </div>
+                <form action="https://formspree.io/f/mjkrlknp" method="POST" class="max-w-md mx-auto space-y-4 text-left">
+                    <input type="text" name="name" required placeholder="Tu Nombre" class="w-full bg-black border border-gray-700 rounded-lg py-3 px-4 text-white focus:outline-none focus:border-accent-color transition-colors placeholder-gray-600">
+                    <input type="email" name="email" required placeholder="Tu Email" class="w-full bg-black border border-gray-700 rounded-lg py-3 px-4 text-white focus:outline-none focus:border-accent-color transition-colors placeholder-gray-600">
+                    <textarea name="message" rows="4" required placeholder="Detalles del proyecto..." class="w-full bg-black border border-gray-700 rounded-lg py-3 px-4 text-white focus:outline-none focus:border-accent-color transition-colors placeholder-gray-600"></textarea>
+                    
+                    <button type="submit" class="w-full bg-white text-black hover:bg-accent-color hover:text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 transform active:scale-95" data-translate="form_button">ENVIAR MENSAJE</button>
                 </form>
 
-                <div class="flex justify-center space-x-6 mt-12">
-                    <a href="https://youtube.com/@sr.maclor?si=j_jhz9mmhoqxZJaA" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:accent-color text-2xl transition-transform transform hover:scale-125"><i class="fab fa-youtube"></i></a>
-                    <a href="https://www.instagram.com/maclor_studio?igsh=MXYyNjBnMnI1ZDI1OA==" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:accent-color text-2xl transition-transform transform hover:scale-125"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.linkedin.com/in/jesus-rondon-i" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:accent-color text-2xl transition-transform transform hover:scale-125"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="http://tiktok.com/@sr.maclor" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:accent-color text-2xl transition-transform transform hover:scale-125"><i class="fab fa-tiktok"></i></a>
+                <div class="flex justify-center gap-8 mt-12">
+                    <a href="https://www.instagram.com/maclor_studio?igsh=MXYyNjBnMnI1ZDI1OA==" target="_blank" class="text-gray-500 hover:text-white text-2xl transition-colors"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.linkedin.com/in/jesus-rondon-i" target="_blank" class="text-gray-500 hover:text-white text-2xl transition-colors"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="http://tiktok.com/@sr.maclor" target="_blank" class="text-gray-500 hover:text-white text-2xl transition-colors"><i class="fab fa-tiktok"></i></a>
                 </div>
             </div>
         </section>
@@ -353,402 +551,267 @@
     </main>
 
     <!-- ========== FOOTER ========== -->
-    <footer class="text-center py-6 border-t border-gray-800">
-        <p class="text-gray-500">&copy; <span id="year">2024</span> Jesús Rondón (MACLOR). <span data-translate="footer_rights">Todos los derechos reservados.</span></p>
+    <footer class="py-8 border-t border-gray-900 bg-black text-center">
+        <p class="text-gray-600 text-sm">&copy; <span id="year">2024</span> Jesús Rondón (MACLOR). <span data-translate="footer_rights">Todos los derechos reservados.</span></p>
     </footer>
 
-    <!-- ========== MODALS (VENTANAS EMERGENTES) ========== -->
+    <!-- ========== MODALS (Optimizados) ========== -->
+    <!-- NUEVOS MODALES -->
+    <div id="modal_lead_brand" class="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300" onclick="if(event.target === this) closeModal('modal_lead_brand')"><div class="bg-gray-900 rounded-xl w-full max-w-5xl overflow-hidden border border-gray-700 shadow-2xl"><div class="p-4 flex justify-between items-center bg-black border-b border-gray-800"><h3 class="text-lg font-bold text-white">Lead To Cash: Marca Personal</h3><button onclick="closeModal('modal_lead_brand')" class="text-gray-400 hover:text-white text-2xl">&times;</button></div><div class="video-responsive"><iframe data-src="https://www.youtube.com/embed/T_EVA4cqOJk" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div></div></div>
+    
+    <div id="modal_uclinic_impact" class="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300" onclick="if(event.target === this) closeModal('modal_uclinic_impact')"><div class="bg-gray-900 rounded-xl w-full max-w-5xl overflow-hidden border border-gray-700 shadow-2xl"><div class="p-4 flex justify-between items-center bg-black border-b border-gray-800"><h3 class="text-lg font-bold text-white">U Clinic: Alto Impacto</h3><button onclick="closeModal('modal_uclinic_impact')" class="text-gray-400 hover:text-white text-2xl">&times;</button></div><div class="video-responsive"><iframe data-src="https://www.youtube.com/embed/Ahb2y7TUHfo" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div></div></div>
 
-    <!-- Modal para Showreel (NUEVO) -->
-    <div id="modal_showreel" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-gray-900 rounded-xl w-full max-w-4xl max-h-full overflow-y-auto border border-gray-700">
-            <div class="p-4 flex justify-between items-center border-b border-gray-700">
-                <h3 class="text-xl font-bold text-white" data-translate="trailer_title">Mi Showreel de Edición</h3>
-                <button onclick="closeModal('modal_showreel')" class="text-gray-400 hover:text-white text-3xl">&times;</button>
-            </div>
-            <div class="p-4">
-                <div class="video-responsive">
-                    <iframe data-src="https://www.youtube.com/embed/iz6Bm4nUtBI" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
-                </div>
-                <p class="text-gray-300 mt-4" data-translate="trailer_desc_modal">Esta es una muestra total de mi potencial en Motion Graphics. Por unos segundos se logra ver un antes y después de uno de los videos para U Clinic Center, demostrando cómo el contenido de marca vibrante puede ser utilizado para videos corporativos o incluso proyectos más cinemáticos.</p>
-            </div>
-        </div>
-    </div>
+    <!-- MODALES EXISTENTES -->
+    <!-- Cars: Transformación (Link YouTube actualizado) -->
+    <div id="modal_cars" class="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300" onclick="if(event.target === this) closeModal('modal_cars')"><div class="bg-gray-900 rounded-xl w-full max-w-5xl overflow-hidden border border-gray-700 shadow-2xl"><div class="p-4 flex justify-between items-center bg-black border-b border-gray-800"><h3 class="text-lg font-bold text-white">Cars: El Poder de la Transformación</h3><button onclick="closeModal('modal_cars')" class="text-gray-400 hover:text-white text-2xl">&times;</button></div><div class="video-responsive"><iframe data-src="https://www.youtube.com/embed/QPH-pP8fcrg" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div></div></div>
+    
+    <!-- KFC (Link YouTube actualizado) -->
+    <div id="modal_kfc" class="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300" onclick="if(event.target === this) closeModal('modal_kfc')"><div class="bg-gray-900 rounded-xl w-full max-w-5xl overflow-hidden border border-gray-700 shadow-2xl"><div class="p-4 flex justify-between items-center bg-black border-b border-gray-800"><h3 class="text-lg font-bold text-white">KFC: La Historia del Coronel Sanders</h3><button onclick="closeModal('modal_kfc')" class="text-gray-400 hover:text-white text-2xl">&times;</button></div><div class="video-responsive"><iframe data-src="https://www.youtube.com/embed/_DoV0mBNJsw" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div></div></div>
+    
+    <!-- Bruce Lee (Link YouTube actualizado) -->
+    <div id="modal_bruce" class="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300" onclick="if(event.target === this) closeModal('modal_bruce')"><div class="bg-gray-900 rounded-xl w-full max-w-5xl overflow-hidden border border-gray-700 shadow-2xl"><div class="p-4 flex justify-between items-center bg-black border-b border-gray-800"><h3 class="text-lg font-bold text-white">Bruce Lee: Filosofía</h3><button onclick="closeModal('modal_bruce')" class="text-gray-400 hover:text-white text-2xl">&times;</button></div><div class="video-responsive"><iframe data-src="https://www.youtube.com/embed/0b287Y7sBo4" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div></div></div>
 
-    <!-- Modal para Proyecto 1 -->
-    <div id="modal1" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-gray-900 rounded-xl w-full max-w-4xl max-h-full overflow-y-auto border border-gray-700">
-            <div class="p-4 flex justify-between items-center border-b border-gray-700">
-                <h3 class="text-xl font-bold text-white" data-translate="p1_title">Documental: El Rey Balduino IV</h3>
-                <button onclick="closeModal('modal1')" class="text-gray-400 hover:text-white text-3xl">&times;</button>
-            </div>
-            <div class="p-4">
-                <div class="video-responsive">
-                    <iframe data-src="https://www.youtube.com/embed/nnEkfU5rWdU" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
-                </div>
-                <p class="text-gray-300 mt-4" data-translate="modal_p1_desc">Análisis histórico del Rey Balduino IV de Jerusalén, combinando narrativa documental con una edición visual que captura la épica y el drama de su reinado.</p>
-            </div>
-        </div>
-    </div>
-    <!-- Modal para Proyecto 2 -->
-    <div id="modal2" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-gray-900 rounded-xl w-full max-w-4xl max-h-full overflow-y-auto border border-gray-700">
-            <div class="p-4 flex justify-between items-center border-b border-gray-700">
-                <h3 class="text-xl font-bold text-white" data-translate="p2_title">Ensayo Visual: El Horror de la Guerra</h3>
-                <button onclick="closeModal('modal2')" class="text-gray-400 hover:text-white text-3xl">&times;</button>
-            </div>
-            <div class="p-4">
-                <div class="video-responsive">
-                    <iframe data-src="https://www.youtube.com/embed/T19LKFARr-Y" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
-                </div>
-                <p class="text-gray-300 mt-4" data-translate="modal_p2_desc">Experimentando con un estilo más pausado y enfocado en el terror psicológico para analizar la película "Masacre: Ven y Mira". Este fue mi primer video en alcanzar viralidad, buscando impactar al espectador a través de una atmósfera opresiva.</p>
-            </div>
-        </div>
-    </div>
-    <!-- Modal para Proyecto 3 -->
-    <div id="modal3" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-gray-900 rounded-xl w-full max-w-4xl max-h-full overflow-y-auto border border-gray-700">
-            <div class="p-4 flex justify-between items-center border-b border-gray-700">
-                <h3 class="text-xl font-bold text-white" data-translate="p3_title">Análisis: Sin Novedad en el Frente</h3>
-                <button onclick="closeModal('modal3')" class="text-gray-400 hover:text-white text-3xl">&times;</button>
-            </div>
-            <div class="p-4">
-                <div class="video-responsive">
-                    <iframe data-src="https://www.youtube.com/embed/WaspcBACCyo" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
-                </div>
-                <p class="text-gray-300 mt-4" data-translate="modal_p3_desc">Un vídeo que explora todo el horror que se vivió en una guerra, con un estilo de edición más limpio y enfocado en impactar al espectador.</p>
-            </div>
-        </div>
-    </div>
-    <!-- Modal para Proyecto 4 -->
-    <div id="modal4" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-gray-900 rounded-xl w-full max-w-4xl max-h-full overflow-y-auto border border-gray-700">
-            <div class="p-4 flex justify-between items-center border-b border-gray-700">
-                <h3 class="text-xl font-bold text-white" data-translate="p4_title">Reel de Animaciones en After Effects</h3>
-                <button onclick="closeModal('modal4')" class="text-gray-400 hover:text-white text-3xl">&times;</button>
-            </div>
-            <div class="p-4">
-                <div class="video-responsive">
-                    <iframe data-src="https://www.youtube.com/embed/zlVBn8OmL6E" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
-                </div>
-                <p class="text-gray-300 mt-4" data-translate="modal_p4_desc">Una recopilación de mis primeras exploraciones en motion graphics. Este reel muestra mi experimentación con diversas técnicas de animación y efectos visuales en Adobe After Effects.</p>
-            </div>
-        </div>
-    </div>
-    <!-- Modal para Proyecto 5 -->
-    <div id="modal5" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-gray-900 rounded-xl w-full max-w-4xl max-h-full overflow-y-auto border border-gray-700">
-            <div class="p-4 flex justify-between items-center border-b border-gray-700">
-                <h3 class="text-xl font-bold text-white" data-translate="p5_title">Reel de Contenido: Izumi Club</h3>
-                <button onclick="closeModal('modal5')" class="text-gray-400 hover:text-white text-3xl">&times;</button>
-            </div>
-            <div class="p-4">
-                <div class="video-responsive">
-                    <iframe data-src="https://www.youtube.com/embed/CF6RwsSAS34" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
-                </div>
-                <p class="text-gray-300 mt-4" data-translate="modal_p5_desc">Uno de los Reels que cree para una Escuela de Boxeo ubicada en Madrid la cual necesitaba un impulso en su contenido, por lo cual una de las secciones eran pequeños documentales sobre distintos boxeadores o leyendas del deporte.</p>
-            </div>
-        </div>
-    </div>
-    <!-- Modal para Proyecto 6 -->
-    <div id="modal6" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-gray-900 rounded-xl w-full max-w-4xl max-h-full overflow-y-auto border border-gray-700">
-            <div class="p-4 flex justify-between items-center border-b border-gray-700">
-                <h3 class="text-xl font-bold text-white" data-translate="p6_title">Reel para Instagram: U Clinic Center</h3>
-                <button onclick="closeModal('modal6')" class="text-gray-400 hover:text-white text-3xl">&times;</button>
-            </div>
-            <div class="p-4">
-                <div class="video-responsive">
-                    <iframe data-src="https://www.youtube.com/embed/juIrcETp4HI" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
-                </div>
-                <p class="text-gray-300 mt-4" data-translate="modal_p6_desc">Uno de los Reels para la cuenta de Instagram U Clinic. Esta es una Clínica en Madrid, en la cual me encargo de todo el contenido que se sube en su instagram. Los vídeos solicitados por el cliente piden una edición limpia que demuestre el profesionalismo que se vive dia dia en la clinica.</p>
-            </div>
-        </div>
-    </div>
-    <!-- Modal para Proyecto 7 (ACTUALIZADO) -->
-    <div id="modal7" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-gray-900 rounded-xl w-full max-w-4xl max-h-full overflow-y-auto border border-gray-700">
-            <div class="p-4 flex justify-between items-center border-b border-gray-700">
-                <h3 class="text-xl font-bold text-white" data-translate="p7_title">Anuncio Corporativo: U Clinic Center</h3>
-                <button onclick="closeModal('modal7')" class="text-gray-400 hover:text-white text-3xl">&times;</button>
-            </div>
-            <div class="p-4">
-                <div class="video-responsive">
-                    <iframe data-src="https://www.youtube.com/embed/C6XSdD6Un-g" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
-                </div>
-                <p class="text-gray-300 mt-4" data-translate="modal_p7_desc">Creación de contenido para U Clinic Center, fusionando un estilo para redes sociales con un enfoque corporativo para anunciar y explicar sus tratamientos de manera clara y profesional.</p>
-            </div>
-        </div>
-    </div>
+    <!-- Pirámide de Valor (Link YouTube actualizado) -->
+    <div id="modal_pyramid" class="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300" onclick="if(event.target === this) closeModal('modal_pyramid')"><div class="bg-gray-900 rounded-xl w-full max-w-5xl overflow-hidden border border-gray-700 shadow-2xl"><div class="p-4 flex justify-between items-center bg-black border-b border-gray-800"><h3 class="text-lg font-bold text-white">Pirámide de Valor</h3><button onclick="closeModal('modal_pyramid')" class="text-gray-400 hover:text-white text-2xl">&times;</button></div><div class="video-responsive"><iframe data-src="https://www.youtube.com/embed/TBsrgUOjAPU" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div></div></div>
 
-    <!-- ========== JAVASCRIPT ========== -->
+    <div id="modal7" class="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300" onclick="if(event.target === this) closeModal('modal7')"><div class="bg-gray-900 rounded-xl w-full max-w-5xl overflow-hidden border border-gray-700 shadow-2xl"><div class="p-4 flex justify-between items-center bg-black border-b border-gray-800"><h3 class="text-lg font-bold text-white">Reel Corporativo: U Clinic Center</h3><button onclick="closeModal('modal7')" class="text-gray-400 hover:text-white text-2xl">&times;</button></div><div class="video-responsive"><iframe data-src="https://www.youtube.com/embed/C6XSdD6Un-g" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div></div></div>
+
+    <div id="modal5" class="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300" onclick="if(event.target === this) closeModal('modal5')"><div class="bg-gray-900 rounded-xl w-full max-w-5xl overflow-hidden border border-gray-700 shadow-2xl"><div class="p-4 flex justify-between items-center bg-black border-b border-gray-800"><h3 class="text-lg font-bold text-white">Izumi Club</h3><button onclick="closeModal('modal5')" class="text-gray-400 hover:text-white text-2xl">&times;</button></div><div class="video-responsive"><iframe data-src="https://www.youtube.com/embed/CF6RwsSAS34" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div></div></div>
+
+    <!-- AMV (Link YouTube actualizado) -->
+    <div id="modal_amv" class="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300" onclick="if(event.target === this) closeModal('modal_amv')"><div class="bg-gray-900 rounded-xl w-full max-w-5xl overflow-hidden border border-gray-700 shadow-2xl"><div class="p-4 flex justify-between items-center bg-black border-b border-gray-800"><h3 class="text-lg font-bold text-white">AMV: Angeldust</h3><button onclick="closeModal('modal_amv')" class="text-gray-400 hover:text-white text-2xl">&times;</button></div><div class="video-responsive"><iframe data-src="https://www.youtube.com/embed/ZQciIimrB1Y" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div></div></div>
+
+    <div id="modal1" class="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300" onclick="if(event.target === this) closeModal('modal1')"><div class="bg-gray-900 rounded-xl w-full max-w-5xl overflow-hidden border border-gray-700 shadow-2xl"><div class="p-4 flex justify-between items-center bg-black border-b border-gray-800"><h3 class="text-lg font-bold text-white">El Rey Balduino IV</h3><button onclick="closeModal('modal1')" class="text-gray-400 hover:text-white text-2xl">&times;</button></div><div class="video-responsive"><iframe data-src="https://www.youtube.com/embed/nnEkfU5rWdU" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div></div></div>
+
+    <div id="modal2" class="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300" onclick="if(event.target === this) closeModal('modal2')"><div class="bg-gray-900 rounded-xl w-full max-w-5xl overflow-hidden border border-gray-700 shadow-2xl"><div class="p-4 flex justify-between items-center bg-black border-b border-gray-800"><h3 class="text-lg font-bold text-white">El Horror de la Guerra</h3><button onclick="closeModal('modal2')" class="text-gray-400 hover:text-white text-2xl">&times;</button></div><div class="video-responsive"><iframe data-src="https://www.youtube.com/embed/T19LKFARr-Y" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div></div></div>
+
+    <div id="modal3" class="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300" onclick="if(event.target === this) closeModal('modal3')"><div class="bg-gray-900 rounded-xl w-full max-w-5xl overflow-hidden border border-gray-700 shadow-2xl"><div class="p-4 flex justify-between items-center bg-black border-b border-gray-800"><h3 class="text-lg font-bold text-white">Sin Novedad en el Frente</h3><button onclick="closeModal('modal3')" class="text-gray-400 hover:text-white text-2xl">&times;</button></div><div class="video-responsive"><iframe data-src="https://www.youtube.com/embed/WaspcBACCyo" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div></div></div>
+    
+    <div id="modal_showreel" class="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300" onclick="if(event.target === this) closeModal('modal_showreel')"><div class="bg-gray-900 rounded-xl w-full max-w-5xl overflow-hidden border border-gray-700 shadow-2xl"><div class="p-4 flex justify-between items-center bg-black border-b border-gray-800"><h3 class="text-lg font-bold text-white">Showreel Social Media</h3><button onclick="closeModal('modal_showreel')" class="text-gray-400 hover:text-white text-2xl">&times;</button></div><div class="video-responsive"><iframe data-src="https://www.youtube.com/embed/iz6Bm4nUtBI" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div></div></div>
+
+    <div id="modal_showreel_mg" class="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300" onclick="if(event.target === this) closeModal('modal_showreel_mg')"><div class="bg-gray-900 rounded-xl w-full max-w-5xl overflow-hidden border border-gray-700 shadow-2xl"><div class="p-4 flex justify-between items-center bg-black border-b border-gray-800"><h3 class="text-lg font-bold text-white">Showreel Motion Graphics</h3><button onclick="closeModal('modal_showreel_mg')" class="text-gray-400 hover:text-white text-2xl">&times;</button></div><div class="video-responsive"><iframe data-src="https://www.youtube.com/embed/iz6Bm4nUtBI" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div></div></div>
+
     <script>
-        // --- DICCIONARIO DE TRADUCCIONES ---
+        // --- TRADUCCIONES (Actualizadas) ---
         const translations = {
             es: {
-                // POPUP
                 lang_popup_title: "Elige tu idioma",
-                // NAV
-                nav_projects: "Proyectos",
-                nav_about: "Sobre Mí",
-                nav_contact_talk: "HABLEMOS",
-                nav_contact_contact: "CONTACTO",
-                // HERO
-                hero_tagline: "◆ Ritmo y energía en cada corte.",
-                hero_description: "Transformo metraje en experiencias visuales cinéticas. Mi edición se enfoca en la energía, el ritmo y los detalles que hacen que tu contenido sea inolvidable.",
-                hero_cta: "Ver todos los proyectos (7) &rarr;",
-                // PROJECTS
-                projects_title: "Proyectos Destacados",
-                trailer_title: "Mi Showreel de Edición",
-                trailer_desc: "Esta es una muestra total de mi potencial en Motion Graphics. Por unos segundos se logra ver un antes y después de uno de los videos para U Clinic Center, demostrando cómo el contenido de marca vibrante puede ser utilizado para videos corporativos o incluso proyectos más cinemáticos.",
-                trailer_cta: "Ver Showreel Completo",
-                gallery_title: "Galería de Proyectos",
-                view_project_btn: "Ver Proyecto",
-                p1_title: "Documental: El Rey Balduino IV",
-                p1_desc: "Análisis histórico del rey de Jerusalén, combinando narrativa con una edición visual que captura la épica y el drama.",
-                p2_title: "Ensayo Visual: El Horror de la Guerra",
-                p2_desc: "Experimentando con un estilo más pausado y enfocado en el terror psicológico para analizar la película \"Masacre: Ven y Mira\".",
-                p3_title: "Análisis: Sin Novedad en el Frente",
-                p3_desc: "Un vídeo que explora todo el horror que se vivió en una guerra, con un estilo de edición más limpio y enfocado en impactar al espectador.",
-                p4_title: "Reel de Animaciones en After Effects",
-                p4_desc: "Recopilación de mis primeras exploraciones en motion graphics, experimentando con diversas técnicas de animación.",
-                p5_title: "Reel de Contenido: Izumi Club",
-                p5_desc: "Creación de pequeños documentales sobre leyendas del boxeo para impulsar el contenido de una escuela en Madrid.",
-                p6_title: "Reel para Instagram: U Clinic Center",
-                p6_desc: "Gestión y creación de contenido para una clínica en Madrid, con una edición limpia que demuestra profesionalismo.",
-                p7_title: "Anuncio Corporativo: U Clinic Center",
-                p7_desc: "Creación de contenido para U Clinic Center, fusionando un estilo para redes sociales con un enfoque corporativo.",
-                // ABOUT
-                about_title: "Soy Jesús Rondón, el editor detrás de MACLOR.",
-                about_desc: "Con más de 5 años de experiencia, mi pasión es contar historias. Combino técnica y creatividad para que cada proyecto no solo se vea bien, sino que también conecte y emocione. Mi objetivo es simple: superar tus expectativas.",
-                services_title: "Mis Servicios",
-                service_1: "Edición de Video (Redes, Corporativo, Creativo)",
-                service_2: "Motion Graphics y Animación 2D",
-                service_3: "Corrección de Color y Etalonaje",
-                service_4: "Edición y Retoque Fotográfico",
-                service_5: "Diseño de Sonido Básico",
-                // TESTIMONIALS
-                testimonials_title: "Lo que dicen mis clientes",
-                testimonial_1_text: "\"La visión de MACLOR es increíble. Entendió perfectamente lo que buscábamos y lo elevó a otro nivel. Su edición es pura energía.\"",
-                testimonial_1_author: "Ana Torres",
-                testimonial_1_role: "Fundadora de Marca Creativa",
-                testimonial_2_text: "\"Profesional, rápido y con una comunicación excelente. El resultado final superó todas nuestras expectativas. Sin duda volveremos a trabajar con él.\"",
-                testimonial_2_author: "Carlos Jiménez",
-                testimonial_2_role: "Director de Marketing, Tech Solutions",
-                testimonial_3_text: "\"Necesitábamos un video impactante para redes sociales y MACLOR lo consiguió. El engagement de nuestras publicaciones se disparó.\"",
-                testimonial_3_author: "Sofía Navarro",
-                testimonial_3_role: "Influencer & Creadora de Contenido",
-                // CONTACT
-                contact_title: "¿Tienes un proyecto en mente?",
-                contact_subtitle: "Me encantaría escucharlo. Rellena el formulario y empecemos a crear algo increíble juntos.",
-                form_name: "Tu Nombre",
-                form_email: "Tu Email",
-                form_message: "Tu Mensaje",
-                form_button: "Enviar Mensaje",
-                // FOOTER
+                nav_projects: "Proyectos", nav_about: "Sobre Mí", nav_contact_talk: "HABLEMOS", nav_contact_contact: "CONTACTO",
+                hero_subtitle: "Video Editor",
+                hero_description: "Me especializo en convertir contenido hablado en videos de alto impacto para redes sociales. Mi edición se enfoca en tipografía cinética, composición profesional y un ritmo dinámico.",
+                hero_cta_button: "Ver Portafolio",
+                
+                projects_intro: "Explora una selección de mis mejores colaboraciones y proyectos personales.",
+                filter_all: "Todos", filter_clients: "Clientes", filter_personal: "Personal", filter_showreels: "Showreels",
+                
+                // NUEVAS TRADUCCIONES
+                p_lead_brand_title: "Reel de Apertura: Marca Personal",
+                p_lead_brand_desc: "Estrategia visual unificada para lanzamiento de marca personal.",
+                p_uclinic_impact_title: "Alto Impacto: Cirugía vs Calificación",
+                p_uclinic_impact_desc: "Edición dinámica manteniendo estética clínica pulcra.",
+
+                showreel_promo_title: "Showreel Redes Sociales",
+                showreel_promo_desc: "Trailer dinámico para promocionar estilo de edición.",
+                showreel_mg_title: "Motion Graphics",
+                showreel_mg_desc: "Compilación de tipografía cinética y animación.",
+                p_cars_title: "Cars: Transformación",
+                p_cars_desc: "Análisis visual de narrativa de negocio.",
+                p_kfc_title: "KFC: Coronel Sanders",
+                p_kfc_desc: "Relato biográfico con compositing.",
+                p_bruce_title: "Bruce Lee: Filosofía",
+                p_bruce_desc: "Concepto filosófico en lección visual.",
+                p_pyramid_title: "Pirámide de Valor",
+                p_pyramid_desc: "Explicación de modelo de marketing.",
+                p_uclinic_title: "Reel Corporativo",
+                p_uclinic_desc: "Producción corporativa para servicios médicos.",
+                p5_title: "Reel: Izumi Club",
+                p5_desc: "Mini documental deportivo.",
+                p1_title: "El Rey Balduino IV",
+                p1_desc: "Análisis histórico con narrativa épica.",
+                p2_title: "Horror de la Guerra",
+                p2_desc: "Terror psicológico y atmósfera.",
+                p3_title: "Sin Novedad en el Frente",
+                p3_desc: "Edición limpia impactante.",
+                p_amv_title: "Anime Music Video",
+                p_amv_desc: "Edición rítmica de alta energía para Angeldust.",
+                
+                about_title: "Soy Jesús Rondón.<br><span class='text-gray-500'>Editor & Visual Storyteller.</span>",
+                about_desc: "Con más de 5 años de experiencia, mi pasión es contar historias. Combino técnica y creatividad para que cada proyecto no solo se vea bien, sino que también conecte y emocione.",
+                service_1: "Edición Narrativa", service_2: "Edición Rítmica", service_3: "VFX & Composición", service_4: "Social Media",
+                
+                contact_title: "¿Creamos algo épico?",
+                contact_subtitle: "Cuéntame tu idea. Estoy listo para llevar tu contenido al siguiente nivel.",
+                form_button: "ENVIAR MENSAJE",
                 footer_rights: "Todos los derechos reservados.",
-                // MODALS
-                trailer_desc_modal: "Esta es una muestra total de mi potencial en Motion Graphics. Por unos segundos se logra ver un antes y después de uno de los videos para U Clinic Center, demostrando cómo el contenido de marca vibrante puede ser utilizado para videos corporativos o incluso proyectos más cinemáticos.",
-                modal_p1_desc: "Análisis histórico del Rey Balduino IV de Jerusalén, combinando narrativa documental con una edición visual que captura la épica y el drama de su reinado.",
-                modal_p2_desc: "Experimentando con un estilo más pausado y enfocado en el terror psicológico para analizar la película \"Masacre: Ven y Mira\". Este fue mi primer video en alcanzar viralidad, buscando impactar al espectador a través de una atmósfera opresiva.",
-                modal_p3_desc: "Un vídeo que explora todo el horror que se vivió en una guerra, con un estilo de edición más limpio y enfocado en impactar al espectador.",
-                modal_p4_desc: "Una recopilación de mis primeras exploraciones en motion graphics. Este reel muestra mi experimentación con diversas técnicas de animación y efectos visuales en Adobe After Effects.",
-                modal_p5_desc: "Uno de los Reels que cree para una Escuela de Boxeo ubicada en Madrid la cual necesitaba un impulso en su contenido, por lo cual una de las secciones eran pequeños documentales sobre distintos boxeadores o leyendas del deporte.",
-                modal_p6_desc: "Uno de los Reels para la cuenta de Instagram U Clinic. Esta es una Clínica en Madrid, en la cual me encargo de todo el contenido que se sube en su instagram. Los vídeos solicitados por el cliente piden una edición limpia que demuestre el profesionalismo que se vive dia dia en la clinica.",
-                modal_p7_desc: "Creación de contenido para U Clinic Center, fusionando un estilo para redes sociales con un enfoque corporativo para anunciar y explicar sus tratamientos de manera clara y profesional."
+                youtube_btn_text: "VER MÁS EN YOUTUBE"
             },
             en: {
-                // POPUP
                 lang_popup_title: "Choose your language",
-                // NAV
-                nav_projects: "Projects",
-                nav_about: "About Me",
-                nav_contact_talk: "LET'S TALK",
-                nav_contact_contact: "CONTACT",
-                // HERO
-                hero_tagline: "◆ Rhythm and energy in every cut.",
-                hero_description: "I transform footage into kinetic visual experiences. My editing focuses on energy, rhythm, and the details that make your content unforgettable.",
-                hero_cta: "See all projects (7) &rarr;",
-                // PROJECTS
-                projects_title: "Featured Projects",
-                trailer_title: "My Editing Showreel",
-                trailer_desc: "This is a full showcase of my potential in Motion Graphics. For a few seconds, you can see a before-and-after of one of the videos for U Clinic Center, demonstrating how vibrant brand content can be used for corporate or even more cinematic projects.",
-                trailer_cta: "Watch Full Showreel",
-                gallery_title: "Project Gallery",
-                view_project_btn: "View Project",
-                p1_title: "Documentary: King Baldwin IV",
-                p1_desc: "Historical analysis of the King of Jerusalem, combining narrative with visual editing that captures the epic and drama.",
-                p2_title: "Visual Essay: The Horror of War",
-                p2_desc: "Experimenting with a slower pace, focusing on psychological terror to analyze the film \"Come and See\".",
-                p3_title: "Analysis: All Quiet on the Western Front",
-                p3_desc: "A video that explores the horror lived in war, with a cleaner editing style focused on impacting the viewer.",
-                p4_title: "After Effects Animation Reel",
-                p4_desc: "A compilation of my first explorations in motion graphics, experimenting with various animation techniques.",
-                p5_title: "Content Reel: Izumi Club",
-                p5_desc: "Creating short documentaries about boxing legends to boost content for a school in Madrid.",
-                p6_title: "Instagram Reel: U Clinic Center",
-                p6_desc: "Content management and creation for a clinic in Madrid, with clean editing that shows professionalism.",
-                p7_title: "Corporate Ad: U Clinic Center",
-                p7_desc: "Content creation for U Clinic Center, blending a social media style with a corporate approach.",
-                // ABOUT
-                about_title: "I'm Jesús Rondón, the editor behind MACLOR.",
-                about_desc: "With over 5 years of experience, my passion is storytelling. I combine technique and creativity so that each project not only looks good, but also connects and excites. My goal is simple: to exceed your expectations.",
-                services_title: "My Services",
-                service_1: "Video Editing (Social, Corporate, Creative)",
-                service_2: "Motion Graphics and 2D Animation",
-                service_3: "Color Correction and Grading",
-                service_4: "Photo Editing and Retouching",
-                service_5: "Basic Sound Design",
-                // TESTIMONIALS
-                testimonials_title: "What my clients say",
-                testimonial_1_text: "\"MACLOR's vision is incredible. He perfectly understood what we were looking for and took it to another level. His editing is pure energy.\"",
-                testimonial_1_author: "Ana Torres",
-                testimonial_1_role: "Founder of Creative Brand",
-                testimonial_2_text: "\"Professional, fast, and with excellent communication. The final result exceeded all our expectations. We will definitely work with him again.\"",
-                testimonial_2_author: "Carlos Jiménez",
-                testimonial_2_role: "Marketing Director, Tech Solutions",
-                testimonial_3_text: "\"We needed an impactful video for social media and MACLOR delivered. The engagement on our posts skyrocketed.\"",
-                testimonial_3_author: "Sofía Navarro",
-                testimonial_3_role: "Influencer & Content Creator",
-                // CONTACT
-                contact_title: "Have a project in mind?",
-                contact_subtitle: "I'd love to hear about it. Fill out the form and let's start creating something amazing together.",
-                form_name: "Your Name",
-                form_email: "Your Email",
-                form_message: "Your Message",
-                form_button: "Send Message",
-                // FOOTER
+                nav_projects: "Projects", nav_about: "About Me", nav_contact_talk: "LET'S TALK", nav_contact_contact: "CONTACT",
+                hero_subtitle: "Video Editor",
+                hero_description: "I specialize in turning spoken-word content into high-impact social media videos. My editing focuses on kinetic typography, professional compositing, and dynamic rhythm.",
+                hero_cta_button: "View Portfolio",
+                
+                projects_intro: "Explore a selection of my best collaborations and personal projects.",
+                filter_all: "All", filter_clients: "Clients", filter_personal: "Personal", filter_showreels: "Showreels",
+
+                // NEW TRANSLATIONS
+                p_lead_brand_title: "Opening Reel: Personal Brand",
+                p_lead_brand_desc: "Unified visual strategy for personal brand launch.",
+                p_uclinic_impact_title: "High Impact: Surgery vs Rating",
+                p_uclinic_impact_desc: "Dynamic editing maintaining clean clinical aesthetics.",
+
+                showreel_promo_title: "Social Media Showreel",
+                showreel_promo_desc: "Dynamic trailer promoting high-impact editing style.",
+                showreel_mg_title: "Motion Graphics",
+                showreel_mg_desc: "Compilation of kinetic typography and animation.",
+                p_cars_title: "Cars: Transformation",
+                p_cars_desc: "Visual analysis of business narrative.",
+                p_kfc_title: "KFC: Colonel Sanders",
+                p_kfc_desc: "Biographical story with compositing.",
+                p_bruce_title: "Bruce Lee: Philosophy",
+                p_bruce_desc: "Philosophical concept into visual lesson.",
+                p_pyramid_title: "Pyramid of Value",
+                p_pyramid_desc: "Marketing model explanation.",
+                p_uclinic_title: "Corporate Reel",
+                p_uclinic_desc: "Corporate production for medical services.",
+                p5_title: "Reel: Izumi Club",
+                p5_desc: "Sports mini-documentary.",
+                p1_title: "King Baldwin IV",
+                p1_desc: "Historical analysis with epic narrative.",
+                p2_title: "The Horror of War",
+                p2_desc: "Psychological terror and atmosphere.",
+                p3_title: "All Quiet on the Western Front",
+                p3_desc: "Clean impactful editing.",
+                p_amv_title: "Anime Music Video",
+                p_amv_desc: "High-energy rhythmic editing for Angeldust.",
+
+                about_title: "I'm Jesús Rondón.<br><span class='text-gray-500'>Editor & Visual Storyteller.</span>",
+                about_desc: "With over 5 years of experience, my passion is storytelling. I combine technique and creativity so that each project not only looks good but also connects and excites.",
+                service_1: "Narrative Editing", service_2: "Rhythmic Editing", service_3: "VFX & Compositing", service_4: "Social Media",
+                
+                contact_title: "Let's create something epic?",
+                contact_subtitle: "Tell me your idea. I'm ready to take your content to the next level.",
+                form_button: "SEND MESSAGE",
                 footer_rights: "All rights reserved.",
-                // MODALS
-                trailer_desc_modal: "This is a full showcase of my potential in Motion Graphics. For a few seconds, you can see a before-and-after of one of the videos for U Clinic Center, demonstrating how vibrant brand content can be used for corporate or even more cinematic projects.",
-                modal_p1_desc: "Historical analysis of King Baldwin IV of Jerusalem, combining documentary narrative with visual editing that captures the epic and drama of his reign.",
-                modal_p2_desc: "Experimenting with a slower pace and focusing on psychological terror to analyze the film \"Come and See.\" This was my first video to go viral, aiming to impact the viewer through an oppressive atmosphere.",
-                modal_p3_desc: "A video that explores the full horror of war, with a cleaner editing style focused on impacting the viewer.",
-                modal_p4_desc: "A compilation of my early explorations in motion graphics. This reel showcases my experimentation with various animation and visual effects techniques in Adobe After Effects.",
-                modal_p5_desc: "One of the Reels I created for a Boxing School in Madrid that needed a boost in its content. One of the sections included short documentaries about different boxers or legends of the sport.",
-                modal_p6_desc: "One of the Reels for the U Clinic Instagram account. This is a clinic in Madrid where I manage all the content posted on their Instagram. The client requested clean editing that demonstrates the professionalism experienced daily at the clinic.",
-                modal_p7_desc: "Content creation for U Clinic Center, blending a social media style with a corporate approach to clearly and professionally advertise and explain their treatments."
+                youtube_btn_text: "SEE MORE ON YOUTUBE"
             }
         };
 
-        // --- LÓGICA DE TRADUCCIÓN (ACTUALIZADA) ---
+        // --- LÓGICA DE FILTRADO ---
+        function filterProjects(category) {
+            const cards = document.querySelectorAll('.project-card');
+            const buttons = document.querySelectorAll('.filter-btn');
+            
+            // Actualizar botones activos
+            buttons.forEach(btn => {
+                if(btn.getAttribute('onclick').includes(category)) {
+                    btn.classList.add('active');
+                    btn.classList.remove('text-gray-300', 'border-gray-700');
+                    btn.classList.add('text-white', 'border-accent-color');
+                } else {
+                    btn.classList.remove('active', 'text-white', 'border-accent-color');
+                    btn.classList.add('text-gray-300', 'border-gray-700');
+                }
+            });
+
+            // Filtrar tarjetas con animación
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.classList.remove('hidden-card');
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'scale(1)';
+                    }, 50);
+                } else {
+                    card.style.opacity = '0';
+                    card.style.transform = 'scale(0.9)';
+                    setTimeout(() => {
+                        card.classList.add('hidden-card');
+                    }, 300); 
+                }
+            });
+        }
+
+        // --- SISTEMA DE IDIOMAS ---
         function setLanguage(lang) {
-            // Traduce todo el contenido
             document.querySelectorAll('[data-translate]').forEach(element => {
                 const key = element.getAttribute('data-translate');
                 if (translations[lang] && translations[lang][key]) {
                     element.innerHTML = translations[lang][key];
                 }
             });
-            // Actualiza el atributo lang del HTML
             document.documentElement.lang = lang; 
-
-            // Actualiza los estilos de los botones del selector de idioma
-            const langButtonsDesktop = {
-                es: document.getElementById('lang-es-desktop'),
-                en: document.getElementById('lang-en-desktop')
+            
+            const setBtnStyle = (btnId, isActive) => {
+                const btn = document.getElementById(btnId);
+                if (!btn) return;
+                if (isActive) {
+                    btn.classList.add('text-white', 'scale-110');
+                    btn.classList.remove('text-gray-500');
+                } else {
+                    btn.classList.add('text-gray-500');
+                    btn.classList.remove('text-white', 'scale-110');
+                }
             };
-            const langButtonsMobile = {
-                es: document.getElementById('lang-es-mobile'),
-                en: document.getElementById('lang-en-mobile')
-            };
-
-            if (lang === 'es') {
-                langButtonsDesktop.es.classList.add('text-white');
-                langButtonsDesktop.es.classList.remove('text-gray-500', 'hover:text-white');
-                langButtonsDesktop.en.classList.add('text-gray-500', 'hover:text-white');
-                langButtonsDesktop.en.classList.remove('text-white');
-                
-                langButtonsMobile.es.classList.add('text-white');
-                langButtonsMobile.es.classList.remove('text-gray-500', 'hover:text-white');
-                langButtonsMobile.en.classList.add('text-gray-500', 'hover:text-white');
-                langButtonsMobile.en.classList.remove('text-white');
-            } else { // lang === 'en'
-                langButtonsDesktop.en.classList.add('text-white');
-                langButtonsDesktop.en.classList.remove('text-gray-500', 'hover:text-white');
-                langButtonsDesktop.es.classList.add('text-gray-500', 'hover:text-white');
-                langButtonsDesktop.es.classList.remove('text-white');
-
-                langButtonsMobile.en.classList.add('text-white');
-                langButtonsMobile.en.classList.remove('text-gray-500', 'hover:text-white');
-                langButtonsMobile.es.classList.add('text-gray-500', 'hover:text-white');
-                langButtonsMobile.es.classList.remove('text-white');
-            }
+            
+            setBtnStyle('lang-es-desktop', lang === 'es');
+            setBtnStyle('lang-en-desktop', lang === 'en');
+            setBtnStyle('lang-es-mobile', lang === 'es');
+            setBtnStyle('lang-en-mobile', lang === 'en');
         }
 
-        // Función para el pop-up inicial
         function selectLanguage(lang) {
-            setLanguage(lang); // Establece el idioma
-            const popup = document.getElementById('language-popup');
-            popup.classList.add('hidden'); // Oculta el pop-up
+            setLanguage(lang);
+            document.getElementById('language-popup').classList.add('hidden');
         }
 
-
-        // --- LÓGICA DE MODALES ---
+        // --- MODALES ---
         function openModal(modalId) {
             const modal = document.getElementById(modalId);
             modal.classList.remove('hidden');
             document.body.classList.add('overflow-hidden');
-            
             const iframe = modal.querySelector('iframe');
             if (iframe && iframe.getAttribute('data-src')) {
                 iframe.src = iframe.getAttribute('data-src');
             }
         }
-
+        
         function closeModal(modalId) {
             const modal = document.getElementById(modalId);
             modal.classList.add('hidden');
             document.body.classList.remove('overflow-hidden');
-            
             const iframe = modal.querySelector('iframe');
-            if (iframe) {
-                iframe.src = ''; 
-            }
+            if (iframe) { iframe.src = ''; }
         }
 
-        // --- CÓDIGO QUE SE EJECUTA AL CARGAR LA PÁGINA ---
+        // --- INICIALIZACIÓN ---
         document.addEventListener('DOMContentLoaded', () => {
-            
-            // NO se comprueba el idioma guardado, el pop-up siempre aparece.
-            // Se establece español por defecto mientras el pop-up está visible.
             setLanguage('es');
-
-            // Año dinámico en el footer
             document.getElementById('year').textContent = new Date().getFullYear();
-
-            // Animación de letras del título
-            const titleSpans = document.querySelectorAll('#main-title span');
-            titleSpans.forEach((span, index) => {
-                span.style.animationDelay = `${index * 0.07}s`;
-            });
-
-            // Animación de secciones al hacer scroll
+            
             const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                    }
-                });
-            }, {
-                threshold: 0.1 // La animación se activa cuando el 10% del elemento es visible
-            });
+                entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('is-visible'); } });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.fade-in-section').forEach(section => observer.observe(section));
 
-            const sections = document.querySelectorAll('.fade-in-section');
-            sections.forEach(section => observer.observe(section));
-
-            // Cerrar modales con la tecla Escape
             document.addEventListener('keydown', function (event) {
                 if (event.key === "Escape") {
                     document.querySelectorAll('.fixed.inset-0').forEach(modal => {
-                        if (!modal.classList.contains('hidden')) {
-                            closeModal(modal.id);
-                        }
+                        if (!modal.classList.contains('hidden')) { closeModal(modal.id); }
                     });
                 }
             });
+
+            const title = document.getElementById('main-title');
+            if(title) {
+                title.addEventListener('mousemove', e => {
+                    const rect = title.getBoundingClientRect();
+                    title.style.setProperty('--x', `${e.clientX - rect.left}px`);
+                    title.style.setProperty('--y', `${e.clientY - rect.top}px`);
+                });
+            }
         });
     </script>
-
 </body>
 </html>
