@@ -21,5 +21,4 @@ Puedes visualizar el portafolio operativo aquí: **[https://maclor540.github.io]
 ## 👨‍💻 Autor
 **Jesús Rondón**
 *   **Rol:** Desarrollador Full-Stack & Editor de Medios Digitales
-*   [LinkedIn](https://linkedin.com/in/tu-perfil-aqui) *(¡Recuerda agregar tu enlace real aquí!)*
-*   [GitHub](https://github.com/Maclor540) *(Actualiza el enlace cuando cambies tu usuario)*
+
