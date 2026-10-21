@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MACLOR | Visual Storyteller & Motion Graphics</title>
+    <!-- Permite cargar todas las previsualizaciones de Imgur sin bloqueos -->
+    <meta name="referrer" content="no-referrer">
+    <title>MACLOR | Video Editing & Motion Graphics</title>
     
     <link rel="icon" href="Assets/favicon.png" type="image/png">
     <link rel="apple-touch-icon" href="Assets/favicon.png">
@@ -11,10 +13,10 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Fonts -->
+    <!-- Fonts: Inter + Anton -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
     
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -23,527 +25,748 @@
         html { scroll-behavior: smooth; }
         body { 
             font-family: 'Inter', sans-serif; 
-            background-color: #030303;
+            background-color: #050505;
+            color: #e5e7eb;
+            overflow-x: hidden;
             position: relative;
         }
-        /* Fondo con textura/ruido y desenfoque */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop'); /* Imagen abstracta de fondo */
-            background-size: cover;
-            background-position: center;
-            opacity: 0.15;
-            filter: blur(8px) grayscale(100%);
-            z-index: -1;
-            pointer-events: none;
+
+        .font-display {
+            font-family: 'Anton', sans-serif;
+            letter-spacing: 0.02em;
         }
 
-        .video-responsive { overflow: hidden; padding-bottom: 56.25%; position: relative; height: 0; }
-        .video-responsive iframe { left: 0; top: 0; height: 100%; width: 100%; position: absolute; }
-        
-        /* Colores y Utilidades */
-        .accent-color { color: #e34656; }
-        .bg-accent-color { background-color: #e34656; }
-        .border-accent-color { border-color: #e34656; }
-        .hover\:text-accent-color:hover { color: #e34656; }
-        
-        .thumbnail-video { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-            transition: transform 0.5s ease;
+        /* Fondos luminosos optimizados */
+        .bg-glow-top {
+            background: radial-gradient(circle at 30% 18%, rgba(227, 70, 86, 0.22) 0%, rgba(180, 20, 35, 0.06) 38%, transparent 70%);
         }
-        
-        /* --- ANIMACIONES Y TARJETAS --- */
-        .project-card {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            opacity: 1;
-            transform: scale(1);
-        }
-        
-        /* Clase para ocultar tarjetas al filtrar */
-        .project-card.hidden-card {
-            display: none; 
-            opacity: 0;
-            transform: scale(0.9);
+        .bg-glow-section {
+            background: radial-gradient(circle at 50% 50%, rgba(227, 70, 86, 0.12) 0%, transparent 65%);
         }
 
-        .card-hover-effect:hover .thumbnail-video {
-            transform: scale(1.05);
-        }
-        
-        .fade-in-section { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
-        .fade-in-section.is-visible { opacity: 1; transform: translateY(0); }
+        /* Utilidades de Color MACLOR */
+        .accent-color { color: #ff1f3d; }
+        .bg-accent-color { background-color: #ff1f3d; }
+        .border-accent-color { border-color: #ff1f3d; }
 
-        #main-title {
-            position: relative;
-            color: white;
-            transition: color 0.3s ease;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3), 0 0 20px rgba(255, 255, 255, 0.1);
-        }
-
-        #main-title:hover {
-            color: rgba(255, 255, 255, 0.8);
-            background: radial-gradient(250px circle at var(--x, 50%) var(--y, 50%), #e34656 0%, transparent 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
+        /* Efectos de Texto Contorneado */
+        .text-outline-white {
             color: transparent;
+            -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.85);
+        }
+        .text-outline-red {
+            color: transparent;
+            -webkit-text-stroke: 1.8px #ff1f3d;
+        }
+        .text-glow-red {
+            color: #ff1f3d;
+            text-shadow: 0 0 25px rgba(255, 31, 61, 0.45);
         }
 
-        /* Botones de Filtro */
-        .filter-btn {
+        /* Animación de subida para las palabras rotativas del Hero */
+        @keyframes slideUpFade {
+            0% { opacity: 0; transform: translateY(18px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .animate-slide-up {
+            animation: slideUpFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Tarjetas de Secciones Generales */
+        .dark-red-card {
+            background: linear-gradient(160deg, rgba(28, 10, 14, 0.75) 0%, rgba(10, 10, 12, 0.95) 100%);
+            border: 1px solid rgba(255, 31, 61, 0.16);
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .dark-red-card:hover {
+            border-color: rgba(255, 31, 61, 0.5);
+            box-shadow: 0 10px 30px -10px rgba(255, 31, 61, 0.2);
+        }
+
+        /* Tarjetas de Video */
+        .video-showcase-card {
             position: relative;
+            border-radius: 22px;
             overflow: hidden;
-            transition: all 0.3s ease;
+            background-color: #0b0b0e;
+            border: 1.5px solid rgba(255, 255, 255, 0.08);
+            cursor: pointer;
+            transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.38s ease, box-shadow 0.38s ease;
         }
-        .filter-btn.active {
-            background-color: #e34656;
-            color: white;
-            border-color: #e34656;
-        }
-        
-        /* Badge de Categoría */
-        .category-badge {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(4px);
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            border: 1px solid rgba(255,255,255,0.2);
+        .video-showcase-card:hover {
+            transform: translateY(-10px) scale(1.015);
+            border-color: #ff1f3d;
+            box-shadow: 0 18px 40px -10px rgba(255, 31, 61, 0.45), 0 0 22px rgba(255, 31, 61, 0.35);
             z-index: 10;
         }
+
+        .thumbnail-video { 
+            width: 100%; height: 100%; object-fit: cover; display: block;
+            transition: transform 0.5s ease;
+        }
+        .video-showcase-card:hover .thumbnail-video { transform: scale(1.03); }
+
+        .center-play-circle {
+            width: 60px; height: 60px; border-radius: 9999px;
+            background: rgba(0, 0, 0, 0.45); border: 1.5px solid rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center;
+            color: white; transition: all 0.3s ease; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+        .video-showcase-card:hover .center-play-circle {
+            background: #ff1f3d; border-color: #ff1f3d; transform: scale(1.12);
+            box-shadow: 0 0 25px rgba(255, 31, 61, 0.7);
+        }
+
+        .visualize-pill {
+            position: absolute; bottom: 1.1rem; left: 50%;
+            transform: translateX(-50%) translateY(4px);
+            background: rgba(10, 10, 12, 0.85); border: 1px solid rgba(255, 255, 255, 0.22);
+            backdrop-filter: blur(6px); padding: 0.45rem 1.15rem; border-radius: 9999px;
+            font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em;
+            color: #ffffff; display: inline-flex; align-items: center; gap: 0.45rem; white-space: nowrap;
+            transition: all 0.3s ease; box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
+        }
+        .video-showcase-card:hover .visualize-pill {
+            background: #ff1f3d; border-color: #ff1f3d; transform: translateX(-50%) translateY(0);
+            box-shadow: 0 0 20px rgba(255, 31, 61, 0.6);
+        }
+
+        .project-card.hidden-card { display: none !important; }
+
+        /* Abanico de Servicios Verticales (9:16) */
+        .fan-container { position: relative; height: 250px; display: flex; align-items: center; justify-content: center; margin: 1rem 0 1.5rem 0; }
+        .fan-card { position: absolute; width: 115px; height: 200px; border-radius: 14px; overflow: hidden; background: #111; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: 0 10px 25px rgba(0,0,0,0.8); }
+        .fan-card video { width: 100%; height: 100%; object-fit: cover; }
+        .fan-left { transform: translateX(-58px) translateY(8px) rotate(-10deg) scale(0.9); opacity: 0.65; z-index: 1; border: 1px solid rgba(255,255,255,0.15); }
+        .fan-right { transform: translateX(58px) translateY(8px) rotate(10deg) scale(0.9); opacity: 0.65; z-index: 1; border: 1px solid rgba(255,255,255,0.15); }
+        .fan-center { transform: translateX(0) scale(1.04); z-index: 3; border: 2px solid #ff1f3d; box-shadow: 0 0 25px rgba(255, 31, 61, 0.45); }
+        .dark-red-card:hover .fan-left { transform: translateX(-72px) translateY(4px) rotate(-14deg) scale(0.92); opacity: 0.85; }
+        .dark-red-card:hover .fan-right { transform: translateX(72px) translateY(4px) rotate(14deg) scale(0.92); opacity: 0.85; }
+        .dark-red-card:hover .fan-center { transform: translateX(0) scale(1.08); }
+
+        /* Tarjetas Horizontales Apiladas (16:9 una encima/atrás de otra para Video Largo) */
+        .stack-horizontal-container {
+            position: relative;
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 1rem 0 1.5rem 0;
+        }
+        .stack-h-card {
+            position: absolute;
+            width: 230px;
+            height: 130px;
+            border-radius: 14px;
+            overflow: hidden;
+            background: #111;
+            transition: all 0.45s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.85);
+        }
+        .stack-h-card video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        /* Tarjeta de hasta atrás (Arriba/Izquierda) */
+        .stack-h-back {
+            transform: translateY(-34px) translateX(-18px) rotate(-5deg) scale(0.86);
+            opacity: 0.45;
+            z-index: 1;
+            border: 1px solid rgba(255,255,255,0.18);
+        }
+        /* Tarjeta del medio (Arriba/Derecha) */
+        .stack-h-mid {
+            transform: translateY(-17px) translateX(18px) rotate(4deg) scale(0.93);
+            opacity: 0.72;
+            z-index: 2;
+            border: 1px solid rgba(255,255,255,0.25);
+        }
+        /* Tarjeta principal frontal */
+        .stack-h-front {
+            transform: translateY(14px) scale(1.02);
+            opacity: 1;
+            z-index: 3;
+            border: 2px solid #ff1f3d;
+            box-shadow: 0 0 28px rgba(255, 31, 61, 0.45);
+        }
+        /* Efecto al pasar el mouse sobre la tarjeta de Video Largo */
+        .dark-red-card:hover .stack-h-back {
+            transform: translateY(-48px) translateX(-28px) rotate(-8deg) scale(0.9);
+            opacity: 0.75;
+        }
+        .dark-red-card:hover .stack-h-mid {
+            transform: translateY(-22px) translateX(28px) rotate(7deg) scale(0.96);
+            opacity: 0.9;
+        }
+        .dark-red-card:hover .stack-h-front {
+            transform: translateY(20px) scale(1.06);
+        }
+
+        /* Overlay interactivo "¿QUIÉN SOY?" en la Foto de Perfil */
+        .profile-card-group.show-bio .bio-overlay {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .profile-card-group.show-bio .profile-img {
+            transform: scale(1.08);
+            filter: blur(3px) brightness(0.35);
+        }
+
+        .video-responsive-16-9 { overflow: hidden; padding-bottom: 56.25%; position: relative; height: 0; }
+        .video-responsive-16-9 iframe { left: 0; top: 0; height: 100%; width: 100%; position: absolute; }
+        .video-responsive-9-16 { overflow: hidden; aspect-ratio: 9 / 16; width: 100%; max-height: 80vh; position: relative; margin: 0 auto; }
+        .video-responsive-9-16 iframe { left: 0; top: 0; height: 100%; width: 100%; position: absolute; }
+
+        .filter-btn { transition: all 0.25s ease; }
+        .filter-btn.active {
+            background-color: #ff1f3d; color: white; border-color: #ff1f3d;
+            box-shadow: 0 0 18px rgba(255, 31, 61, 0.45);
+        }
+
+        .clip-path-triangle { clip-path: polygon(50% 100%, 0 0, 100% 0); }
+
+        .fade-in-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .fade-in-section.is-visible { opacity: 1; transform: translateY(0); }
     </style>
 </head>
-<body class="bg-black text-gray-200">
+<body class="bg-[#050505] text-gray-200 selection:bg-red-600 selection:text-white">
 
     <!-- ========== POP-UP DE IDIOMA ========== -->
-    <div id="language-popup" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-50">
-        <div class="bg-gray-900 rounded-xl p-8 text-center border border-gray-700 max-w-sm w-full shadow-2xl shadow-red-900/20">
-            <h2 class="text-2xl font-bold text-white mb-6" data-translate="lang_popup_title">Elige tu idioma / Choose your language</h2>
-            <div class="flex flex-col sm:flex-row gap-4">
-                <button onclick="selectLanguage('es')" class="w-full bg-accent-color hover:brightness-125 text-white font-bold py-3 px-6 rounded-lg transition-transform transform hover:scale-105">Español</button>
-                <button onclick="selectLanguage('en')" class="w-full bg-gray-800 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-lg transition-transform transform hover:scale-105 border border-gray-600">English</button>
+    <div id="language-popup" class="fixed inset-0 bg-black/95 flex items-center justify-center p-4 z-50 hidden">
+        <div class="dark-red-card rounded-2xl p-8 text-center max-w-sm w-full shadow-2xl">
+            <div class="w-12 h-12 rounded-full bg-red-500/10 border border-red-500/30 flex items-center justify-center mx-auto mb-4 text-accent-color">
+                <i class="fas fa-globe text-xl"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-white mb-2">Elige tu idioma</h2>
+            <p class="text-gray-400 text-sm mb-6">Choose your preferred language</p>
+            <div class="flex flex-col sm:flex-row gap-3">
+                <button onclick="selectLanguage('es')" class="w-full bg-accent-color hover:brightness-110 text-white font-bold py-3 px-6 rounded-xl transition-transform active:scale-95">Español</button>
+                <button onclick="selectLanguage('en')" class="w-full bg-zinc-900 hover:bg-gray-800 text-white font-bold py-3 px-6 rounded-xl transition-transform active:scale-95 border border-zinc-700">English</button>
             </div>
         </div>
     </div>
 
-    <!-- ========== HEADER / NAV ========== -->
-    <header class="sticky top-0 z-40 bg-black/80 backdrop-blur-md border-b border-white/5">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" class="text-2xl font-black text-white uppercase tracking-widest flex items-center gap-2">
-                <span class="text-red-500 text-3xl">.</span>MACLOR
+    <!-- ========== HEADER ========== -->
+    <header class="sticky top-0 z-40 bg-[#050505]/90 backdrop-blur-md border-b border-white/5">
+        <nav class="container mx-auto px-5 py-3.5 flex justify-between items-center max-w-6xl">
+            <a href="#" class="text-xl md:text-2xl font-black text-white uppercase tracking-wider flex items-center gap-1.5">
+                <span class="text-accent-color text-3xl leading-none">.</span>MACLOR
             </a>
-            <div class="hidden md:flex space-x-8 items-center font-medium">
-                <a href="#proyectos" class="text-gray-300 hover:text-white hover:text-accent-color transition-colors" data-translate="nav_projects">Proyectos</a>
-                <a href="#sobre-mi" class="text-gray-300 hover:text-white hover:text-accent-color transition-colors" data-translate="nav_about">Sobre Mí</a>
-                <a href="#contacto" class="bg-white text-black font-bold py-2 px-6 rounded-full hover:bg-accent-color hover:text-white transition-all duration-300" data-translate="nav_contact_talk">HABLEMOS</a>
-                
-                <!-- Selector Idioma Desktop -->
-                <div class="flex items-center space-x-2 border-l border-gray-600 ml-4 pl-4 text-sm">
-                    <button id="lang-es-desktop" onclick="setLanguage('es')" class="font-bold text-white transition-colors">ES</button>
-                    <span class="text-gray-600">|</span>
-                    <button id="lang-en-desktop" onclick="setLanguage('en')" class="text-gray-500 hover:text-white transition-colors">EN</button>
-                </div>
+
+            <div class="hidden md:flex space-x-7 items-center text-sm font-medium">
+                <a href="#selected-work" class="text-gray-300 hover:text-white transition-colors" data-translate="nav_projects">Proyectos</a>
+                <a href="#whats-included" class="text-gray-300 hover:text-white transition-colors" data-translate="nav_methodology">Proceso</a>
+                <a href="#services" class="text-gray-300 hover:text-white transition-colors" data-translate="nav_services">Servicios</a>
+                <a href="#sobre-mi" class="text-gray-300 hover:text-white transition-colors" data-translate="nav_about">Sobre Mí</a>
             </div>
-            
-            <!-- Mobile Menu Button & Lang -->
-             <div class="md:hidden flex items-center gap-4">
-                <div class="flex items-center space-x-1">
-                    <button id="lang-es-mobile" onclick="setLanguage('es')" class="font-bold text-white text-xs p-1">ES</button>
-                    <span class="text-gray-600 text-xs">|</span>
-                    <button id="lang-en-mobile" onclick="setLanguage('en')" class="text-gray-500 hover:text-white text-xs p-1">EN</button>
+
+            <div class="flex items-center gap-3">
+                <div class="bg-zinc-900/90 border border-white/10 rounded-full p-1 flex items-center text-xs font-extrabold shadow-inner">
+                    <button id="pill-es" onclick="setLanguage('es')" class="px-3.5 py-1.5 rounded-full transition-all duration-300 bg-accent-color text-white">ES</button>
+                    <button id="pill-en" onclick="setLanguage('en')" class="px-3.5 py-1.5 rounded-full transition-all duration-300 text-gray-400 hover:text-white">EN</button>
                 </div>
-                <a href="#contacto" class="bg-accent-color text-white font-bold py-2 px-4 rounded-full text-xs" data-translate="nav_contact_contact">CONTACTO</a>
             </div>
         </nav>
     </header>
 
     <main>
 
-        <!-- ========== HERO SECTION ========== -->
-        <section id="hero" class="min-h-[90vh] flex flex-col justify-center items-start text-left p-6 container mx-auto relative overflow-hidden">
-            <!-- Elementos decorativos de fondo -->
-            <div class="absolute top-1/4 right-0 w-96 h-96 bg-red-600 rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-pulse"></div>
-            <div class="absolute bottom-1/4 left-0 w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-[128px] opacity-10"></div>
+        <!-- ========== 1. HERO SECTION (FOTO ARRIBA DE TODO EN MÓVIL / IZQUIERDA EN PC) ========== -->
+        <section id="hero" class="bg-glow-top pt-8 pb-20 px-5 container mx-auto max-w-6xl relative">
+            <!-- Contenedor del Hero: 'flex-col-reverse' en móvil pone la foto arriba, 'lg:flex-row' la manda a la derecha en PC -->
+    <div class="flex flex-col-reverse lg:flex-row items-center justify-between gap-10 lg:gap-16">
+        
+        <!-- Columna Izquierda (Textos y Botones) -->
+        <div class="w-full lg:w-7/12 text-center lg:text-left">
+            <div class="inline-flex items-center gap-2.5 mb-5 bg-zinc-900/80 border border-zinc-800 py-1.5 px-4 rounded-full">
+                <span class="w-2 h-2 rounded-full bg-accent-color animate-pulse"></span>
+                <span class="text-xs font-mono uppercase tracking-[0.25em] text-accent-color" data-translate="hero_subtitle">Editor de Videos & Motion Designer</span>
+            </div>
 
-            <div class="w-full relative z-10">
-                <div class="flex items-center gap-3 mb-6">
-                    <span class="h-px w-12 bg-accent-color"></span>
-                    <p class="font-mono text-sm uppercase tracking-[0.3em] text-accent-color" data-translate="hero_subtitle">Video Editor & Motion Designer</p>
+            <h1 class="font-display text-5xl sm:text-7xl lg:text-8xl uppercase tracking-wide mb-6 select-none flex flex-col items-center lg:items-start">
+                <span class="text-white leading-[0.95]" data-translate="hero_line1">EDICIÓN DE VIDEO</span>
+                <span class="text-outline-white leading-[0.95] my-1.5" data-translate="hero_line2">PARA</span>
+                <span id="rotating-target" class="text-glow-red leading-[0.95] min-h-[1em] animate-slide-up">MARCAS.</span>
+            </h1>
+
+            <p class="text-gray-300 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed mb-9 font-normal" data-translate="hero_description">
+                Transformo metraje en bruto en contenido dinámico para Reels, TikTok y YouTube, diseñado con tipografía cinética y ritmo para captar la atención y retener.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                <a href="https://wa.me/584120000000?text=Hola%20Jes%C3%BAs%20(MACLOR),%20vi%20tu%20portafolio%20y%20quiero%20cotizar%20un%20proyecto" 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   class="bg-white hover:bg-gray-100 text-black font-extrabold text-sm sm:text-base py-4 px-7 rounded-full inline-flex items-center gap-3.5 shadow-[0_0_30px_rgba(255,255,255,0.2)] hover:scale-105 transition-all duration-300">
+                    <span class="w-8 h-8 rounded-full bg-[#25D366] text-white flex items-center justify-center text-lg shadow-sm">
+                        <i class="fab fa-whatsapp"></i>
+                    </span>
+                    <span class="tracking-wide uppercase" data-translate="whatsapp_cta">HABLEMOS POR WHATSAPP</span>
+                </a>
+
+                <a href="#selected-work" class="text-gray-300 hover:text-white text-sm font-semibold border-b border-gray-600 hover:border-white pb-1 transition-colors inline-flex items-center gap-2 mt-2 sm:mt-0">
+                    <span data-translate="see_my_work">Ver mi trabajo</span>
+                    <i class="fas fa-arrow-down text-xs"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Columna Derecha (Foto de Perfil Agrandada y Estilizada) -->
+        <div class="w-full lg:w-5/12 flex justify-center">
+            <!-- AQUÍ PUEDES EXPERIMENTAR CON EL TAMAÑO: Cambia 'h-[420px]' o 'w-80' a lo que desees -->
+            <div id="hero-profile-card" 
+                onclick="this.classList.toggle('show-bio')"
+                tabindex="0"
+                class="profile-card-group relative w-full max-w-sm h-[420px] sm:h-[480px] rounded-3xl overflow-hidden border border-red-500/30 shadow-[0_0_60px_rgba(255,31,61,0.2)] group bg-zinc-900 cursor-pointer select-none focus:outline-none focus:border-accent-color">
+                
+                <div class="absolute top-4 right-4 w-1.5 h-32 bg-red-500 rounded-full shadow-[0_0_20px_#ff1f3d] z-20 pointer-events-none opacity-90"></div>
+                
+                <img src="Assets/perfil.jpg" 
+                    onerror="this.onerror=null; this.src='https://placehold.co/600x750/09090b/ff1f3d?text=MACLOR';" 
+                    alt="Jesús Rondón - MACLOR" 
+                    class="profile-img w-full h-full object-cover object-center group-hover:scale-110 group-hover:blur-[2px] group-hover:brightness-[0.3] transition-all duration-500">
+                
+                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent pointer-events-none"></div>
+
+                <div class="bio-overlay absolute inset-0 bg-black/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-all duration-300 flex flex-col items-center justify-center p-6 text-center z-10 pointer-events-none">
+                    <div class="w-11 h-11 rounded-full bg-red-500/15 border border-red-500/40 flex items-center justify-center mb-3 text-accent-color shadow-[0_0_15px_rgba(255,31,61,0.3)]">
+                        <i class="fas fa-film text-lg"></i>
+                    </div>
+                    <h3 class="font-display text-2xl sm:text-3xl text-white uppercase tracking-wide mb-1">Jesús Rondón</h3>
+                    <span class="text-xs font-extrabold uppercase tracking-[0.2em] text-accent-color bg-red-950/60 border border-red-500/30 px-3 py-1 rounded-full mb-4" data-translate="bio_role">
+                        Editor de Video
+                    </span>
+
+                    <div class="w-full space-y-2.5 text-left bg-zinc-900/90 border border-white/10 rounded-2xl p-4 shadow-inner">
+                        <div class="flex items-center gap-3">
+                            <span class="w-7 h-7 rounded-lg bg-red-500/10 border border-red-500/30 flex items-center justify-center text-accent-color text-xs">
+                                <i class="fas fa-user"></i>
+                            </span>
+                            <div>
+                                <p class="text-[10px] uppercase tracking-wider text-gray-400" data-translate="bio_age_label">Edad</p>
+                                <p class="text-xs sm:text-sm font-bold text-white" data-translate="bio_age_val">22 años</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="w-7 h-7 rounded-lg bg-red-500/10 border border-red-500/30 flex items-center justify-center text-accent-color text-xs">
+                                <i class="fas fa-clock"></i>
+                            </span>
+                            <div>
+                                <p class="text-[10px] uppercase tracking-wider text-gray-400" data-translate="bio_exp_label">Experiencia</p>
+                                <p class="text-xs sm:text-sm font-bold text-white" data-translate="bio_exp_val">Edito desde hace 4 años</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                
-                <h1 id="main-title" class="text-6xl md:text-8xl lg:text-[9rem] font-black text-white leading-[0.9] tracking-tighter cursor-default mb-8">
-                    VISUAL<br>
-                    <span class="text-stroke text-transparent bg-clip-text bg-gradient-to-r from-gray-500 to-gray-700" style="-webkit-text-stroke: 1px rgba(255,255,255,0.3);">STORYTELLER</span>
-                </h1>
-                
-                <p class="text-lg md:text-xl text-gray-400 max-w-xl leading-relaxed border-l-2 border-gray-800 pl-6" data-translate="hero_description">
-                    Me especializo en convertir contenido hablado en videos de alto impacto. Mi edición enfoca en tipografía cinética, composición profesional y ritmo dinámico para hacer tu mensaje inolvidable.
-                </p>
-                
-                <div class="mt-10 flex gap-4">
-                    <a href="#proyectos" class="bg-white text-black hover:bg-accent-color hover:text-white font-bold py-4 px-8 rounded-lg transition-all duration-300 transform hover:-translate-y-1 shadow-lg shadow-white/10" data-translate="hero_cta_button">
-                        Ver Portafolio
+
+                <div class="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 bg-black/85 group-hover:bg-accent-color border border-white/20 group-hover:border-accent-color text-white text-xs font-extrabold uppercase tracking-wider py-2.5 px-6 rounded-full flex items-center gap-2.5 whitespace-nowrap transition-all duration-300 shadow-lg">
+                    <span class="w-2.5 h-2.5 rounded-full bg-accent-color group-hover:bg-white animate-ping absolute"></span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-accent-color group-hover:bg-white relative"></span>
+                    <span data-translate="who_am_i_btn">¿QUIÉN SOY?</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+        <!-- ========== 2. TRABAJOS SELECCIONADOS ========== -->
+        <section id="selected-work" class="py-16 px-5 container mx-auto max-w-6xl">
+            <div class="text-center mb-10 fade-in-section">
+                <h2 class="text-4xl sm:text-5xl font-black text-accent-color mb-3 tracking-tight" data-translate="selected_work_title">Trabajos Seleccionados</h2>
+                <p class="text-gray-300 text-sm sm:text-base max-w-xl mx-auto" data-translate="projects_intro">Algunos proyectos en los que trabajé.</p>
+            </div>
+
+            <div class="flex flex-wrap justify-center gap-3 mb-12 fade-in-section sticky top-20 z-30 py-3 bg-black/85 backdrop-blur-md rounded-full border border-white/10 shadow-2xl max-w-fit mx-auto px-5">
+                <button onclick="filterProjects('shorts')" class="filter-btn active px-6 py-2.5 rounded-full border border-zinc-700 text-white font-bold text-xs sm:text-sm uppercase tracking-wider" data-translate="filter_shorts">Shorts</button>
+                <button onclick="filterProjects('motion')" class="filter-btn px-6 py-2.5 rounded-full border border-zinc-700 text-gray-300 hover:text-white font-bold text-xs sm:text-sm uppercase tracking-wider" data-translate="filter_motion">Motion Graphics</button>
+                <button onclick="filterProjects('horizontal')" class="filter-btn px-6 py-2.5 rounded-full border border-zinc-700 text-gray-300 hover:text-white font-bold text-xs sm:text-sm uppercase tracking-wider" data-translate="filter_horizontal">Video Largo</button>
+            </div>
+
+            <div id="projects-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
+                <!-- SHORTS -->
+                <div class="project-card" data-category="shorts">
+                    <div class="video-showcase-card aspect-[9/16]" onclick="openVideoModal('T_EVA4cqOJk', false)">
+                        <video class="thumbnail-video" src="https://i.imgur.com/UxOffPC.mp4" autoplay loop muted playsinline></video>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-center justify-center">
+                            <div class="center-play-circle"><i class="fas fa-play text-lg ml-1"></i></div>
+                        </div>
+                        <div class="visualize-pill"><i class="fas fa-play text-[10px]"></i><span data-translate="visualize_btn">Visualizar</span></div>
+                    </div>
+                </div>
+                <div class="project-card" data-category="shorts">
+                    <div class="video-showcase-card aspect-[9/16]" onclick="openVideoModal('Ahb2y7TUHfo', false)">
+                        <video class="thumbnail-video" src="https://i.imgur.com/UDf1mi0.mp4" autoplay loop muted playsinline></video>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-center justify-center">
+                            <div class="center-play-circle"><i class="fas fa-play text-lg ml-1"></i></div>
+                        </div>
+                        <div class="visualize-pill"><i class="fas fa-play text-[10px]"></i><span data-translate="visualize_btn">Visualizar</span></div>
+                    </div>
+                </div>
+                <div class="project-card" data-category="shorts">
+                    <div class="video-showcase-card aspect-[9/16]" onclick="openVideoModal('QPH-pP8fcrg', false)">
+                        <video class="thumbnail-video" src="https://i.imgur.com/yfT0scC.mp4" autoplay loop muted playsinline></video>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-center justify-center">
+                            <div class="center-play-circle"><i class="fas fa-play text-lg ml-1"></i></div>
+                        </div>
+                        <div class="visualize-pill"><i class="fas fa-play text-[10px]"></i><span data-translate="visualize_btn">Visualizar</span></div>
+                    </div>
+                </div>
+                <div class="project-card" data-category="shorts">
+                    <div class="video-showcase-card aspect-[9/16]" onclick="openVideoModal('_DoV0mBNJsw', false)">
+                        <video class="thumbnail-video" src="https://i.imgur.com/pdY1Xuo.mp4" autoplay loop muted playsinline></video>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-center justify-center">
+                            <div class="center-play-circle"><i class="fas fa-play text-lg ml-1"></i></div>
+                        </div>
+                        <div class="visualize-pill"><i class="fas fa-play text-[10px]"></i><span data-translate="visualize_btn">Visualizar</span></div>
+                    </div>
+                </div>
+                <div class="project-card" data-category="shorts">
+                    <div class="video-showcase-card aspect-[9/16]" onclick="openVideoModal('0b287Y7sBo4', false)">
+                        <video class="thumbnail-video" src="https://i.imgur.com/iqprKof.mp4" autoplay loop muted playsinline></video>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-center justify-center">
+                            <div class="center-play-circle"><i class="fas fa-play text-lg ml-1"></i></div>
+                        </div>
+                        <div class="visualize-pill"><i class="fas fa-play text-[10px]"></i><span data-translate="visualize_btn">Visualizar</span></div>
+                    </div>
+                </div>
+                <div class="project-card" data-category="shorts">
+                    <div class="video-showcase-card aspect-[9/16]" onclick="openVideoModal('C6XSdD6Un-g', false)">
+                        <video class="thumbnail-video" src="https://i.imgur.com/kk0Z1Vn.mp4" autoplay loop muted playsinline></video>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-center justify-center">
+                            <div class="center-play-circle"><i class="fas fa-play text-lg ml-1"></i></div>
+                        </div>
+                        <div class="visualize-pill"><i class="fas fa-play text-[10px]"></i><span data-translate="visualize_btn">Visualizar</span></div>
+                    </div>
+                </div>
+                <div class="project-card" data-category="shorts">
+                    <div class="video-showcase-card aspect-[9/16]" onclick="openVideoModal('CF6RwsSAS34', false)">
+                        <video class="thumbnail-video" src="https://i.imgur.com/eG6Pimu.mp4" autoplay loop muted playsinline></video>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-center justify-center">
+                            <div class="center-play-circle"><i class="fas fa-play text-lg ml-1"></i></div>
+                        </div>
+                        <div class="visualize-pill"><i class="fas fa-play text-[10px]"></i><span data-translate="visualize_btn">Visualizar</span></div>
+                    </div>
+                </div>
+
+                <!-- MOTION GRAPHICS -->
+                <div class="project-card hidden-card" data-category="motion">
+                    <div class="video-showcase-card aspect-[16/9]" onclick="openVideoModal('ZDOrHHNJW5c', true)">
+                        <video class="thumbnail-video" src="https://i.imgur.com/y7GGbaK.mp4" loop muted playsinline></video>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-center justify-center">
+                            <div class="center-play-circle"><i class="fas fa-play text-lg ml-1"></i></div>
+                        </div>
+                        <div class="visualize-pill"><i class="fas fa-play text-[10px]"></i><span data-translate="visualize_btn">Visualizar</span></div>
+                    </div>
+                </div>
+                <div class="project-card hidden-card" data-category="motion">
+                    <div class="video-showcase-card aspect-[16/9]" onclick="openVideoModal('iz6Bm4nUtBI', false)">
+                        <video class="thumbnail-video" src="https://i.imgur.com/i9Rv2UJ.mp4" loop muted playsinline></video>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-center justify-center">
+                            <div class="center-play-circle"><i class="fas fa-play text-lg ml-1"></i></div>
+                        </div>
+                        <div class="visualize-pill"><i class="fas fa-play text-[10px]"></i><span data-translate="visualize_btn">Visualizar</span></div>
+                    </div>
+                </div>
+                <div class="project-card hidden-card" data-category="motion">
+                    <div class="video-showcase-card aspect-[16/9]" onclick="openVideoModal('TBsrgUOjAPU', false)">
+                        <video class="thumbnail-video" src="https://i.imgur.com/E7FGjjS.mp4" loop muted playsinline></video>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-center justify-center">
+                            <div class="center-play-circle"><i class="fas fa-play text-lg ml-1"></i></div>
+                        </div>
+                        <div class="visualize-pill"><i class="fas fa-play text-[10px]"></i><span data-translate="visualize_btn">Visualizar</span></div>
+                    </div>
+                </div>
+
+                <!-- VIDEO LARGO -->
+                <div class="project-card hidden-card" data-category="horizontal">
+                    <div class="video-showcase-card aspect-[16/9]" onclick="openVideoModal('nnEkfU5rWdU', false)">
+                        <video class="thumbnail-video" src="https://i.imgur.com/9vPKbqr.mp4" loop muted playsinline></video>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-center justify-center">
+                            <div class="center-play-circle"><i class="fas fa-play text-lg ml-1"></i></div>
+                        </div>
+                        <div class="visualize-pill"><i class="fas fa-play text-[10px]"></i><span data-translate="visualize_btn">Visualizar</span></div>
+                    </div>
+                </div>
+                <div class="project-card hidden-card" data-category="horizontal">
+                    <div class="video-showcase-card aspect-[16/9]" onclick="openVideoModal('T19LKFARr-Y', false)">
+                        <video class="thumbnail-video" src="https://i.imgur.com/9lYEasD.mp4" loop muted playsinline></video>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-center justify-center">
+                            <div class="center-play-circle"><i class="fas fa-play text-lg ml-1"></i></div>
+                        </div>
+                        <div class="visualize-pill"><i class="fas fa-play text-[10px]"></i><span data-translate="visualize_btn">Visualizar</span></div>
+                    </div>
+                </div>
+                <div class="project-card hidden-card" data-category="horizontal">
+                    <div class="video-showcase-card aspect-[16/9]" onclick="openVideoModal('WaspcBACCyo', false)">
+                        <video class="thumbnail-video" src="https://i.imgur.com/XKZzN6n.mp4" loop muted playsinline></video>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-center justify-center">
+                            <div class="center-play-circle"><i class="fas fa-play text-lg ml-1"></i></div>
+                        </div>
+                        <div class="visualize-pill"><i class="fas fa-play text-[10px]"></i><span data-translate="visualize_btn">Visualizar</span></div>
+                    </div>
+                </div>
+                <div class="project-card hidden-card" data-category="horizontal">
+                    <div class="video-showcase-card aspect-[16/9]" onclick="openVideoModal('ZQciIimrB1Y', false)">
+                        <video class="thumbnail-video" src="https://i.imgur.com/tok2Wy4.mp4" loop muted playsinline></video>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-center justify-center">
+                            <div class="center-play-circle"><i class="fas fa-play text-lg ml-1"></i></div>
+                        </div>
+                        <div class="visualize-pill"><i class="fas fa-play text-[10px]"></i><span data-translate="visualize_btn">Visualizar</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ========== 3. PROCESO ========== -->
+        <section id="whats-included" class="py-24 px-5 container mx-auto max-w-6xl bg-glow-section relative overflow-hidden">
+            <div class="text-center mb-16 fade-in-section">
+                <div class="flex items-center justify-center gap-3 mb-3">
+                    <span class="w-8 h-[2px] bg-accent-color"></span>
+                    <span class="text-xs font-bold uppercase tracking-[0.25em] text-gray-300" data-translate="process_eyebrow">PROCESO</span>
+                    <span class="w-8 h-[2px] bg-accent-color"></span>
+                </div>
+                <h2 class="font-display text-4xl sm:text-6xl uppercase leading-none">
+                    <span class="text-white block" data-translate="process_title_1">CÓMO</span>
+                    <span class="text-glow-red block mt-1" data-translate="process_title_2">TRABAJAMOS</span>
+                </h2>
+            </div>
+
+            <!-- PC: Horizontal Timeline -->
+            <div class="hidden lg:block relative w-full pt-12 pb-6 fade-in-section">
+                <div class="flex justify-between text-[11px] font-mono text-zinc-500 mb-2 px-2 select-none tracking-widest">
+                    <span>00:00</span><span>00:15</span><span>00:30</span><span>00:45</span><span>01:00</span>
+                </div>
+                <div class="relative w-full h-16 bg-zinc-950/90 border border-zinc-800 rounded-xl flex items-center px-3 shadow-2xl mb-12">
+                    <div id="desktop-playhead" class="absolute left-3 top-0 bottom-0 w-1 bg-accent-color z-20 shadow-[0_0_15px_#ff1f3d] transition-all duration-75">
+                        <div class="absolute -top-3.5 -left-1.5 w-4 h-4 bg-accent-color clip-path-triangle shadow-md"></div>
+                    </div>
+                    <div class="w-full flex justify-between items-center opacity-40 px-1">
+                        <div class="h-4 w-px bg-zinc-600"></div><div class="h-2 w-px bg-zinc-700"></div><div class="h-2 w-px bg-zinc-700"></div><div class="h-2 w-px bg-zinc-700"></div><div class="h-2 w-px bg-zinc-700"></div>
+                        <div class="h-4 w-px bg-zinc-600"></div><div class="h-2 w-px bg-zinc-700"></div><div class="h-2 w-px bg-zinc-700"></div><div class="h-2 w-px bg-zinc-700"></div><div class="h-2 w-px bg-zinc-700"></div>
+                        <div class="h-4 w-px bg-zinc-600"></div><div class="h-2 w-px bg-zinc-700"></div><div class="h-2 w-px bg-zinc-700"></div><div class="h-2 w-px bg-zinc-700"></div><div class="h-2 w-px bg-zinc-700"></div>
+                        <div class="h-4 w-px bg-zinc-600"></div><div class="h-2 w-px bg-zinc-700"></div><div class="h-2 w-px bg-zinc-700"></div><div class="h-2 w-px bg-zinc-700"></div><div class="h-2 w-px bg-zinc-700"></div>
+                        <div class="h-4 w-px bg-zinc-600"></div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-4 gap-6">
+                    <div class="dark-red-card rounded-2xl p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="font-display text-4xl text-outline-red mb-2">01</div>
+                            <h3 class="font-display text-xl text-white uppercase tracking-wide mb-2" data-translate="p_1_title">ME ENVÍAS EL MATERIAL</h3>
+                            <p class="text-gray-300 text-xs sm:text-sm leading-relaxed" data-translate="p_1_desc">Crudos, referencias y objetivo del contenido.</p>
+                        </div>
+                    </div>
+                    <div class="dark-red-card rounded-2xl p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="font-display text-4xl text-outline-red mb-2">02</div>
+                            <h3 class="font-display text-xl text-white uppercase tracking-wide mb-2" data-translate="p_2_title">EDITO EL VIDEO</h3>
+                            <p class="text-gray-300 text-xs sm:text-sm leading-relaxed" data-translate="p_2_desc">Estructura, ritmo, subtítulos, recursos y sonido.</p>
+                        </div>
+                    </div>
+                    <div class="dark-red-card rounded-2xl p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="font-display text-4xl text-outline-red mb-2">03</div>
+                            <h3 class="font-display text-xl text-white uppercase tracking-wide mb-2" data-translate="p_3_title">REVISAMOS</h3>
+                            <p class="text-gray-300 text-xs sm:text-sm leading-relaxed" data-translate="p_3_desc">Aplicamos los ajustes correspondientes.</p>
+                        </div>
+                    </div>
+                    <div class="dark-red-card rounded-2xl p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="font-display text-4xl text-outline-red mb-2">04</div>
+                            <h3 class="font-display text-xl text-white uppercase tracking-wide mb-2" data-translate="p_4_title">LISTO PARA PUBLICAR</h3>
+                            <p class="text-gray-300 text-xs sm:text-sm leading-relaxed" data-translate="p_4_desc">Recibes el contenido terminado.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MÓVIL: Vertical Timeline -->
+            <div id="mobile-timeline-container" class="lg:hidden relative pl-8 sm:pl-14 space-y-10 fade-in-section">
+                <div class="absolute left-3.5 sm:left-6 top-4 bottom-4 w-1 bg-zinc-800 rounded-full"></div>
+                <div id="mobile-progress-bar" class="absolute left-3.5 sm:left-6 top-4 w-1 bg-accent-color rounded-full shadow-[0_0_15px_#ff1f3d] transition-all duration-75" style="height: 0%;"></div>
+
+                <div class="relative">
+                    <div class="absolute -left-8 sm:-left-14 top-1 w-6 h-6 rounded-full bg-black border-2 border-accent-color flex items-center justify-center z-10 shadow-[0_0_10px_#ff1f3d]"><div class="w-2 h-2 rounded-full bg-accent-color"></div></div>
+                    <div class="dark-red-card rounded-2xl p-6">
+                        <div class="font-display text-3xl text-outline-red mb-2">01</div>
+                        <h3 class="font-display text-xl text-white uppercase tracking-wide mb-1" data-translate="p_1_title">ME ENVÍAS EL MATERIAL</h3>
+                        <p class="text-gray-300 text-xs leading-relaxed" data-translate="p_1_desc">Crudos, referencias y objetivo del contenido.</p>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="absolute -left-8 sm:-left-14 top-1 w-6 h-6 rounded-full bg-black border-2 border-zinc-700 flex items-center justify-center z-10 mobile-node"><div class="w-2 h-2 rounded-full bg-zinc-500 mobile-dot"></div></div>
+                    <div class="dark-red-card rounded-2xl p-6">
+                        <div class="font-display text-3xl text-outline-red mb-2">02</div>
+                        <h3 class="font-display text-xl text-white uppercase tracking-wide mb-1" data-translate="p_2_title">EDITO EL VIDEO</h3>
+                        <p class="text-gray-300 text-xs leading-relaxed" data-translate="p_2_desc">Estructura, ritmo, subtítulos, recursos y sonido.</p>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="absolute -left-8 sm:-left-14 top-1 w-6 h-6 rounded-full bg-black border-2 border-zinc-700 flex items-center justify-center z-10 mobile-node"><div class="w-2 h-2 rounded-full bg-zinc-500 mobile-dot"></div></div>
+                    <div class="dark-red-card rounded-2xl p-6">
+                        <div class="font-display text-3xl text-outline-red mb-2">03</div>
+                        <h3 class="font-display text-xl text-white uppercase tracking-wide mb-1" data-translate="p_3_title">REVISAMOS</h3>
+                        <p class="text-gray-300 text-xs leading-relaxed" data-translate="p_3_desc">Aplicamos los ajustes correspondientes.</p>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="absolute -left-8 sm:-left-14 top-1 w-6 h-6 rounded-full bg-black border-2 border-zinc-700 flex items-center justify-center z-10 mobile-node"><div class="w-2 h-2 rounded-full bg-zinc-500 mobile-dot"></div></div>
+                    <div class="dark-red-card rounded-2xl p-6">
+                        <div class="font-display text-3xl text-outline-red mb-2">04</div>
+                        <h3 class="font-display text-xl text-white uppercase tracking-wide mb-1" data-translate="p_4_title">LISTO PARA PUBLICAR</h3>
+                        <p class="text-gray-300 text-xs leading-relaxed" data-translate="p_4_desc">Recibes el contenido terminado.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ========== 4. SERVICES ========== -->
+        <section id="services" class="py-20 px-5 container mx-auto max-w-6xl">
+            <div class="text-center mb-14 fade-in-section">
+                <div class="flex items-center justify-center gap-3 mb-3">
+                    <span class="w-8 h-[2px] bg-accent-color"></span>
+                    <span class="text-xs font-bold uppercase tracking-[0.25em] text-gray-300" data-translate="srv_eyebrow">SERVICIOS</span>
+                    <span class="w-8 h-[2px] bg-accent-color"></span>
+                </div>
+                <h2 class="font-display text-4xl sm:text-6xl uppercase leading-none">
+                    <span class="text-outline-white block" data-translate="srv_title_1">CÓMO PUEDO</span>
+                    <span class="text-glow-red block mt-1" data-translate="srv_title_2">AYUDARTE</span>
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- 01 SHORT FORM -->
+                <div class="dark-red-card rounded-3xl p-7 sm:p-9 flex flex-col justify-between fade-in-section">
+                    <div class="fan-container cursor-pointer" onclick="goToCategory('shorts')">
+                        <div class="fan-card fan-left"><video src="https://i.imgur.com/UDf1mi0.mp4" autoplay loop muted playsinline></video></div>
+                        <div class="fan-card fan-center"><video src="https://i.imgur.com/UxOffPC.mp4" autoplay loop muted playsinline></video></div>
+                        <div class="fan-card fan-right"><video src="https://i.imgur.com/eG6Pimu.mp4" autoplay loop muted playsinline></video></div>
+                    </div>
+                    <div>
+                        <div class="font-display text-4xl text-outline-red mb-1">01</div>
+                        <h3 class="font-display text-3xl text-white uppercase tracking-wide mb-3" data-translate="srv_1_title">SHORT FORM</h3>
+                        <p class="text-gray-300 text-sm sm:text-base leading-relaxed mb-6" data-translate="srv_1_desc">Edición para Reels, TikToks y Shorts con ritmo dinámico, subtítulos animados y recursos visuales de alto impacto.</p>
+                        <button onclick="goToCategory('shorts')" class="bg-accent-color hover:brightness-110 text-white font-bold text-sm py-3 px-6 rounded-full inline-flex items-center gap-2.5 shadow-[0_0_20px_rgba(255,31,61,0.4)] transition-all">
+                            <span data-translate="see_examples_btn">Ver ejemplos</span><i class="fas fa-arrow-right text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 02 CLIPPING & STORYTELLING -->
+                <div class="dark-red-card rounded-3xl p-7 sm:p-9 flex flex-col justify-between fade-in-section">
+                    <div class="fan-container cursor-pointer" onclick="goToCategory('shorts')">
+                        <div class="fan-card fan-left"><video src="https://i.imgur.com/pdY1Xuo.mp4" autoplay loop muted playsinline></video></div>
+                        <div class="fan-card fan-center"><video src="https://i.imgur.com/yfT0scC.mp4" autoplay loop muted playsinline></video></div>
+                        <div class="fan-card fan-right"><video src="https://i.imgur.com/iqprKof.mp4" autoplay loop muted playsinline></video></div>
+                    </div>
+                    <div>
+                        <div class="font-display text-4xl text-outline-red mb-1">02</div>
+                        <h3 class="font-display text-3xl text-white uppercase tracking-wide mb-3" data-translate="srv_2_title">CLIPPING & STORYTELLING</h3>
+                        <p class="text-gray-300 text-sm sm:text-base leading-relaxed mb-6" data-translate="srv_2_desc">Clips dinámicos y análisis narrativos extraídos de contenido largo o guiones, listos para redes sociales.</p>
+                        <button onclick="goToCategory('shorts')" class="bg-accent-color hover:brightness-110 text-white font-bold text-sm py-3 px-6 rounded-full inline-flex items-center gap-2.5 shadow-[0_0_20px_rgba(255,31,61,0.4)] transition-all">
+                            <span data-translate="see_examples_btn">Ver ejemplos</span><i class="fas fa-arrow-right text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 03 VIDEO LARGO (3 TARJETAS HORIZONTALES 16:9 APILADAS UNA ATRÁS/ENCIMA DE OTRA) -->
+                <div class="dark-red-card rounded-3xl p-7 sm:p-9 flex flex-col justify-between fade-in-section">
+                    <div class="stack-horizontal-container cursor-pointer" onclick="goToCategory('horizontal')">
+                        <div class="stack-h-card stack-h-back">
+                            <video src="https://i.imgur.com/XKZzN6n.mp4" autoplay loop muted playsinline></video>
+                        </div>
+                        <div class="stack-h-card stack-h-mid">
+                            <video src="https://i.imgur.com/9lYEasD.mp4" autoplay loop muted playsinline></video>
+                        </div>
+                        <div class="stack-h-card stack-h-front">
+                            <video src="https://i.imgur.com/9vPKbqr.mp4" autoplay loop muted playsinline></video>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="font-display text-4xl text-outline-red mb-1">03</div>
+                        <h3 class="font-display text-3xl text-white uppercase tracking-wide mb-3" data-translate="srv_3_title">VIDEO LARGO</h3>
+                        <p class="text-gray-300 text-sm sm:text-base leading-relaxed mb-6" data-translate="srv_3_desc">Edición de formato largo, documentales, ensayos visuales e identidad profesional para canales de YouTube.</p>
+                        <button onclick="goToCategory('horizontal')" class="bg-accent-color hover:brightness-110 text-white font-bold text-sm py-3 px-6 rounded-full inline-flex items-center gap-2.5 shadow-[0_0_20px_rgba(255,31,61,0.4)] transition-all">
+                            <span data-translate="see_examples_btn">Ver ejemplos</span><i class="fas fa-arrow-right text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 04 MOTION GRAPHICS & ADS -->
+                <div class="dark-red-card rounded-3xl p-7 sm:p-9 flex flex-col justify-between fade-in-section">
+                    <div class="fan-container cursor-pointer" onclick="goToCategory('motion')">
+                        <div class="fan-card fan-left"><video src="https://i.imgur.com/E7FGjjS.mp4" autoplay loop muted playsinline></video></div>
+                        <div class="fan-card fan-center"><video src="https://i.imgur.com/y7GGbaK.mp4" autoplay loop muted playsinline></video></div>
+                        <div class="fan-card fan-right"><video src="https://i.imgur.com/i9Rv2UJ.mp4" autoplay loop muted playsinline></video></div>
+                    </div>
+                    <div>
+                        <div class="font-display text-4xl text-outline-red mb-1">04</div>
+                        <h3 class="font-display text-3xl text-white uppercase tracking-wide mb-3" data-translate="srv_4_title">MOTION GRAPHICS & ADS</h3>
+                        <p class="text-gray-300 text-sm sm:text-base leading-relaxed mb-6" data-translate="srv_4_desc">Anuncios cortos y piezas con motion graphics avanzados, diseñados para detener el scroll y vender.</p>
+                        <button onclick="goToCategory('motion')" class="bg-accent-color hover:brightness-110 text-white font-bold text-sm py-3 px-6 rounded-full inline-flex items-center gap-2.5 shadow-[0_0_20px_rgba(255,31,61,0.4)] transition-all">
+                            <span data-translate="see_examples_btn">Ver ejemplos</span><i class="fas fa-arrow-right text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ========== 5. SOBRE MÍ ========== -->
+        <section id="sobre-mi" class="py-16 px-5 container mx-auto max-w-5xl">
+            <div class="dark-red-card rounded-3xl p-8 md:p-14 flex flex-col md:flex-row items-center gap-10 fade-in-section">
+                <div class="w-44 h-44 sm:w-56 sm:h-56 rounded-full overflow-hidden border-2 border-accent-color shadow-[0_0_35px_rgba(255,31,61,0.3)] flex-shrink-0 bg-zinc-900">
+                    <img src="Assets/perfil.jpg" onerror="this.onerror=null; this.src='https://placehold.co/400x400/09090b/ff1f3d?text=MACLOR';" alt="Jesús Rondón - MACLOR" class="w-full h-full object-cover">
+                </div>
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-[0.25em] text-accent-color block mb-2" data-translate="about_eyebrow">FILOSOFÍA & EXPERIENCIA</span>
+                    <h2 class="text-3xl sm:text-4xl font-black text-white mb-4 leading-tight" data-translate="about_title">Soy Jesús Rondón.<br><span class="text-gray-400 font-bold text-2xl">Editor & Visual Storyteller.</span></h2>
+                    <p class="text-gray-300 text-base leading-relaxed mb-6" data-translate="about_desc">Con más de 4 años de experiencia y 22 años de edad, mi filosofía es simple: la atención es el activo más valioso. Combino narrativa, psicología de retención, diseño sonoro y motion graphics para que cada segundo de tu video tenga un propósito claro.</p>
+                    <a href="https://youtube.com/@sr.maclor?si=j_jhz9mmhoqxZJaA" target="_blank" class="inline-flex items-center gap-2 bg-zinc-900 hover:bg-accent-color text-white text-xs font-bold uppercase tracking-wider py-3 px-5 rounded-full border border-white/10 transition-colors">
+                        <i class="fab fa-youtube text-base"></i><span data-translate="youtube_btn_text">VER MÁS EN YOUTUBE</span>
                     </a>
                 </div>
             </div>
         </section>
 
 
-        <!-- ========== PROYECTOS (NUEVO SISTEMA DE FILTRADO) ========== -->
-        <section id="proyectos" class="py-20 px-6 container mx-auto">
-            
-            <div class="text-center mb-12 fade-in-section">
-                <h2 class="text-4xl md:text-5xl font-bold text-white mb-4"><span class="text-accent-color">.</span> Trabajos Seleccionados</h2>
-                <p class="text-gray-400 max-w-2xl mx-auto" data-translate="projects_intro">Explora una selección de mis mejores colaboraciones y proyectos personales.</p>
-            </div>
-
-            <!-- FILTROS (TABS) -->
-            <div class="flex flex-wrap justify-center gap-3 mb-16 fade-in-section sticky top-24 z-30 py-4 bg-black/80 backdrop-blur-lg rounded-full border border-white/5 shadow-2xl max-w-fit mx-auto px-6">
-                <button onclick="filterProjects('all')" class="filter-btn active px-6 py-2 rounded-full border border-gray-700 text-gray-300 font-medium hover:border-white transition-colors text-sm md:text-base" data-translate="filter_all">Todos</button>
-                <button onclick="filterProjects('clientes')" class="filter-btn px-6 py-2 rounded-full border border-gray-700 text-gray-300 font-medium hover:border-white transition-colors text-sm md:text-base" data-translate="filter_clients">Clientes</button>
-                <button onclick="filterProjects('personal')" class="filter-btn px-6 py-2 rounded-full border border-gray-700 text-gray-300 font-medium hover:border-white transition-colors text-sm md:text-base" data-translate="filter_personal">Personal</button>
-                <button onclick="filterProjects('showreel')" class="filter-btn px-6 py-2 rounded-full border border-gray-700 text-gray-300 font-medium hover:border-white transition-colors text-sm md:text-base" data-translate="filter_showreels">Showreels</button>
-            </div>
-
-            <!-- GRID DE PROYECTOS -->
-            <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- ========== 6. CONTACTO DIRECTO (BOTÓN DE ALTA CONVERSIÓN WHATSAPP) ========== -->
+        <section id="contacto" class="py-20 px-5 container mx-auto max-w-4xl mb-12">
+            <div class="dark-red-card p-10 md:p-16 rounded-3xl text-center fade-in-section relative overflow-hidden border border-red-500/30 shadow-[0_0_50px_rgba(255,31,61,0.12)]">
                 
-                <!-- NUEVO CLIENTE: Lead To Cash -->
-                <div class="project-card group fade-in-section" data-category="clientes">
-                    <div class="bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 card-hover-effect relative h-full flex flex-col">
-                        <span class="category-badge text-accent-color border-red-500/30">Lead To Cash</span>
-                        <div class="relative aspect-[16/9] overflow-hidden cursor-pointer" onclick="openModal('modal_lead_brand')">
-                            <!-- Link Miniatura Imgur -->
-                            <video class="thumbnail-video" src="https://i.imgur.com/UxOffPC.mp4" autoplay loop muted playsinline></video>
-                             <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center">
-                                <i class="fas fa-play text-white text-4xl opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all duration-300 drop-shadow-lg"></i>
-                            </div>
-                        </div>
-                        <div class="p-6 flex flex-col flex-grow">
-                            <h3 class="text-xl font-bold text-white mb-2" data-translate="p_lead_brand_title">Reel de Apertura: Marca Personal</h3>
-                            <p class="text-gray-400 text-sm mb-4 flex-grow" data-translate="p_lead_brand_desc">Estrategia visual unificada para lanzamiento de marca personal.</p>
-                            <button onclick="openModal('modal_lead_brand')" class="text-white font-bold text-sm uppercase tracking-wider hover:text-accent-color transition-colors flex items-center gap-2">Ver Proyecto <i class="fas fa-arrow-right text-xs"></i></button>
-                        </div>
-                    </div>
-                </div>
+                <div class="absolute inset-0 bg-gradient-to-b from-red-600/5 via-transparent to-transparent pointer-events-none"></div>
 
-                <!-- NUEVO CLIENTE: U Clinic Center -->
-                <div class="project-card group fade-in-section" data-category="clientes">
-                    <div class="bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 card-hover-effect relative h-full flex flex-col">
-                        <span class="category-badge text-accent-color border-red-500/30">U Clinic Center</span>
-                        <div class="relative aspect-[16/9] overflow-hidden cursor-pointer" onclick="openModal('modal_uclinic_impact')">
-                             <!-- Link Miniatura Imgur -->
-                             <video class="thumbnail-video" src="https://i.imgur.com/UDf1mi0.mp4" autoplay loop muted playsinline></video>
-                             <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center">
-                                <i class="fas fa-play text-white text-4xl opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all duration-300 drop-shadow-lg"></i>
-                            </div>
-                        </div>
-                        <div class="p-6 flex flex-col flex-grow">
-                            <h3 class="text-xl font-bold text-white mb-2" data-translate="p_uclinic_impact_title">Alto Impacto: Cirugía vs Calificación</h3>
-                            <p class="text-gray-400 text-sm mb-4 flex-grow" data-translate="p_uclinic_impact_desc">Edición dinámica manteniendo estética clínica pulcra.</p>
-                            <button onclick="openModal('modal_uclinic_impact')" class="text-white font-bold text-sm uppercase tracking-wider hover:text-accent-color transition-colors flex items-center gap-2">Ver Proyecto <i class="fas fa-arrow-right text-xs"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SHOWREEL SOCIAL MEDIA (Categoría: Showreel) -->
-                <div class="project-card group fade-in-section" data-category="showreel">
-                    <div class="bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 card-hover-effect relative h-full flex flex-col">
-                        <span class="category-badge text-green-400 border-green-400/30">Showreel</span>
-                        <div class="relative aspect-[16/9] overflow-hidden cursor-pointer" onclick="openModal('modal_showreel')">
-                            <video class="thumbnail-video" src="https://i.imgur.com/y7GGbaK.mp4" autoplay loop muted playsinline></video>
-                            <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center">
-                                <i class="fas fa-play text-white text-4xl opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all duration-300 drop-shadow-lg"></i>
-                            </div>
-                        </div>
-                        <div class="p-6 flex flex-col flex-grow">
-                            <h3 class="text-xl font-bold text-white mb-2" data-translate="showreel_promo_title">Edición y Motion Graphics para Campaña Publicitaria</h3>
-                            <p class="text-gray-400 text-sm mb-4 flex-grow" data-translate="showreel_promo_desc">El objetivo de este anuncio era mantener la atención del espectador para entrar al link del Curso. Para lograrlo, implementé un montaje de ritmo acelerado (fast-paced editing), apoyado fuertemente en animaciones de texto, Motion graphics y efectos de sonido precisos para enfatizar los llamados a la acción de la marca...</p>
-                            <button onclick="openModal('modal_showreel')" class="text-white font-bold text-sm uppercase tracking-wider hover:text-accent-color transition-colors flex items-center gap-2">
-                                Ver Video <i class="fas fa-arrow-right text-xs"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CARS (Categoría: Clientes) -->
-                <div class="project-card group fade-in-section" data-category="clientes">
-                    <div class="bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 card-hover-effect relative h-full flex flex-col">
-                        <span class="category-badge text-accent-color border-red-500/30">Lead To Cash</span>
-                        <div class="relative aspect-[16/9] overflow-hidden cursor-pointer" onclick="openModal('modal_cars')">
-                            <!-- Link Miniatura Imgur -->
-                            <video class="thumbnail-video" src="https://i.imgur.com/yfT0scC.mp4" autoplay loop muted playsinline></video>
-                            <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center">
-                                <i class="fas fa-play text-white text-4xl opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all duration-300 drop-shadow-lg"></i>
-                            </div>
-                        </div>
-                        <div class="p-6 flex flex-col flex-grow">
-                            <h3 class="text-xl font-bold text-white mb-2" data-translate="p_cars_title">Cars: Transformación</h3>
-                            <p class="text-gray-400 text-sm mb-4 flex-grow" data-translate="p_cars_desc">Análisis visual para desglosar narrativa de negocio.</p>
-                            <button onclick="openModal('modal_cars')" class="text-white font-bold text-sm uppercase tracking-wider hover:text-accent-color transition-colors flex items-center gap-2">Ver Proyecto <i class="fas fa-arrow-right text-xs"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- AMV (Categoría: Clientes) -->
-                <div class="project-card group fade-in-section" data-category="clientes">
-                    <div class="bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 card-hover-effect relative h-full flex flex-col">
-                        <span class="category-badge text-purple-400 border-purple-400/30">Angeldust</span>
-                        <div class="relative aspect-[16/9] overflow-hidden cursor-pointer" onclick="openModal('modal_amv')">
-                            <!-- Link Miniatura Imgur -->
-                            <video class="thumbnail-video" src="https://i.imgur.com/tok2Wy4.mp4" autoplay loop muted playsinline></video>
-                             <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center">
-                                <i class="fas fa-play text-white text-4xl opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all duration-300 drop-shadow-lg"></i>
-                            </div>
-                        </div>
-                        <div class="p-6 flex flex-col flex-grow">
-                            <h3 class="text-xl font-bold text-white mb-2" data-translate="p_amv_title">Anime Music Video</h3>
-                            <p class="text-gray-400 text-sm mb-4 flex-grow" data-translate="p_amv_desc">Edición rítmica de alta energía para el canal Angeldust.</p>
-                            <button onclick="openModal('modal_amv')" class="text-white font-bold text-sm uppercase tracking-wider hover:text-accent-color transition-colors flex items-center gap-2">Ver Proyecto <i class="fas fa-arrow-right text-xs"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- BALDUINO (Categoría: Personal) -->
-                <div class="project-card group fade-in-section" data-category="personal">
-                    <div class="bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 card-hover-effect relative h-full flex flex-col">
-                        <span class="category-badge text-blue-400 border-blue-400/30">Documental</span>
-                        <div class="relative aspect-[16/9] overflow-hidden cursor-pointer" onclick="openModal('modal1')">
-                            <video class="thumbnail-video" src="https://i.imgur.com/9vPKbqr.mp4" autoplay loop muted playsinline></video>
-                            <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center">
-                                <i class="fas fa-play text-white text-4xl opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all duration-300 drop-shadow-lg"></i>
-                            </div>
-                        </div>
-                        <div class="p-6 flex flex-col flex-grow">
-                            <h3 class="text-xl font-bold text-white mb-2" data-translate="p1_title">El Rey Balduino IV</h3>
-                            <p class="text-gray-400 text-sm mb-4 flex-grow" data-translate="p1_desc">Análisis histórico con narrativa documental épica.</p>
-                            <button onclick="openModal('modal1')" class="text-white font-bold text-sm uppercase tracking-wider hover:text-accent-color transition-colors flex items-center gap-2">Ver Proyecto <i class="fas fa-arrow-right text-xs"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- U CLINIC (Categoría: Clientes - Anterior) -->
-                 <div class="project-card group fade-in-section" data-category="clientes">
-                    <div class="bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 card-hover-effect relative h-full flex flex-col">
-                        <span class="category-badge text-accent-color border-red-500/30">U Clinic Center</span>
-                        <div class="relative aspect-[16/9] overflow-hidden cursor-pointer" onclick="openModal('modal7')">
-                            <video class="thumbnail-video" src="https://i.imgur.com/kk0Z1Vn.mp4" autoplay loop muted playsinline></video>
-                             <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center">
-                                <i class="fas fa-play text-white text-4xl opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all duration-300 drop-shadow-lg"></i>
-                            </div>
-                        </div>
-                        <div class="p-6 flex flex-col flex-grow">
-                            <h3 class="text-xl font-bold text-white mb-2" data-translate="p_uclinic_title">Reel Corporativo</h3>
-                            <p class="text-gray-400 text-sm mb-4 flex-grow" data-translate="p_uclinic_desc">Producción corporativa para destacar servicios médicos estéticos.</p>
-                            <button onclick="openModal('modal7')" class="text-white font-bold text-sm uppercase tracking-wider hover:text-accent-color transition-colors flex items-center gap-2">Ver Proyecto <i class="fas fa-arrow-right text-xs"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- KFC (Categoría: Clientes) -->
-                <div class="project-card group fade-in-section" data-category="clientes">
-                    <div class="bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 card-hover-effect relative h-full flex flex-col">
-                        <span class="category-badge text-accent-color border-red-500/30">Lead To Cash</span>
-                        <div class="relative aspect-[16/9] overflow-hidden cursor-pointer" onclick="openModal('modal_kfc')">
-                            <!-- Link Miniatura Imgur -->
-                            <video class="thumbnail-video" src="https://i.imgur.com/pdY1Xuo.mp4" autoplay loop muted playsinline></video>
-                             <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center">
-                                <i class="fas fa-play text-white text-4xl opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all duration-300 drop-shadow-lg"></i>
-                            </div>
-                        </div>
-                        <div class="p-6 flex flex-col flex-grow">
-                            <h3 class="text-xl font-bold text-white mb-2" data-translate="p_kfc_title">KFC: Coronel Sanders</h3>
-                            <p class="text-gray-400 text-sm mb-4 flex-grow" data-translate="p_kfc_desc">Relato biográfico con compositing.</p>
-                            <button onclick="openModal('modal_kfc')" class="text-white font-bold text-sm uppercase tracking-wider hover:text-accent-color transition-colors flex items-center gap-2">Ver Proyecto <i class="fas fa-arrow-right text-xs"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SHOWREEL MOTION (Categoría: Showreel) -->
-                <div class="project-card group fade-in-section" data-category="showreel">
-                    <div class="bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 card-hover-effect relative h-full flex flex-col">
-                        <span class="category-badge text-green-400 border-green-400/30">Showreel</span>
-                        <div class="relative aspect-[16/9] overflow-hidden cursor-pointer" onclick="openModal('modal_showreel_mg')">
-                            <video class="thumbnail-video" src="https://i.imgur.com/i9Rv2UJ.mp4" autoplay loop muted playsinline></video>
-                             <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center">
-                                <i class="fas fa-play text-white text-4xl opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all duration-300 drop-shadow-lg"></i>
-                            </div>
-                        </div>
-                        <div class="p-6 flex flex-col flex-grow">
-                            <h3 class="text-xl font-bold text-white mb-2" data-translate="showreel_mg_title">Motion Graphics</h3>
-                            <p class="text-gray-400 text-sm mb-4 flex-grow" data-translate="showreel_mg_desc">Compilación de tipografía cinética y animación.</p>
-                            <button onclick="openModal('modal_showreel_mg')" class="text-white font-bold text-sm uppercase tracking-wider hover:text-accent-color transition-colors flex items-center gap-2">Ver Video <i class="fas fa-arrow-right text-xs"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- BRUCE LEE (Categoría: Clientes) -->
-                <div class="project-card group fade-in-section" data-category="clientes">
-                    <div class="bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 card-hover-effect relative h-full flex flex-col">
-                         <span class="category-badge text-accent-color border-red-500/30">Lead To Cash</span>
-                        <div class="relative aspect-[16/9] overflow-hidden cursor-pointer" onclick="openModal('modal_bruce')">
-                            <!-- Link Miniatura Imgur -->
-                            <video class="thumbnail-video" src="https://i.imgur.com/iqprKof.mp4" autoplay loop muted playsinline></video>
-                             <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center">
-                                <i class="fas fa-play text-white text-4xl opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all duration-300 drop-shadow-lg"></i>
-                            </div>
-                        </div>
-                        <div class="p-6 flex flex-col flex-grow">
-                            <h3 class="text-xl font-bold text-white mb-2" data-translate="p_bruce_title">Bruce Lee: Filosofía</h3>
-                            <p class="text-gray-400 text-sm mb-4 flex-grow" data-translate="p_bruce_desc">Concepto filosófico en lección visual.</p>
-                            <button onclick="openModal('modal_bruce')" class="text-white font-bold text-sm uppercase tracking-wider hover:text-accent-color transition-colors flex items-center gap-2">Ver Proyecto <i class="fas fa-arrow-right text-xs"></i></button>
-                        </div>
-                    </div>
-                </div>
+                <h2 class="font-display text-4xl sm:text-6xl text-white uppercase mb-4 tracking-wide relative z-10" data-translate="contact_title">¿CREAMOS ALGO ÉPICO?</h2>
+                <p class="text-gray-300 mb-10 max-w-lg mx-auto text-sm sm:text-base leading-relaxed relative z-10" data-translate="contact_subtitle">
+                    Escríbeme directo por WhatsApp para una respuesta rápida, cuéntame tu proyecto y te paso una propuesta.
+                </p>
                 
-                 <!-- ENSAYO VISUAL (Categoría: Personal) -->
-                 <div class="project-card group fade-in-section" data-category="personal">
-                    <div class="bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 card-hover-effect relative h-full flex flex-col">
-                         <span class="category-badge text-blue-400 border-blue-400/30">Ensayo</span>
-                        <div class="relative aspect-[16/9] overflow-hidden cursor-pointer" onclick="openModal('modal2')">
-                            <video class="thumbnail-video" src="https://i.imgur.com/9lYEasD.mp4" autoplay loop muted playsinline></video>
-                             <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center">
-                                <i class="fas fa-play text-white text-4xl opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all duration-300 drop-shadow-lg"></i>
-                            </div>
-                        </div>
-                        <div class="p-6 flex flex-col flex-grow">
-                            <h3 class="text-xl font-bold text-white mb-2" data-translate="p2_title">Horror de la Guerra</h3>
-                            <p class="text-gray-400 text-sm mb-4 flex-grow" data-translate="p2_desc">Terror psicológico y atmósfera.</p>
-                            <button onclick="openModal('modal2')" class="text-white font-bold text-sm uppercase tracking-wider hover:text-accent-color transition-colors flex items-center gap-2">Ver Proyecto <i class="fas fa-arrow-right text-xs"></i></button>
-                        </div>
-                    </div>
+                <div class="relative z-10 inline-block w-full max-w-md mx-auto mb-12">
+                    <a href="https://wa.me/584120000000?text=Hola%20Jes%C3%BAs%20(MACLOR),%20vi%20tu%20portafolio%20y%20quiero%20contarte%20sobre%20mi%20proyecto." 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       class="group relative bg-[#25D366] hover:bg-[#20ba5a] text-black font-black text-base sm:text-lg py-5 px-8 rounded-2xl w-full flex items-center justify-center gap-4 shadow-[0_0_35px_rgba(37,211,102,0.45)] hover:shadow-[0_0_50px_rgba(37,211,102,0.7)] transition-all duration-300 transform hover:-translate-y-1 active:scale-95">
+                        
+                        <span class="absolute inset-0 rounded-2xl border-2 border-[#25D366] animate-ping opacity-35 pointer-events-none"></span>
+
+                        <span class="w-10 h-10 rounded-full bg-black text-[#25D366] flex items-center justify-center text-xl shadow-md group-hover:scale-110 transition-transform">
+                            <i class="fab fa-whatsapp"></i>
+                        </span>
+                        <span class="uppercase tracking-wider text-white" data-translate="contact_whatsapp_btn">CUÉNTAME DE TU PROYECTO</span>
+                    </a>
                 </div>
 
-                <!-- PYRAMID (Categoría: Clientes) -->
-                <div class="project-card group fade-in-section" data-category="clientes">
-                    <div class="bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 card-hover-effect relative h-full flex flex-col">
-                        <span class="category-badge text-accent-color border-red-500/30">Lead To Cash</span>
-                        <div class="relative aspect-[16/9] overflow-hidden cursor-pointer" onclick="openModal('modal_pyramid')">
-                             <!-- Link Miniatura Imgur -->
-                             <video class="thumbnail-video" src="https://i.imgur.com/E7FGjjS.mp4" autoplay loop muted playsinline></video>
-                             <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center">
-                                <i class="fas fa-play text-white text-4xl opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all duration-300 drop-shadow-lg"></i>
-                            </div>
-                        </div>
-                        <div class="p-6 flex flex-col flex-grow">
-                            <h3 class="text-xl font-bold text-white mb-2" data-translate="p_pyramid_title">Pirámide de Valor</h3>
-                            <p class="text-gray-400 text-sm mb-4 flex-grow" data-translate="p_pyramid_desc">Explicación de modelo de marketing.</p>
-                            <button onclick="openModal('modal_pyramid')" class="text-white font-bold text-sm uppercase tracking-wider hover:text-accent-color transition-colors flex items-center gap-2">Ver Proyecto <i class="fas fa-arrow-right text-xs"></i></button>
-                        </div>
-                    </div>
-                </div>
-                
-                 <!-- IZUMI (Categoría: Clientes) -->
-                 <div class="project-card group fade-in-section" data-category="clientes">
-                    <div class="bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 card-hover-effect relative h-full flex flex-col">
-                        <span class="category-badge text-accent-color border-red-500/30">Izumi Club</span>
-                        <div class="relative aspect-[16/9] overflow-hidden cursor-pointer" onclick="openModal('modal5')">
-                            <video class="thumbnail-video" src="https://i.imgur.com/eG6Pimu.mp4" autoplay loop muted playsinline></video>
-                             <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center">
-                                <i class="fas fa-play text-white text-4xl opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all duration-300 drop-shadow-lg"></i>
-                            </div>
-                        </div>
-                        <div class="p-6 flex flex-col flex-grow">
-                            <h3 class="text-xl font-bold text-white mb-2" data-translate="p5_title">Reel: Izumi Club</h3>
-                            <p class="text-gray-400 text-sm mb-4 flex-grow" data-translate="p5_desc">Mini documental deportivo.</p>
-                            <button onclick="openModal('modal5')" class="text-white font-bold text-sm uppercase tracking-wider hover:text-accent-color transition-colors flex items-center gap-2">Ver Proyecto <i class="fas fa-arrow-right text-xs"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SIN NOVEDAD (Categoría: Personal) -->
-                 <div class="project-card group fade-in-section" data-category="personal">
-                    <div class="bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 card-hover-effect relative h-full flex flex-col">
-                        <span class="category-badge text-blue-400 border-blue-400/30">Ensayo</span>
-                        <div class="relative aspect-[16/9] overflow-hidden cursor-pointer" onclick="openModal('modal3')">
-                            <video class="thumbnail-video" src="https://i.imgur.com/XKZzN6n.mp4" autoplay loop muted playsinline></video>
-                             <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center">
-                                <i class="fas fa-play text-white text-4xl opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all duration-300 drop-shadow-lg"></i>
-                            </div>
-                        </div>
-                        <div class="p-6 flex flex-col flex-grow">
-                            <h3 class="text-xl font-bold text-white mb-2" data-translate="p3_title">Sin Novedad en el Frente</h3>
-                            <p class="text-gray-400 text-sm mb-4 flex-grow" data-translate="p3_desc">Edición limpia impactante.</p>
-                            <button onclick="openModal('modal3')" class="text-white font-bold text-sm uppercase tracking-wider hover:text-accent-color transition-colors flex items-center gap-2">Ver Proyecto <i class="fas fa-arrow-right text-xs"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            
-            <!-- BOTÓN YOUTUBE -->
-            <div class="text-center mt-20">
-                <a href="https://youtube.com/@sr.maclor?si=j_jhz9mmhoqxZJaA" target="_blank" class="inline-flex items-center gap-3 text-white border border-gray-700 bg-black/50 hover:bg-red-600 hover:border-red-600 py-3 px-8 rounded-full transition-all duration-300 group">
-                    <i class="fab fa-youtube text-xl group-hover:scale-110 transition-transform"></i>
-                    <span class="font-bold tracking-wide" data-translate="youtube_btn_text">VER MÁS EN YOUTUBE</span>
-                </a>
-            </div>
-
-        </section>
-
-        <!-- ========== SOBRE MÍ SECTION ========== -->
-        <section id="sobre-mi" class="py-20 relative container mx-auto px-6">
-            <div class="bg-gradient-to-br from-gray-900 to-black rounded-3xl p-8 md:p-16 border border-gray-800 flex flex-col md:flex-row items-center gap-12 fade-in-section shadow-2xl">
-                <div class="md:w-1/3 relative group">
-                    <div class="absolute inset-0 bg-accent-color rounded-full blur-[40px] opacity-20 group-hover:opacity-40 transition-opacity"></div>
-                    <img src="https://placehold.co/400x400/030303/e34656?text=MACLOR" alt="MACLOR" class="relative z-10 rounded-full shadow-2xl mx-auto border-4 border-gray-800 w-64 h-64 object-cover transform transition duration-500 hover:scale-105">
-                </div>
-                <div class="md:w-2/3">
-                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight" data-translate="about_title">Soy Jesús Rondón. <br><span class="text-gray-500">Editor & Visual Storyteller.</span></h2>
-                    <p class="text-gray-400 text-lg mb-8 leading-relaxed" data-translate="about_desc">Con más de 5 años de experiencia, mi pasión es contar historias. Combino técnica y creatividad para que cada proyecto no solo se vea bien, sino que también conecte y emocione.</p>
-                    
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div class="bg-black/30 p-4 rounded-lg border border-gray-800 hover:border-accent-color transition-colors">
-                            <i class="fas fa-film text-accent-color mb-2"></i>
-                            <h4 class="text-white font-bold text-sm" data-translate="service_1">Edición Narrativa</h4>
-                        </div>
-                        <div class="bg-black/30 p-4 rounded-lg border border-gray-800 hover:border-accent-color transition-colors">
-                            <i class="fas fa-music text-accent-color mb-2"></i>
-                            <h4 class="text-white font-bold text-sm" data-translate="service_2">Edición Rítmica</h4>
-                        </div>
-                        <div class="bg-black/30 p-4 rounded-lg border border-gray-800 hover:border-accent-color transition-colors">
-                            <i class="fas fa-magic text-accent-color mb-2"></i>
-                            <h4 class="text-white font-bold text-sm" data-translate="service_3">VFX & Composición</h4>
-                        </div>
-                        <div class="bg-black/30 p-4 rounded-lg border border-gray-800 hover:border-accent-color transition-colors">
-                            <i class="fas fa-hashtag text-accent-color mb-2"></i>
-                            <h4 class="text-white font-bold text-sm" data-translate="service_4">Social Media</h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ========== CONTACTO SECTION ========== -->
-        <section id="contacto" class="py-16 container mx-auto px-6 mb-12">
-            <div class="max-w-4xl mx-auto bg-gray-900/50 backdrop-blur-sm p-8 md:p-12 rounded-3xl border border-gray-800 text-center fade-in-section">
-                <h2 class="text-4xl font-bold text-white mb-4" data-translate="contact_title">¿Creamos algo épico?</h2>
-                <p class="text-gray-400 mb-8 max-w-lg mx-auto" data-translate="contact_subtitle">Cuéntame tu idea. Estoy listo para llevar tu contenido al siguiente nivel.</p>
-                
-                <form action="https://formspree.io/f/mjkrlknp" method="POST" class="max-w-md mx-auto space-y-4 text-left">
-                    <input type="text" name="name" required placeholder="Tu Nombre" class="w-full bg-black border border-gray-700 rounded-lg py-3 px-4 text-white focus:outline-none focus:border-accent-color transition-colors placeholder-gray-600">
-                    <input type="email" name="email" required placeholder="Tu Email" class="w-full bg-black border border-gray-700 rounded-lg py-3 px-4 text-white focus:outline-none focus:border-accent-color transition-colors placeholder-gray-600">
-                    <textarea name="message" rows="4" required placeholder="Detalles del proyecto..." class="w-full bg-black border border-gray-700 rounded-lg py-3 px-4 text-white focus:outline-none focus:border-accent-color transition-colors placeholder-gray-600"></textarea>
-                    
-                    <button type="submit" class="w-full bg-white text-black hover:bg-accent-color hover:text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 transform active:scale-95" data-translate="form_button">ENVIAR MENSAJE</button>
-                </form>
-
-                <div class="flex justify-center gap-8 mt-12">
-                    <a href="https://www.instagram.com/maclor_studio?igsh=MXYyNjBnMnI1ZDI1OA==" target="_blank" class="text-gray-500 hover:text-white text-2xl transition-colors"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.linkedin.com/in/jesus-rondon-i" target="_blank" class="text-gray-500 hover:text-white text-2xl transition-colors"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="http://tiktok.com/@sr.maclor" target="_blank" class="text-gray-500 hover:text-white text-2xl transition-colors"><i class="fab fa-tiktok"></i></a>
+                <div class="flex justify-center gap-8 relative z-10 pt-4 border-t border-white/5">
+                    <a href="https://www.instagram.com/maclor_studio?igsh=MXYyNjBnMnI1ZDI1OA==" target="_blank" class="text-gray-400 hover:text-white text-2xl transition-colors hover:scale-110"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.linkedin.com/in/jesus-rondon-i" target="_blank" class="text-gray-400 hover:text-white text-2xl transition-colors hover:scale-110"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="http://tiktok.com/@sr.maclor" target="_blank" class="text-gray-400 hover:text-white text-2xl transition-colors hover:scale-110"><i class="fab fa-tiktok"></i></a>
+                    <a href="https://youtube.com/@sr.maclor?si=j_jhz9mmhoqxZJaA" target="_blank" class="text-gray-400 hover:text-white text-2xl transition-colors hover:scale-110"><i class="fab fa-youtube"></i></a>
                 </div>
             </div>
         </section>
@@ -551,214 +774,320 @@
     </main>
 
     <!-- ========== FOOTER ========== -->
-    <footer class="py-8 border-t border-gray-900 bg-black text-center">
-        <p class="text-gray-600 text-sm">&copy; <span id="year">2024</span> Jesús Rondón (MACLOR). <span data-translate="footer_rights">Todos los derechos reservados.</span></p>
+    <footer class="py-8 border-t border-white/5 bg-black text-center">
+        <p class="text-gray-500 text-xs sm:text-sm">&copy; <span id="year">2026</span> Jesús Rondón (MACLOR). <span data-translate="footer_rights">Todos los derechos reservados.</span></p>
     </footer>
 
-    <!-- ========== MODALS (Optimizados) ========== -->
-    <!-- NUEVOS MODALES -->
-    <div id="modal_lead_brand" class="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300" onclick="if(event.target === this) closeModal('modal_lead_brand')"><div class="bg-gray-900 rounded-xl w-full max-w-5xl overflow-hidden border border-gray-700 shadow-2xl"><div class="p-4 flex justify-between items-center bg-black border-b border-gray-800"><h3 class="text-lg font-bold text-white">Lead To Cash: Marca Personal</h3><button onclick="closeModal('modal_lead_brand')" class="text-gray-400 hover:text-white text-2xl">&times;</button></div><div class="video-responsive"><iframe data-src="https://www.youtube.com/embed/T_EVA4cqOJk" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div></div></div>
-    
-    <div id="modal_uclinic_impact" class="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300" onclick="if(event.target === this) closeModal('modal_uclinic_impact')"><div class="bg-gray-900 rounded-xl w-full max-w-5xl overflow-hidden border border-gray-700 shadow-2xl"><div class="p-4 flex justify-between items-center bg-black border-b border-gray-800"><h3 class="text-lg font-bold text-white">U Clinic: Alto Impacto</h3><button onclick="closeModal('modal_uclinic_impact')" class="text-gray-400 hover:text-white text-2xl">&times;</button></div><div class="video-responsive"><iframe data-src="https://www.youtube.com/embed/Ahb2y7TUHfo" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div></div></div>
+    <!-- ========== MODAL UNIVERSAL DE YOUTUBE ========== -->
+    <div id="universal-video-modal" class="fixed inset-0 bg-black/95 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden" onclick="if(event.target === this) closeVideoModal()">
+        <div id="modal-container-box" class="bg-zinc-950 rounded-2xl w-full max-w-4xl overflow-hidden border border-zinc-800 shadow-2xl relative">
+            <button onclick="closeVideoModal()" class="absolute top-3 right-3 z-20 w-9 h-9 rounded-full bg-black/80 border border-white/20 text-gray-200 hover:text-white hover:border-red-500 flex items-center justify-center text-xl transition-colors">&times;</button>
+            <div id="modal-aspect-wrapper" class="video-responsive-16-9 bg-black">
+                <iframe id="modal-youtube-iframe" src="" frameborder="0" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
 
-    <!-- MODALES EXISTENTES -->
-    <!-- Cars: Transformación (Link YouTube actualizado) -->
-    <div id="modal_cars" class="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300" onclick="if(event.target === this) closeModal('modal_cars')"><div class="bg-gray-900 rounded-xl w-full max-w-5xl overflow-hidden border border-gray-700 shadow-2xl"><div class="p-4 flex justify-between items-center bg-black border-b border-gray-800"><h3 class="text-lg font-bold text-white">Cars: El Poder de la Transformación</h3><button onclick="closeModal('modal_cars')" class="text-gray-400 hover:text-white text-2xl">&times;</button></div><div class="video-responsive"><iframe data-src="https://www.youtube.com/embed/QPH-pP8fcrg" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div></div></div>
-    
-    <!-- KFC (Link YouTube actualizado) -->
-    <div id="modal_kfc" class="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300" onclick="if(event.target === this) closeModal('modal_kfc')"><div class="bg-gray-900 rounded-xl w-full max-w-5xl overflow-hidden border border-gray-700 shadow-2xl"><div class="p-4 flex justify-between items-center bg-black border-b border-gray-800"><h3 class="text-lg font-bold text-white">KFC: La Historia del Coronel Sanders</h3><button onclick="closeModal('modal_kfc')" class="text-gray-400 hover:text-white text-2xl">&times;</button></div><div class="video-responsive"><iframe data-src="https://www.youtube.com/embed/_DoV0mBNJsw" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div></div></div>
-    
-    <!-- Bruce Lee (Link YouTube actualizado) -->
-    <div id="modal_bruce" class="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300" onclick="if(event.target === this) closeModal('modal_bruce')"><div class="bg-gray-900 rounded-xl w-full max-w-5xl overflow-hidden border border-gray-700 shadow-2xl"><div class="p-4 flex justify-between items-center bg-black border-b border-gray-800"><h3 class="text-lg font-bold text-white">Bruce Lee: Filosofía</h3><button onclick="closeModal('modal_bruce')" class="text-gray-400 hover:text-white text-2xl">&times;</button></div><div class="video-responsive"><iframe data-src="https://www.youtube.com/embed/0b287Y7sBo4" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div></div></div>
+    <!-- ========== 1. SISTEMA DE CHAT EXCLUSIVO PARA PC ========== -->
+    <div class="hidden lg:block">
+        
+        <!-- Cuadro de Chat Cuadrado (Se abre a los 2.5s o al darle clic al botón de abajo) -->
+        <div id="ai-chat-widget" style="display: none;" class="fixed bottom-6 right-6 z-50 transition-all duration-300 transform translate-y-6 opacity-0">
+            <div class="dark-red-card rounded-2xl w-80 shadow-[0_10px_40px_rgba(0,0,0,0.85)] overflow-hidden border border-red-500/30">
+                
+                <!-- Cabecera del Chat -->
+                <div class="bg-gradient-to-r from-red-950/80 to-zinc-900 p-3.5 border-b border-red-500/25 flex items-center justify-between">
+                    <div class="flex items-center gap-2.5">
+                        <div class="relative w-9 h-9 rounded-full bg-[#25D366] text-white flex items-center justify-center text-lg shadow-md">
+                            <i class="fab fa-whatsapp"></i>
+                            <span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-black"></span>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold text-xs tracking-wide">Jesús (MACLOR)</h4>
+                            <p class="text-[10px] text-gray-400" data-translate="chat_subtitle">Editor de videos</p>
+                        </div>
+                    </div>
+                    <!-- Botón X para cerrar el chat y dejar el botón pequeño -->
+                    <button type="button" onclick="toggleChatWidget(false)" class="w-7 h-7 rounded-full bg-black/50 hover:bg-red-600 text-gray-300 hover:text-white flex items-center justify-center transition-colors cursor-pointer">
+                        <i class="fas fa-times text-xs"></i>
+                    </button>
+                </div>
 
-    <!-- Pirámide de Valor (Link YouTube actualizado) -->
-    <div id="modal_pyramid" class="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300" onclick="if(event.target === this) closeModal('modal_pyramid')"><div class="bg-gray-900 rounded-xl w-full max-w-5xl overflow-hidden border border-gray-700 shadow-2xl"><div class="p-4 flex justify-between items-center bg-black border-b border-gray-800"><h3 class="text-lg font-bold text-white">Pirámide de Valor</h3><button onclick="closeModal('modal_pyramid')" class="text-gray-400 hover:text-white text-2xl">&times;</button></div><div class="video-responsive"><iframe data-src="https://www.youtube.com/embed/TBsrgUOjAPU" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div></div></div>
+                <!-- Cuerpo del Chat -->
+                <div class="p-3.5 bg-zinc-950/95 space-y-3">
+                    <div class="bg-zinc-900/90 border border-zinc-800 rounded-xl p-3 text-xs text-gray-200 relative shadow-md">
+                        <p data-translate="chat_msg_bot">¡Hola! Soy Jesús. Cuéntame qué contenido tienes y te paso una propuesta.</p>
+                        <span class="text-[9px] text-gray-500 block text-right mt-1 font-mono">MACLOR</span>
+                    </div>
 
-    <div id="modal7" class="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300" onclick="if(event.target === this) closeModal('modal7')"><div class="bg-gray-900 rounded-xl w-full max-w-5xl overflow-hidden border border-gray-700 shadow-2xl"><div class="p-4 flex justify-between items-center bg-black border-b border-gray-800"><h3 class="text-lg font-bold text-white">Reel Corporativo: U Clinic Center</h3><button onclick="closeModal('modal7')" class="text-gray-400 hover:text-white text-2xl">&times;</button></div><div class="video-responsive"><iframe data-src="https://www.youtube.com/embed/C6XSdD6Un-g" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div></div></div>
+                    <!-- Chips para autocompletar -->
+                    <div class="flex flex-wrap gap-1 pt-0.5">
+                        <button type="button" onclick="appendChatChip('Short Form')" class="bg-black/60 hover:bg-red-950/60 border border-red-500/40 text-gray-300 hover:text-white text-[11px] font-semibold py-1 px-2.5 rounded-full transition-all cursor-pointer">Short Form</button>
+                        <button type="button" onclick="appendChatChip('Clipping')" class="bg-black/60 hover:bg-red-950/60 border border-red-500/40 text-gray-300 hover:text-white text-[11px] font-semibold py-1 px-2.5 rounded-full transition-all cursor-pointer">Clipping</button>
+                        <button type="button" onclick="appendChatChip('Video Largo')" class="bg-black/60 hover:bg-red-950/60 border border-red-500/40 text-gray-300 hover:text-white text-[11px] font-semibold py-1 px-2.5 rounded-full transition-all cursor-pointer" data-translate="chip_long">Video Largo</button>
+                        <button type="button" onclick="appendChatChip('Story Ads')" class="bg-black/60 hover:bg-red-950/60 border border-red-500/40 text-gray-300 hover:text-white text-[11px] font-semibold py-1 px-2.5 rounded-full transition-all cursor-pointer">Story Ads</button>
+                    </div>
 
-    <div id="modal5" class="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300" onclick="if(event.target === this) closeModal('modal5')"><div class="bg-gray-900 rounded-xl w-full max-w-5xl overflow-hidden border border-gray-700 shadow-2xl"><div class="p-4 flex justify-between items-center bg-black border-b border-gray-800"><h3 class="text-lg font-bold text-white">Izumi Club</h3><button onclick="closeModal('modal5')" class="text-gray-400 hover:text-white text-2xl">&times;</button></div><div class="video-responsive"><iframe data-src="https://www.youtube.com/embed/CF6RwsSAS34" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div></div></div>
+                    <!-- Campo de texto (También envía al presionar Enter) -->
+                    <div class="bg-zinc-900 border border-zinc-700 rounded-xl p-2 flex items-center gap-2 mt-1">
+                        <input type="text" 
+                               id="chat-user-input" 
+                               onkeydown="if(event.key === 'Enter') sendChatToWhatsApp()"
+                               class="w-full bg-transparent text-xs text-white px-2 py-1 focus:outline-none placeholder-gray-500" 
+                               data-translate-placeholder="chat_input_placeholder" 
+                               placeholder="Hola Jesús, vi tu portfolio y quiero consultarte...">
+                        
+                        <!-- ESTE es el único botón que envía a WhatsApp -->
+                        <button type="button" onclick="sendChatToWhatsApp()" class="w-8 h-8 rounded-full bg-emerald-500 hover:bg-emerald-400 text-white flex items-center justify-center flex-shrink-0 transition-transform active:scale-95 shadow-md cursor-pointer">
+                            <i class="fas fa-paper-plane text-[10px]"></i>
+                        </button>
+                    </div>
+                    <p class="text-[9px] text-center text-gray-500" data-translate="chat_footer_note">Se abre WhatsApp con tu mensaje listo para enviar</p>
+                </div>
+            </div>
+        </div>
 
-    <!-- AMV (Link YouTube actualizado) -->
-    <div id="modal_amv" class="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300" onclick="if(event.target === this) closeModal('modal_amv')"><div class="bg-gray-900 rounded-xl w-full max-w-5xl overflow-hidden border border-gray-700 shadow-2xl"><div class="p-4 flex justify-between items-center bg-black border-b border-gray-800"><h3 class="text-lg font-bold text-white">AMV: Angeldust</h3><button onclick="closeModal('modal_amv')" class="text-gray-400 hover:text-white text-2xl">&times;</button></div><div class="video-responsive"><iframe data-src="https://www.youtube.com/embed/ZQciIimrB1Y" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div></div></div>
+        <!-- Botón flotante abajo a la derecha en PC (SOLO abre el cuadro de chat, NO lleva a WhatsApp) -->
+        <button type="button" 
+                id="ai-chat-launcher" 
+                onclick="toggleChatWidget(true)" 
+                aria-label="Abrir chat"
+                style="display: flex;"
+                class="fixed bottom-6 right-6 z-40 bg-gradient-to-br from-red-600 to-red-900 p-3 rounded-2xl shadow-[0_0_25px_rgba(255,31,61,0.5)] border border-red-400/30 items-center justify-center transition-transform hover:scale-110 cursor-pointer">
+            <div class="w-11 h-11 rounded-full bg-[#25D366] flex items-center justify-center text-white text-2xl shadow-md pointer-events-none">
+                <i class="fab fa-whatsapp"></i>
+            </div>
+        </button>
 
-    <div id="modal1" class="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300" onclick="if(event.target === this) closeModal('modal1')"><div class="bg-gray-900 rounded-xl w-full max-w-5xl overflow-hidden border border-gray-700 shadow-2xl"><div class="p-4 flex justify-between items-center bg-black border-b border-gray-800"><h3 class="text-lg font-bold text-white">El Rey Balduino IV</h3><button onclick="closeModal('modal1')" class="text-gray-400 hover:text-white text-2xl">&times;</button></div><div class="video-responsive"><iframe data-src="https://www.youtube.com/embed/nnEkfU5rWdU" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div></div></div>
+    </div>
 
-    <div id="modal2" class="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300" onclick="if(event.target === this) closeModal('modal2')"><div class="bg-gray-900 rounded-xl w-full max-w-5xl overflow-hidden border border-gray-700 shadow-2xl"><div class="p-4 flex justify-between items-center bg-black border-b border-gray-800"><h3 class="text-lg font-bold text-white">El Horror de la Guerra</h3><button onclick="closeModal('modal2')" class="text-gray-400 hover:text-white text-2xl">&times;</button></div><div class="video-responsive"><iframe data-src="https://www.youtube.com/embed/T19LKFARr-Y" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div></div></div>
 
-    <div id="modal3" class="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300" onclick="if(event.target === this) closeModal('modal3')"><div class="bg-gray-900 rounded-xl w-full max-w-5xl overflow-hidden border border-gray-700 shadow-2xl"><div class="p-4 flex justify-between items-center bg-black border-b border-gray-800"><h3 class="text-lg font-bold text-white">Sin Novedad en el Frente</h3><button onclick="closeModal('modal3')" class="text-gray-400 hover:text-white text-2xl">&times;</button></div><div class="video-responsive"><iframe data-src="https://www.youtube.com/embed/WaspcBACCyo" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div></div></div>
-    
-    <div id="modal_showreel" class="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300" onclick="if(event.target === this) closeModal('modal_showreel')"><div class="bg-gray-900 rounded-xl w-full max-w-5xl overflow-hidden border border-gray-700 shadow-2xl"><div class="p-4 flex justify-between items-center bg-black border-b border-gray-800"><h3 class="text-lg font-bold text-white">Showreel Social Media</h3><button onclick="closeModal('modal_showreel')" class="text-gray-400 hover:text-white text-2xl">&times;</button></div><div class="video-responsive"><iframe data-src="https://youtube.com/shorts/ZDOrHHNJW5c?si=CCN3Q9ZeXD_FpRqh" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div></div></div>
+    <!-- ========== 2. BOTÓN LATERAL DERECHO Y POP-UP DESLIZANTE (SIN "X", SWIPE DERECHA PARA CERRAR) ========== -->
+    <div id="mobile-whatsapp-wrapper" class="lg:hidden">
+        <!-- Pestañita lateral fija a la DERECHA de la pantalla -->
+        <button onclick="toggleMobilePopup(true)" aria-label="Abrir WhatsApp" class="fixed right-0 top-1/2 -translate-y-1/2 z-40 bg-gradient-to-l from-red-600 to-red-900 py-3.5 pr-3 pl-2.5 rounded-l-2xl shadow-[0_0_20px_rgba(255,31,61,0.5)] border-y border-l border-red-400/30 flex items-center justify-center transition-transform active:scale-95 cursor-pointer">
+            <div class="w-9 h-9 rounded-full bg-[#25D366] flex items-center justify-center text-white text-xl shadow-md">
+                <i class="fab fa-whatsapp"></i>
+            </div>
+        </button>
 
-    <div id="modal_showreel_mg" class="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden transition-opacity duration-300" onclick="if(event.target === this) closeModal('modal_showreel_mg')"><div class="bg-gray-900 rounded-xl w-full max-w-5xl overflow-hidden border border-gray-700 shadow-2xl"><div class="p-4 flex justify-between items-center bg-black border-b border-gray-800"><h3 class="text-lg font-bold text-white">Showreel Motion Graphics</h3><button onclick="closeModal('modal_showreel_mg')" class="text-gray-400 hover:text-white text-2xl">&times;</button></div><div class="video-responsive"><iframe data-src="https://www.youtube.com/embed/iz6Bm4nUtBI" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div></div></div>
+        <!-- Pop-up alineado a la derecha (Sin botón X, se cierra deslizando hacia la derecha o tocando fuera) -->
+        <div id="mobile-whatsapp-popup" onclick="if(event.target === this) toggleMobilePopup(false)" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-end p-4 transition-opacity duration-300 hidden opacity-0">
+            <div id="whatsapp-popup-card" class="dark-red-card rounded-3xl w-full max-w-xs p-6 shadow-2xl relative border border-red-500/40 translate-x-full transition-transform duration-300 select-none">
+                
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="w-6 h-[2px] bg-accent-color"></span>
+                    <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-400" data-translate="wa_popup_eyebrow">¿TE DECIDISTE?</span>
+                </div>
 
+                <h3 class="font-display text-2xl sm:text-3xl text-white uppercase tracking-wide mb-3 leading-none">
+                    <span data-translate="wa_popup_title1">HABLEMOS</span> <span class="text-accent-color" data-translate="wa_popup_title2">AHORA</span>
+                </h3>
+
+                <p class="text-gray-300 text-xs sm:text-sm leading-relaxed mb-6" data-translate="wa_popup_desc">
+                    Escríbeme por WhatsApp, cuéntame tu proyecto y te paso una propuesta.
+                </p>
+
+                <a href="https://wa.me/584120000000?text=Hola%20Jes%C3%BAs%20(MACLOR),%20vi%20tu%20portafolio%20y%20quiero%20cotizar%20un%20proyecto" 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   class="bg-white hover:bg-gray-100 text-black font-extrabold text-sm py-3.5 px-5 rounded-full w-full flex items-center justify-center gap-2.5 shadow-[0_0_25px_rgba(255,255,255,0.25)] transition-transform active:scale-95 mb-4">
+                    <span class="w-6 h-6 rounded-full bg-[#25D366] text-white flex items-center justify-center text-sm">
+                        <i class="fab fa-whatsapp"></i>
+                    </span>
+                    <span class="uppercase tracking-wide text-xs font-black" data-translate="wa_popup_btn">ESCRÍBEME POR WHATSAPP</span>
+                </a>
+
+                <p class="text-[10px] text-center text-gray-500 font-medium tracking-wide flex items-center justify-center gap-1">
+                    <i class="fas fa-chevron-right text-[8px] animate-pulse"></i>
+                    <span data-translate="wa_popup_swipe">Desliza hacia la derecha para cerrar</span>
+                    <i class="fas fa-chevron-right text-[8px] animate-pulse"></i>
+                </p>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ========== SCRIPTS Y TRADUCCIONES ========== -->
     <script>
-        // --- TRADUCCIONES (Actualizadas) ---
         const translations = {
             es: {
-                lang_popup_title: "Elige tu idioma",
-                nav_projects: "Proyectos", nav_about: "Sobre Mí", nav_contact_talk: "HABLEMOS", nav_contact_contact: "CONTACTO",
-                hero_subtitle: "Video Editor",
-                hero_description: "Me especializo en convertir contenido hablado en videos de alto impacto para redes sociales. Mi edición se enfoca en tipografía cinética, composición profesional y un ritmo dinámico.",
-                hero_cta_button: "Ver Portafolio",
-                
-                projects_intro: "Explora una selección de mis mejores colaboraciones y proyectos personales.",
-                filter_all: "Todos", filter_clients: "Clientes", filter_personal: "Personal", filter_showreels: "Showreels",
-                
-                // NUEVAS TRADUCCIONES
-                p_lead_brand_title: "Reel de Apertura: Marca Personal",
-                p_lead_brand_desc: "Estrategia visual unificada para lanzamiento de marca personal.",
-                p_uclinic_impact_title: "Alto Impacto: Cirugía vs Calificación",
-                p_uclinic_impact_desc: "Edición dinámica manteniendo estética clínica pulcra.",
+                bio_role: "Editor de Video",
+                bio_age_label: "Edad",
+                bio_age_val: "22 años",
+                bio_exp_label: "Experiencia",
+                bio_exp_val: "Edito desde hace 4 años",
 
-                showreel_promo_title: "Showreel Redes Sociales",
-                showreel_promo_desc: "Trailer dinámico para promocionar estilo de edición.",
-                showreel_mg_title: "Motion Graphics",
-                showreel_mg_desc: "Compilación de tipografía cinética y animación.",
-                p_cars_title: "Cars: Transformación",
-                p_cars_desc: "Análisis visual de narrativa de negocio.",
-                p_kfc_title: "KFC: Coronel Sanders",
-                p_kfc_desc: "Relato biográfico con compositing.",
-                p_bruce_title: "Bruce Lee: Filosofía",
-                p_bruce_desc: "Concepto filosófico en lección visual.",
-                p_pyramid_title: "Pirámide de Valor",
-                p_pyramid_desc: "Explicación de modelo de marketing.",
-                p_uclinic_title: "Reel Corporativo",
-                p_uclinic_desc: "Producción corporativa para servicios médicos.",
-                p5_title: "Reel: Izumi Club",
-                p5_desc: "Mini documental deportivo.",
-                p1_title: "El Rey Balduino IV",
-                p1_desc: "Análisis histórico con narrativa épica.",
-                p2_title: "Horror de la Guerra",
-                p2_desc: "Terror psicológico y atmósfera.",
-                p3_title: "Sin Novedad en el Frente",
-                p3_desc: "Edición limpia impactante.",
-                p_amv_title: "Anime Music Video",
-                p_amv_desc: "Edición rítmica de alta energía para Angeldust.",
+                chat_subtitle: "Editor de videos",
+                chat_msg_bot: "¡Hola! Soy Jesús. Cuéntame qué contenido tienes y te paso una propuesta.",
+                chip_long: "Video Largo",
+                chat_input_placeholder: "Hola Jesús, vi tu portfolio y quiero consultarte...",
+                chat_footer_note: "Se abre WhatsApp con tu mensaje listo para enviar",
+                wa_popup_eyebrow: "¿TE DECIDISTE?",
+                wa_popup_title1: "HABLEMOS",
+                wa_popup_title2: "AHORA",
+                wa_popup_desc: "Escríbeme por WhatsApp, cuéntame tu proyecto y te paso una propuesta.",
+                wa_popup_btn: "ESCRÍBEME POR WHATSAPP",
+                wa_popup_swipe: "Desliza hacia la derecha para cerrar",
                 
-                about_title: "Soy Jesús Rondón.<br><span class='text-gray-500'>Editor & Visual Storyteller.</span>",
-                about_desc: "Con más de 5 años de experiencia, mi pasión es contar historias. Combino técnica y creatividad para que cada proyecto no solo se vea bien, sino que también conecte y emocione.",
-                service_1: "Edición Narrativa", service_2: "Edición Rítmica", service_3: "VFX & Composición", service_4: "Social Media",
-                
-                contact_title: "¿Creamos algo épico?",
-                contact_subtitle: "Cuéntame tu idea. Estoy listo para llevar tu contenido al siguiente nivel.",
-                form_button: "ENVIAR MENSAJE",
-                footer_rights: "Todos los derechos reservados.",
-                youtube_btn_text: "VER MÁS EN YOUTUBE"
+                hero_subtitle: "Editor de Videos & Motion Designer",
+                nav_projects: "Proyectos",
+                nav_methodology: "Proceso",
+                nav_services: "Servicios",
+                nav_about: "Sobre Mí",
+                who_am_i_btn: "¿QUIÉN SOY?",
+                hero_line1: "EDICIÓN DE VIDEO",
+                hero_line2: "PARA",
+                hero_rotating_words: ["MARCAS.", "CREADORES.", "NEGOCIOS."],
+                hero_description: "Transformo metraje en bruto en contenido dinámico para Reels, TikTok y YouTube, diseñado con tipografía cinética y ritmo para captar la atención y retener.",
+                whatsapp_cta: "HABLEMOS POR WHATSAPP",
+                see_my_work: "Ver mi trabajo",
+                selected_work_title: "Trabajos Seleccionados",
+                projects_intro: "Algunos proyectos en los que trabajé.",
+                filter_shorts: "Shorts",
+                filter_motion: "Motion Graphics",
+                filter_horizontal: "Video Largo",
+                visualize_btn: "Visualizar",
+                process_eyebrow: "PROCESO",
+                process_title_1: "CÓMO",
+                process_title_2: "TRABAJAMOS",
+                p_1_title: "ME ENVÍAS EL MATERIAL",
+                p_1_desc: "Crudos, referencias y objetivo del contenido.",
+                p_2_title: "EDITO EL VIDEO",
+                p_2_desc: "Estructura, ritmo, subtítulos, recursos y sonido.",
+                p_3_title: "REVISAMOS",
+                p_3_desc: "Aplicamos los ajustes correspondientes.",
+                p_4_title: "LISTO PARA PUBLICAR",
+                p_4_desc: "Recibes el contenido terminado.",
+                srv_eyebrow: "SERVICIOS",
+                srv_title_1: "CÓMO PUEDO",
+                srv_title_2: "AYUDARTE",
+                srv_1_title: "SHORT FORM",
+                srv_1_desc: "Edición para Reels, TikToks y Shorts con ritmo dinámico, subtítulos animados y recursos visuales de alto impacto.",
+                srv_2_title: "CLIPPING & STORYTELLING",
+                srv_2_desc: "Clips dinámicos y análisis narrativos extraídos de contenido largo o guiones, listos para redes sociales.",
+                srv_3_title: "VIDEO LARGO",
+                srv_3_desc: "Edición de formato largo, documentales, ensayos visuales e identidad profesional para canales de YouTube.",
+                srv_4_title: "MOTION GRAPHICS & ADS",
+                srv_4_desc: "Anuncios cortos y piezas con motion graphics avanzados, diseñados para detener el scroll y vender.",
+                see_examples_btn: "Ver ejemplos",
+                about_eyebrow: "FILOSOFÍA & EXPERIENCIA",
+                about_title: "Soy Jesús Rondón.<br><span class='text-gray-400 font-bold text-2xl'>Editor & Visual Storyteller.</span>",
+                about_desc: "Con más de 4 años de experiencia y 22 años de edad, mi filosofía es simple: la atención es el activo más valioso. Combino narrativa, psicología de retención, diseño sonoro y motion graphics para que cada segundo de tu video tenga un propósito claro.",
+                youtube_btn_text: "VER MÁS EN YOUTUBE",
+                contact_title: "¿CREAMOS ALGO ÉPICO?",
+                contact_subtitle: "Escríbeme directo por WhatsApp para una respuesta rápida, cuéntame tu proyecto y te paso una propuesta.",
+                contact_whatsapp_btn: "CUÉNTAME DE TU PROYECTO",
+                footer_rights: "Todos los derechos reservados."
             },
             en: {
-                lang_popup_title: "Choose your language",
-                nav_projects: "Projects", nav_about: "About Me", nav_contact_talk: "LET'S TALK", nav_contact_contact: "CONTACT",
-                hero_subtitle: "Video Editor",
-                hero_description: "I specialize in turning spoken-word content into high-impact social media videos. My editing focuses on kinetic typography, professional compositing, and dynamic rhythm.",
-                hero_cta_button: "View Portfolio",
-                
-                projects_intro: "Explore a selection of my best collaborations and personal projects.",
-                filter_all: "All", filter_clients: "Clients", filter_personal: "Personal", filter_showreels: "Showreels",
+                bio_role: "Video Editor",
+                bio_age_label: "Age",
+                bio_age_val: "22 years old",
+                bio_exp_label: "Experience",
+                bio_exp_val: "Editing for 4 years",
 
-                // NEW TRANSLATIONS
-                p_lead_brand_title: "Opening Reel: Personal Brand",
-                p_lead_brand_desc: "Unified visual strategy for personal brand launch.",
-                p_uclinic_impact_title: "High Impact: Surgery vs Rating",
-                p_uclinic_impact_desc: "Dynamic editing maintaining clean clinical aesthetics.",
+                chat_subtitle: "Video Editor",
+                chat_msg_bot: "Hi! I'm Jesús. Tell me what content you have and I'll send you a proposal.",
+                chip_long: "Long Form",
+                chat_input_placeholder: "Hi Jesús, I saw your portfolio...",
+                chat_footer_note: "WhatsApp opens with your message ready to send",
+                wa_popup_eyebrow: "DECIDED YET?",
+                wa_popup_title1: "LET'S TALK",
+                wa_popup_title2: "NOW",
+                wa_popup_desc: "Message me on WhatsApp, tell me about your project and I'll send a proposal.",
+                wa_popup_btn: "MESSAGE ME ON WHATSAPP",
+                wa_popup_swipe: "Swipe right to close",
 
-                showreel_promo_title: "Social Media Showreel",
-                showreel_promo_desc: "Dynamic trailer promoting high-impact editing style.",
-                showreel_mg_title: "Motion Graphics",
-                showreel_mg_desc: "Compilation of kinetic typography and animation.",
-                p_cars_title: "Cars: Transformation",
-                p_cars_desc: "Visual analysis of business narrative.",
-                p_kfc_title: "KFC: Colonel Sanders",
-                p_kfc_desc: "Biographical story with compositing.",
-                p_bruce_title: "Bruce Lee: Philosophy",
-                p_bruce_desc: "Philosophical concept into visual lesson.",
-                p_pyramid_title: "Pyramid of Value",
-                p_pyramid_desc: "Marketing model explanation.",
-                p_uclinic_title: "Corporate Reel",
-                p_uclinic_desc: "Corporate production for medical services.",
-                p5_title: "Reel: Izumi Club",
-                p5_desc: "Sports mini-documentary.",
-                p1_title: "King Baldwin IV",
-                p1_desc: "Historical analysis with epic narrative.",
-                p2_title: "The Horror of War",
-                p2_desc: "Psychological terror and atmosphere.",
-                p3_title: "All Quiet on the Western Front",
-                p3_desc: "Clean impactful editing.",
-                p_amv_title: "Anime Music Video",
-                p_amv_desc: "High-energy rhythmic editing for Angeldust.",
-
-                about_title: "I'm Jesús Rondón.<br><span class='text-gray-500'>Editor & Visual Storyteller.</span>",
-                about_desc: "With over 5 years of experience, my passion is storytelling. I combine technique and creativity so that each project not only looks good but also connects and excites.",
-                service_1: "Narrative Editing", service_2: "Rhythmic Editing", service_3: "VFX & Compositing", service_4: "Social Media",
-                
-                contact_title: "Let's create something epic?",
-                contact_subtitle: "Tell me your idea. I'm ready to take your content to the next level.",
-                form_button: "SEND MESSAGE",
-                footer_rights: "All rights reserved.",
-                youtube_btn_text: "SEE MORE ON YOUTUBE"
+                hero_subtitle: "Video Editor & Motion Designer",
+                nav_projects: "Projects",
+                nav_methodology: "Process",
+                nav_services: "Services",
+                nav_about: "About Me",
+                who_am_i_btn: "WHO AM I?",
+                hero_line1: "VIDEO EDITING",
+                hero_line2: "FOR",
+                hero_rotating_words: ["BRANDS.", "CREATORS.", "BUSINESS."],
+                hero_description: "I turn raw footage into dynamic short-form and long-form content for Reels, TikTok and YouTube, designed to grab attention and keep the pace.",
+                whatsapp_cta: "LET'S TALK ON WHATSAPP",
+                see_my_work: "See my work",
+                selected_work_title: "Selected Work",
+                projects_intro: "Some of the projects I've worked on.",
+                filter_shorts: "Shorts",
+                filter_motion: "Motion Graphics",
+                filter_horizontal: "Documentary & Long Form",
+                visualize_btn: "Watch",
+                process_eyebrow: "PROCESS",
+                process_title_1: "HOW WE",
+                process_title_2: "WORK",
+                p_1_title: "YOU SEND MATERIALS",
+                p_1_desc: "Raw footage, references and content goal.",
+                p_2_title: "I EDIT THE VIDEO",
+                p_2_desc: "Structure, pacing, subtitles, assets and sound.",
+                p_3_title: "WE REVIEW",
+                p_3_desc: "We apply corresponding adjustments.",
+                p_4_title: "READY TO PUBLISH",
+                p_4_desc: "You receive your finished content.",
+                srv_eyebrow: "SERVICES",
+                srv_title_1: "HOW I CAN",
+                srv_title_2: "HELP YOU",
+                srv_1_title: "SHORT FORM",
+                srv_1_desc: "Editing for Reels, TikToks and Shorts with pacing, subtitles and high-impact visual assets.",
+                srv_2_title: "CLIPPING & STORYTELLING",
+                srv_2_desc: "Short clips cut from long videos or scripts, with dynamic editing and ready for social media.",
+                srv_3_title: "DOCUMENTARY & LONG FORM",
+                srv_3_desc: "Long-form editing, documentaries, visual essays and clear visual identity for YouTube channels.",
+                srv_4_title: "MOTION GRAPHICS & ADS",
+                srv_4_desc: "Short motion graphics ads, designed specifically to stop the scroll and sell.",
+                see_examples_btn: "See examples",
+                about_eyebrow: "PHILOSOPHY & EXPERIENCE",
+                about_title: "I'm Jesús Rondón.<br><span class='text-gray-400 font-bold text-2xl'>Editor & Visual Storyteller.</span>",
+                about_desc: "With 4 years of experience and at 22 years old, my philosophy is simple: attention is the most valuable asset. I combine storytelling, retention psychology, sound design, and motion graphics so every second of your video serves a clear purpose.",
+                youtube_btn_text: "SEE MORE ON YOUTUBE",
+                contact_title: "LET'S CREATE SOMETHING EPIC?",
+                contact_subtitle: "Message me directly on WhatsApp for a fast reply, tell me about your project and I'll send a proposal.",
+                contact_whatsapp_btn: "TELL ME ABOUT YOUR PROJECT",
+                footer_rights: "All rights reserved."
             }
         };
 
-        // --- LÓGICA DE FILTRADO ---
-        function filterProjects(category) {
-            const cards = document.querySelectorAll('.project-card');
-            const buttons = document.querySelectorAll('.filter-btn');
-            
-            // Actualizar botones activos
-            buttons.forEach(btn => {
-                if(btn.getAttribute('onclick').includes(category)) {
-                    btn.classList.add('active');
-                    btn.classList.remove('text-gray-300', 'border-gray-700');
-                    btn.classList.add('text-white', 'border-accent-color');
-                } else {
-                    btn.classList.remove('active', 'text-white', 'border-accent-color');
-                    btn.classList.add('text-gray-300', 'border-gray-700');
-                }
-            });
+        let currentLang = 'es';
+        let wordIndex = 0;
 
-            // Filtrar tarjetas con animación
-            cards.forEach(card => {
-                if (category === 'all' || card.getAttribute('data-category') === category) {
-                    card.classList.remove('hidden-card');
-                    setTimeout(() => {
-                        card.style.opacity = '1';
-                        card.style.transform = 'scale(1)';
-                    }, 50);
-                } else {
-                    card.style.opacity = '0';
-                    card.style.transform = 'scale(0.9)';
-                    setTimeout(() => {
-                        card.classList.add('hidden-card');
-                    }, 300); 
-                }
-            });
-        }
-
-        // --- SISTEMA DE IDIOMAS ---
         function setLanguage(lang) {
-            document.querySelectorAll('[data-translate]').forEach(element => {
-                const key = element.getAttribute('data-translate');
+            currentLang = lang;
+            localStorage.setItem('maclor_lang', lang);
+            document.documentElement.lang = lang;
+
+            document.querySelectorAll('[data-translate]').forEach(el => {
+                const key = el.getAttribute('data-translate');
                 if (translations[lang] && translations[lang][key]) {
-                    element.innerHTML = translations[lang][key];
+                    el.innerHTML = translations[lang][key];
                 }
             });
-            document.documentElement.lang = lang; 
-            
-            const setBtnStyle = (btnId, isActive) => {
-                const btn = document.getElementById(btnId);
-                if (!btn) return;
-                if (isActive) {
-                    btn.classList.add('text-white', 'scale-110');
-                    btn.classList.remove('text-gray-500');
-                } else {
-                    btn.classList.add('text-gray-500');
-                    btn.classList.remove('text-white', 'scale-110');
+
+            document.querySelectorAll('[data-translate-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-translate-placeholder');
+                if (translations[lang] && translations[lang][key]) {
+                    el.placeholder = translations[lang][key];
                 }
-            };
-            
-            setBtnStyle('lang-es-desktop', lang === 'es');
-            setBtnStyle('lang-en-desktop', lang === 'en');
-            setBtnStyle('lang-es-mobile', lang === 'es');
-            setBtnStyle('lang-en-mobile', lang === 'en');
+            });
+
+            const rotatingEl = document.getElementById('rotating-target');
+            if (rotatingEl) {
+                rotatingEl.className = "text-glow-red leading-[0.95] min-h-[1em] animate-slide-up";
+                rotatingEl.textContent = translations[lang].hero_rotating_words[wordIndex % translations[lang].hero_rotating_words.length];
+            }
+
+            const pillEs = document.getElementById('pill-es');
+            const pillEn = document.getElementById('pill-en');
+            if (lang === 'es') {
+                pillEs.className = "px-3.5 py-1.5 rounded-full transition-all duration-300 bg-accent-color text-white shadow";
+                pillEn.className = "px-3.5 py-1.5 rounded-full transition-all duration-300 text-gray-400 hover:text-white";
+            } else {
+                pillEn.className = "px-3.5 py-1.5 rounded-full transition-all duration-300 bg-accent-color text-white shadow";
+                pillEs.className = "px-3.5 py-1.5 rounded-full transition-all duration-300 text-gray-400 hover:text-white";
+            }
         }
 
         function selectLanguage(lang) {
@@ -766,51 +1095,270 @@
             document.getElementById('language-popup').classList.add('hidden');
         }
 
-        // --- MODALES ---
-        function openModal(modalId) {
-            const modal = document.getElementById(modalId);
-            modal.classList.remove('hidden');
-            document.body.classList.add('overflow-hidden');
-            const iframe = modal.querySelector('iframe');
-            if (iframe && iframe.getAttribute('data-src')) {
-                iframe.src = iframe.getAttribute('data-src');
-            }
-        }
-        
-        function closeModal(modalId) {
-            const modal = document.getElementById(modalId);
-            modal.classList.add('hidden');
-            document.body.classList.remove('overflow-hidden');
-            const iframe = modal.querySelector('iframe');
-            if (iframe) { iframe.src = ''; }
+        function startHeroTextRotation() {
+            const rotatingEl = document.getElementById('rotating-target');
+            if (!rotatingEl) return;
+            setInterval(() => {
+                rotatingEl.style.animation = 'none';
+                rotatingEl.offsetHeight;
+                rotatingEl.style.animation = null;
+                
+                wordIndex = (wordIndex + 1) % translations[currentLang].hero_rotating_words.length;
+                rotatingEl.textContent = translations[currentLang].hero_rotating_words[wordIndex];
+            }, 3000);
         }
 
-        // --- INICIALIZACIÓN ---
-        document.addEventListener('DOMContentLoaded', () => {
-            setLanguage('es');
-            document.getElementById('year').textContent = new Date().getFullYear();
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('is-visible'); } });
-            }, { threshold: 0.1 });
-            document.querySelectorAll('.fade-in-section').forEach(section => observer.observe(section));
+        function filterProjects(category) {
+            const cards = document.querySelectorAll('.project-card');
+            const buttons = document.querySelectorAll('.filter-btn');
 
-            document.addEventListener('keydown', function (event) {
-                if (event.key === "Escape") {
-                    document.querySelectorAll('.fixed.inset-0').forEach(modal => {
-                        if (!modal.classList.contains('hidden')) { closeModal(modal.id); }
-                    });
+            buttons.forEach(btn => {
+                if (btn.getAttribute('onclick').includes(`'${category}'`)) {
+                    btn.classList.add('active', 'text-white');
+                    btn.classList.remove('text-gray-300');
+                } else {
+                    btn.classList.remove('active', 'text-white');
+                    btn.classList.add('text-gray-300');
                 }
             });
 
-            const title = document.getElementById('main-title');
-            if(title) {
-                title.addEventListener('mousemove', e => {
-                    const rect = title.getBoundingClientRect();
-                    title.style.setProperty('--x', `${e.clientX - rect.left}px`);
-                    title.style.setProperty('--y', `${e.clientY - rect.top}px`);
-                });
+            cards.forEach(card => {
+                const video = card.querySelector('video');
+                if (card.getAttribute('data-category') === category) {
+                    card.classList.remove('hidden-card');
+                    if (video) {
+                        video.currentTime = 0;
+                        video.play().catch(() => {});
+                    }
+                } else {
+                    card.classList.add('hidden-card');
+                    if (video) {
+                        video.pause();
+                    }
+                }
+            });
+        }
+
+        function goToCategory(category) {
+            filterProjects(category);
+            document.getElementById('selected-work').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function openVideoModal(youtubeId, isVerticalShort = false) {
+            const modal = document.getElementById('universal-video-modal');
+            const iframe = document.getElementById('modal-youtube-iframe');
+            const aspectWrapper = document.getElementById('modal-aspect-wrapper');
+            const containerBox = document.getElementById('modal-container-box');
+
+            if (isVerticalShort) {
+                aspectWrapper.className = 'video-responsive-9-16 bg-black';
+                containerBox.className = 'bg-zinc-950 rounded-2xl w-full max-w-sm overflow-hidden border border-zinc-800 shadow-2xl relative';
+            } else {
+                aspectWrapper.className = 'video-responsive-16-9 bg-black';
+                containerBox.className = 'bg-zinc-950 rounded-2xl w-full max-w-4xl overflow-hidden border border-zinc-800 shadow-2xl relative';
             }
+
+            iframe.src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1&rel=0`;
+            modal.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+        }
+
+        function closeVideoModal() {
+            const modal = document.getElementById('universal-video-modal');
+            const iframe = document.getElementById('modal-youtube-iframe');
+            iframe.src = '';
+            modal.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        // --- LÓGICA DE CHAT PC & POPUP DERECHO MÓVIL (SWIPE DERECHA PARA CERRAR) ---
+        function playNotificationSound() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(587.33, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.15);
+                
+                gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.5);
+            } catch (e) {}
+        }
+
+        function toggleChatWidget(show) {
+            const widget = document.getElementById('ai-chat-widget');
+            const launcher = document.getElementById('ai-chat-launcher');
+            const input = document.getElementById('chat-user-input');
+            if (!widget || !launcher) return;
+
+            if (show) {
+                // Oculta el botón pequeño y muestra el cuadro de chat
+                launcher.style.display = 'none';
+                widget.style.display = 'block';
+                setTimeout(() => {
+                    widget.classList.remove('translate-y-6', 'opacity-0');
+                    if (input) input.focus();
+                }, 20);
+            } else {
+                // Cierra el cuadro de chat con animación y vuelve a mostrar el botón pequeño
+                widget.classList.add('translate-y-6', 'opacity-0');
+                setTimeout(() => {
+                    widget.style.display = 'none';
+                    launcher.style.display = 'flex';
+                }, 300);
+            }
+        }
+
+        function appendChatChip(chipText) {
+            const input = document.getElementById('chat-user-input');
+            const currentLang = document.documentElement.lang || 'es';
+            const prefix = currentLang === 'en' ? "Hi Jesús, I'm interested in " : "Hola Jesús, me interesa cotizar ";
+            input.value = prefix + chipText;
+            input.focus();
+        }
+
+        function sendChatToWhatsApp() {
+            const input = document.getElementById('chat-user-input');
+            const userText = input.value.trim() || (document.documentElement.lang === 'en' ? "Hi Jesús, I saw your portfolio and want to consult with you." : "Hola Jesús, vi tu portfolio y quiero consultarte.");
+            const phoneNumber = "584120000000"; 
+            window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(userText)}`, '_blank');
+        }
+
+        let touchStartX = 0;
+        let touchEndX = 0;
+        let swipeInitialized = false;
+
+        function toggleMobilePopup(show) {
+            const container = document.getElementById('mobile-whatsapp-popup');
+            const card = document.getElementById('whatsapp-popup-card');
+            if (!container || !card) return;
+
+            if (show) {
+                container.classList.remove('hidden');
+                setTimeout(() => {
+                    container.classList.remove('opacity-0');
+                    card.classList.remove('translate-x-full');
+                    initMobileSwipe();
+                }, 20);
+            } else {
+                card.classList.add('translate-x-full');
+                container.classList.add('opacity-0');
+                setTimeout(() => {
+                    container.classList.add('hidden');
+                }, 300);
+            }
+        }
+
+        function initMobileSwipe() {
+            if (swipeInitialized) return;
+            const popupCard = document.getElementById('whatsapp-popup-card');
+            if (!popupCard) return;
+
+            popupCard.addEventListener('touchstart', e => {
+                touchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+
+            popupCard.addEventListener('touchend', e => {
+                touchEndX = e.changedTouches[0].screenX;
+                if (touchEndX - touchStartX > 50) { // Deslizó hacia la derecha
+                    toggleMobilePopup(false);
+                }
+            }, { passive: true });
+
+            swipeInitialized = true;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('year').textContent = new Date().getFullYear();
+
+            const savedLang = localStorage.getItem('maclor_lang');
+            if (savedLang) {
+                setLanguage(savedLang);
+            } else {
+                setLanguage('es');
+                document.getElementById('language-popup').classList.remove('hidden');
+            }
+
+            filterProjects('shorts');
+            startHeroTextRotation();
+
+            const whatsIncludedSec = document.getElementById('whats-included');
+            const desktopPlayhead = document.getElementById('desktop-playhead');
+            const mobileContainer = document.getElementById('mobile-timeline-container');
+            const mobileProgressBar = document.getElementById('mobile-progress-bar');
+            const mobileNodes = document.querySelectorAll('.mobile-node');
+            const mobileDots = document.querySelectorAll('.mobile-dot');
+
+            function updateProcessScroll() {
+                if (!whatsIncludedSec) return;
+                const windowHeight = window.innerHeight;
+
+                if (desktopPlayhead && window.innerWidth >= 1024) {
+                    const timelineBar = desktopPlayhead.parentElement;
+                    if (timelineBar) {
+                        const barRect = timelineBar.getBoundingClientRect();
+                        let progress = (windowHeight - barRect.top) / (windowHeight + barRect.height);
+                        if (progress < 0) progress = 0;
+                        if (progress > 1) progress = 1;
+                        const maxPx = timelineBar.offsetWidth - 24;
+                        desktopPlayhead.style.left = `${progress * maxPx}px`;
+                    }
+                }
+
+                if (mobileContainer && mobileProgressBar) {
+                    const mobRect = mobileContainer.getBoundingClientRect();
+                    let mobPercent = ((windowHeight - mobRect.top) / (mobRect.height + (windowHeight * 0.2))) * 100;
+                    if (mobPercent < 0) mobPercent = 0;
+                    if (mobPercent > 100) mobPercent = 100;
+                    mobileProgressBar.style.height = `${mobPercent}%`;
+
+                    mobileNodes.forEach((node, index) => {
+                        const nodeRect = node.getBoundingClientRect();
+                        if (nodeRect.top < windowHeight * 0.75) {
+                            node.style.borderColor = '#ff1f3d';
+                            node.style.boxShadow = '0 0 10px #ff1f3d';
+                            if (mobileDots[index]) mobileDots[index].style.backgroundColor = '#ff1f3d';
+                        } else {
+                            node.style.borderColor = '#3f3f46';
+                            node.style.boxShadow = 'none';
+                            if (mobileDots[index]) mobileDots[index].style.backgroundColor = '#52525b';
+                        }
+                    });
+                }
+            }
+
+            window.addEventListener('scroll', updateProcessScroll);
+            window.addEventListener('resize', updateProcessScroll);
+            updateProcessScroll();
+
+            const sectionObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.fade-in-section').forEach(sec => sectionObserver.observe(sec));
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeVideoModal();
+            });
+
+            // Disparar chat en PC a los 2.5 segundos con sonido ping (En móvil NO se abre solo)
+            setTimeout(() => {
+                if (window.innerWidth >= 1024) {
+                    playNotificationSound();
+                    toggleChatWidget(true);
+                }
+            }, 2500);
         });
     </script>
 </body>
